@@ -3,6 +3,7 @@ package co.ajeg.tutoflash.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
+
     private String id;
     private String userName;
 

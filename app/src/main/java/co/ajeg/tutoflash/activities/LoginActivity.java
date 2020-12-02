@@ -1,4 +1,4 @@
-package co.ajeg.tutoflash;
+package co.ajeg.tutoflash.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -18,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.UUID;
 
+import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.model.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,8 +29,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Andres
 
         userET = findViewById(R.id.userET);
         loginBtn = findViewById(R.id.loginBtn);

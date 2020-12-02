@@ -1,4 +1,4 @@
-package co.ajeg.tutoflash;
+package co.ajeg.tutoflash.fragments;
 
 import android.os.Bundle;
 
@@ -8,18 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import co.ajeg.tutoflash.R;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link HomeFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class HomeFragment extends Fragment {
+
+
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
+
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
+        // args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
