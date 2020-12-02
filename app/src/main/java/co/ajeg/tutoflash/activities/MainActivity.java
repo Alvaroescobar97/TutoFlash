@@ -15,8 +15,8 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.fragments.CalendarioFragment;
 import co.ajeg.tutoflash.fragments.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
-import co.ajeg.tutoflash.fragments.HomeFragment;
-import co.ajeg.tutoflash.fragments.NotificacionFragment;
+import co.ajeg.tutoflash.fragments.materias.HomeFragment;
+import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package co.ajeg.tutoflash.fragments;
+package co.ajeg.tutoflash.fragments.materias;
 
 import android.os.Bundle;
 
@@ -12,21 +12,18 @@ import co.ajeg.tutoflash.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NotificacionFragment#newInstance} factory method to
+ * Use the {@link MateriasItemFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificacionFragment extends Fragment {
+public class MateriasItemFragment extends Fragment {
 
-    public NotificacionFragment() {
+    public MateriasItemFragment() {
         // Required empty public constructor
     }
 
-
-    public static NotificacionFragment newInstance() {
-        NotificacionFragment fragment = new NotificacionFragment();
+    public static MateriasItemFragment newInstance() {
+        MateriasItemFragment fragment = new MateriasItemFragment();
         Bundle args = new Bundle();
-        // args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,6 +32,6 @@ public class NotificacionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notificacion, container, false);
+        return inflater.inflate(R.layout.fragment_materias_item, container, false);
     }
 }
