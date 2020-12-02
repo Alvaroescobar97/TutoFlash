@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -20,7 +22,7 @@ import co.ajeg.tutoflash.model.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText userET;
+    private TextInputLayout userET;
     private Button loginBtn;
     private ImageView banner;
     private FirebaseFirestore db;
@@ -45,7 +47,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.loginBtn:
 
-                String userName = userET.getText().toString();
+                String userName = userET.getEditText().getText().toString();
+                Log.e(">>>", userName);
+
                 User user = new User(UUID.randomUUID().toString(),userName);
 
                 CollectionReference trainerRef = db.collection("users");

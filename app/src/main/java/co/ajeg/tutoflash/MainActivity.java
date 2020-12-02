@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = HomeFragment.newInstance();
         calendarFragment = CalendarFragment.newInstance();
 
+        showFragment(homeFragment);
+
         navigation.setOnNavigationItemSelectedListener(
                 menuItem ->{
 
