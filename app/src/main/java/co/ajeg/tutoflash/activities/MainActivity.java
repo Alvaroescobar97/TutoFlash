@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
         homeFragment = HomeFragment.newInstance();
         notificacionFragment = NotificacionFragment.newInstance();
         calendarioFragment = CalendarioFragment.newInstance();
-        chatFragment = ChatFragment.newInstance(galeria);
+        chatFragment = ChatFragment.newInstance();
         perfilFragment = PerfilFragment.newInstance();
 
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);

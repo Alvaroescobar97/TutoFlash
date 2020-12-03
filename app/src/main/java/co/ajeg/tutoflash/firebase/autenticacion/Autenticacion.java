@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Date;
+
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -151,10 +153,12 @@ public class Autenticacion {
                         if (task.isSuccessful()) {
                             FirebaseUser user = auth.getCurrentUser();
                             String name= user.getDisplayName();
+                            String image = user.getPhotoUrl().toString();
                             String email = user.getEmail();
                             String carrera = "Estudiante";
+                            String date = (new Date()).toString();
 
-                            User usuario = new User(user.getUid(), name, email, carrera);
+                            User usuario = new User(user.getUid(), date, name, email, carrera, image);
                             Database.createUser(usuario);
 
                             onCompleteListenerUser.onLoad(usuario);
