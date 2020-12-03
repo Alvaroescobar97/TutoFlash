@@ -20,6 +20,7 @@ import co.ajeg.tutoflash.fragments.PerfilFragment;
 import co.ajeg.tutoflash.fragments.materias.HomeFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.galeria.Galeria;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,9 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     public HeaderFragment headerFragment;
 
+    Autenticacion autenticacion;
     FragmentUtil fragmentUtil;
 
     private BottomNavigationView navigationView;
+    private Galeria galeria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = HomeFragment.newInstance();
         notificacionFragment = NotificacionFragment.newInstance();
         calendarioFragment = CalendarioFragment.newInstance();
-        chatFragment = ChatFragment.newInstance();
+        chatFragment = ChatFragment.newInstance(galeria);
         perfilFragment = PerfilFragment.newInstance();
 
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
@@ -91,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        new Autenticacion(this);
+        this.autenticacion = new Autenticacion(this);
+
+
     }
+
+
 }
