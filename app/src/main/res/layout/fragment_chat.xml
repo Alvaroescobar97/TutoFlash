@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="46dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_chat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
