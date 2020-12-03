@@ -60,7 +60,7 @@ public class Galeria {
 
     public void openGaleria(){
         this.activity.runOnUiThread(()->{
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
             i.setType("image/*");
 
             this.activity.startActivityForResult(i, GALLERY_CALLBACK);
