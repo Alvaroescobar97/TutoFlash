@@ -50,7 +50,7 @@ public class Autenticacion {
 
         Database.getCurrentUser(user ->{
           if(user != null){
-              if(!appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())){
+              if(appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())){
                   goToMainActivity();
               }
 
