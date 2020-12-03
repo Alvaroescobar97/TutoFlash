@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,8 +50,8 @@ public class Galeria {
         this.activity.runOnUiThread(()->{
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             file = new File(this.activity.getExternalFilesDir(null) + "/photo.png");
-            Uri uri = FileProvider.getUriForFile(this.activity, this.activity.getPackageName(), file);
 
+            Uri uri = FileProvider.getUriForFile(this.activity, this.activity.getPackageName(), file);
             i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
             this.activity.startActivityForResult(i, CAMERA_CALLBACK);
@@ -66,24 +68,31 @@ public class Galeria {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == CAMERA_CALLBACK && resultCode == this.activity.RESULT_OK){
-            Bitmap image = BitmapFactory.decodeFile(file.getPath());
-            //Bitmap thumbnail = Bitmap.createScaledBitmap(image, image.getWidth()/4, image.getHeight()/4, true);
-            if(onCompleteListenerImage != null){
-                onCompleteListenerImage.onLoad(image);
+
+        this.activity.runOnUiThread(()->{
+
+            if(requestCode == CAMERA_CALLBACK &&  resultCode == this.activity.RESULT_OK){
+                Bitmap image = BitmapFactory.decodeFile(file.getPath());
+                //Bitmap thumbnail = Bitmap.createScaledBitmap(image, image.getWidth()/4, image.getHeight()/4, true);
+
+                if(onCompleteListenerImage != null){
+                    onCompleteListenerImage.onLoad(image);
+                }
+
             }
 
-        }
-
-        if(resultCode == CAMERA_CALLBACK && resultCode == this.activity.RESULT_OK){
-            Uri uri = data.getData();
-            String path = UtilDomi.getPath(this.activity, uri);
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            //Bitmap thumbnail = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
-            if(onCompleteListenerImage != null){
-                onCompleteListenerImage.onLoad(bitmap);
+            if(requestCode == GALLERY_CALLBACK && resultCode == this.activity.RESULT_OK){
+                Uri uri = data.getData();
+                String path = UtilDomi.getPath(this.activity, uri);
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                //Bitmap thumbnail = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
+                if(onCompleteListenerImage != null){
+                    onCompleteListenerImage.onLoad(bitmap);
+                }
             }
-        }
+        });
+
+
     }
 
 

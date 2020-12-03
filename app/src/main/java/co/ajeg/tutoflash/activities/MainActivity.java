@@ -1,12 +1,16 @@
 package co.ajeg.tutoflash.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -22,7 +26,7 @@ import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Galeria.OnCompleteListenerImage {
 
     public HomeFragment homeFragment;
     public NotificacionFragment notificacionFragment;
@@ -42,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.galeria = new Galeria(this);
+        this.galeria.getResultImage(this);
 
         fragmentUtil = new FragmentUtil(this);
 
@@ -69,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
+
+
     }
 
     private boolean onNavigationItemSelected(@NonNull MenuItem item){
@@ -93,11 +102,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        this.galeria.getResultImage(this);
         this.autenticacion = new Autenticacion(this);
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        this.galeria.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.galeria.onActivityResult(requestCode, resultCode, data);
 
     }
 
-
+    @Override
+    public void onLoad(Bitmap bitmap) {
+        runOnUiThread(()->{
+            Toast.makeText(this, "Llego una imagen", Toast.LENGTH_SHORT).show();
+        });
+    }
 }
