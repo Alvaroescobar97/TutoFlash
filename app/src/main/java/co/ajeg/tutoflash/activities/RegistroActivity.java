@@ -11,7 +11,7 @@ import co.ajeg.tutoflash.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegistroActivity extends AppCompatActivity {
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
