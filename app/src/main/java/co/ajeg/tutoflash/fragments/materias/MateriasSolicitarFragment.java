@@ -32,6 +32,10 @@ public class MateriasSolicitarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_materias_solicitar, container, false);
+        View view = inflater.inflate(R.layout.fragment_materias_solicitar, container, false);
+
+
+
+        return view;
     }
 }

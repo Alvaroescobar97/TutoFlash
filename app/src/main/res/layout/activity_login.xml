@@ -7,7 +7,7 @@
     tools:context=".activities.LoginActivity">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userET"
+        android:id="@+id/tiet_login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="58dp"
@@ -28,7 +28,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordET"
+        android:id="@+id/tiet_login_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userET"
+        app:layout_constraintTop_toBottomOf="@+id/tiet_login_username"
         app:startIconDrawable="@drawable/baseline_vpn_key_black_24dp"
         tools:ignore="MissingConstraints">
 
@@ -53,7 +53,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/btn_login_iniciar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="150dp"
@@ -72,6 +72,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/banner"
         tools:srcCompat="@drawable/banner" />
+
+    <Button
+        android:id="@+id/btn_login_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Google"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_iniciar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

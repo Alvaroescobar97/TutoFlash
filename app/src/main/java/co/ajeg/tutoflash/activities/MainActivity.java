@@ -12,23 +12,28 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.fragments.CalendarioFragment;
 import co.ajeg.tutoflash.fragments.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
+import co.ajeg.tutoflash.fragments.PerfilFragment;
 import co.ajeg.tutoflash.fragments.materias.HomeFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HomeFragment homeFragment;
-    private NotificacionFragment notificacionFragment;
-    private CalendarioFragment calendarioFragment;
-    private ChatFragment chatFragment;
-    private BottomNavigationView navigationView;
-    private HeaderFragment headerFragment;
+    public HomeFragment homeFragment;
+    public NotificacionFragment notificacionFragment;
+    public CalendarioFragment calendarioFragment;
+    public ChatFragment chatFragment;
+    public PerfilFragment perfilFragment;
+
+    public HeaderFragment headerFragment;
+
     FragmentUtil fragmentUtil;
 
+    private BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         notificacionFragment = NotificacionFragment.newInstance();
         calendarioFragment = CalendarioFragment.newInstance();
         chatFragment = ChatFragment.newInstance();
-
+        perfilFragment = PerfilFragment.newInstance();
 
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
         fragmentUtil.replaceFragment(R.id.fragment_container_header, headerFragment);
@@ -82,5 +87,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        new Autenticacion(this);
+    }
 }

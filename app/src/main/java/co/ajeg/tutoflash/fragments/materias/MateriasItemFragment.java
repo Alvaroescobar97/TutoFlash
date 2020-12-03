@@ -28,10 +28,15 @@ public class MateriasItemFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_materias_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_materias_item, container, false);
+
+
+
+        return view;
     }
 }
