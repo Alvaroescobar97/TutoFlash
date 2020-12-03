@@ -16,7 +16,8 @@ tools:context=".activities.RegistroActivity">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView2"
             android:layout_width="153dp"
             android:layout_height="148dp"
@@ -24,7 +25,7 @@ tools:context=".activities.RegistroActivity">
             app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/addimage" />
+            android:src="@drawable/addimage" />
 
         <Button
             android:id="@+id/btn_crear"
