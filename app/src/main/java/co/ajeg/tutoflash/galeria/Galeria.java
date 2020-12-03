@@ -72,11 +72,12 @@ public class Galeria {
         this.activity.runOnUiThread(()->{
 
             if(requestCode == CAMERA_CALLBACK &&  resultCode == this.activity.RESULT_OK){
-                Bitmap image = BitmapFactory.decodeFile(file.getPath());
+                String path = file.getPath();
+                Bitmap image = BitmapFactory.decodeFile(path);
                 //Bitmap thumbnail = Bitmap.createScaledBitmap(image, image.getWidth()/4, image.getHeight()/4, true);
 
                 if(onCompleteListenerImage != null){
-                    onCompleteListenerImage.onLoad(image);
+                    onCompleteListenerImage.onLoad(image, path);
                 }
 
             }
@@ -87,7 +88,7 @@ public class Galeria {
                 Bitmap bitmap = BitmapFactory.decodeFile(path);
                 //Bitmap thumbnail = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
                 if(onCompleteListenerImage != null){
-                    onCompleteListenerImage.onLoad(bitmap);
+                    onCompleteListenerImage.onLoad(bitmap, path);
                 }
             }
         });
@@ -118,7 +119,7 @@ public class Galeria {
     }
 
     public interface OnCompleteListenerImage{
-        void onLoad(Bitmap bitmap);
+        void onLoad(Bitmap bitmap, String path);
     }
 
 

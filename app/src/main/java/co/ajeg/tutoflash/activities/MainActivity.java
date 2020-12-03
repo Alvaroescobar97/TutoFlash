@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
     }
 
     @Override
-    public void onLoad(Bitmap bitmap) {
+    public void onLoad(Bitmap bitmap, String path) {
         runOnUiThread(()->{
             Toast.makeText(this, "Llego una imagen", Toast.LENGTH_SHORT).show();
         });
