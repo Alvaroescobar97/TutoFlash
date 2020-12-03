@@ -55,7 +55,7 @@ public class Autenticacion {
               }
 
           }else{
-              if(!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName())){
+              if(!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName()) && !appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())){
                   goToLoginActivity();
               }
           }

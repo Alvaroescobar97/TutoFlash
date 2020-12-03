@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 
 public class PreLogin extends AppCompatActivity {
     private Button btn_prelogin_register;
@@ -18,6 +19,7 @@ public class PreLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_login);
+        new Autenticacion(this);
 
         btn_prelogin_register = findViewById(R.id.btn_prelogin_register);
         btn_prelogin_login = findViewById(R.id.btn_prelogin_login);
