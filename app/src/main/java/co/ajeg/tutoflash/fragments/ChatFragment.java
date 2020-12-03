@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.galeria.Galeria;
@@ -23,10 +24,13 @@ public class ChatFragment extends Fragment {
         // Required empty public constructor
     }
 
+    static private Galeria galeria;
 
-    public static ChatFragment newInstance(Galeria galeria) {
+
+    public static ChatFragment newInstance(Galeria g) {
         ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
+        galeria = g;
        // args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
@@ -40,9 +44,13 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-
-
+        Button btn_chat_button = view.findViewById(R.id.btn_chat_button);
+        btn_chat_button.setOnClickListener(this::openCamera);
 
         return view;
+    }
+
+    public void openCamera(View v){
+        galeria.openCamera();
     }
 }
