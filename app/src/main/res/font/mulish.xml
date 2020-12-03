@@ -2,7 +2,11 @@
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-   <!--
-    <font app:font="@font/mulish" app:fontStyle="normal" app:fontWeight="400" />
-   -->
+
+    <font app:font="@font/mulish_bold" app:fontStyle="normal" app:fontWeight="400" />
+   <font app:font="@font/mulish_light" app:fontStyle="normal" app:fontWeight="400" />
+   <font app:font="@font/mulish_regular" app:fontStyle="normal" app:fontWeight="400" />
+   <font app:font="@font/mulish_semibold" app:fontStyle="normal" app:fontWeight="400" />
+
+
 </font-family>
