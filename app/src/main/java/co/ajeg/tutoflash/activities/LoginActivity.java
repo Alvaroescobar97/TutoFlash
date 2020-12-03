@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout tiet_login_username;
     private TextInputLayout tiet_login_password;
     private Button btn_login_iniciar;
-    private Button btn_login_google;
+    private SignInButton btn_login_google;
     private ImageView banner;
     private Database database;
     private Autenticacion autenticacion;
