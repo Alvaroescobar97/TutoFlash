@@ -163,4 +163,7 @@ public class Autenticacion {
         public void onLoad(User user);
     }
 
+    public static User getUser() {
+        return user;
+    }
 }

@@ -1,7 +1,9 @@
 package co.ajeg.tutoflash.firebase.database;
 
+import android.app.Notification;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -9,11 +11,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 public class Database {
 
@@ -22,9 +30,8 @@ public class Database {
     public Database(AppCompatActivity appCompatActivity) {
         this.appCompatActivity = appCompatActivity;
 
-        if (Autenticacion.user == null) {
-            this.getCurrentUser();
-        }
+        this.getCurrentUser();
+
     }
 
     static public void createUser(User user) {
@@ -109,5 +116,39 @@ public class Database {
     }
 
 
+    public void createNotificacion(Notificacion notificacion, OnCompleteListenerDatabase onCompleteListenerDatabase){
+        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+        User user = Autenticacion.getUser();
+        if(user != null) {
+            fs.collection(DBROUTES.USERS).document(user.getId()).collection(DBROUTES.USERS_NOTIFICACIONES).
+                    document(notificacion.getId()).set(notificacion).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            onCompleteListenerDatabase.onLoad(true);
+                        }else{
+                            onCompleteListenerDatabase.onLoad(null);
+                        }
+            });
+        }
+    }
+
+
+    public void getRefNotificaciones(OnListenerNotificaciones onListenerNotificaciones){
+        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+        User user = Autenticacion.getUser();
+        if(user != null){
+            fs.collection(DBROUTES.USERS).document(user.getId()).collection(DBROUTES.USERS_NOTIFICACIONES).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    List<Notificacion> notificacions = value.toObjects(Notificacion.class);
+                    onListenerNotificaciones.onLoad(notificacions);
+                }
+            });
+        }
+    }
+
+
+    interface OnListenerNotificaciones{
+        void onLoad(List<Notificacion> notificacion);
+    }
 
 }

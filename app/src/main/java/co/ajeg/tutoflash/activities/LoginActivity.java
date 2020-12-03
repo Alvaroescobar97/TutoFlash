@@ -1,7 +1,10 @@
 package co.ajeg.tutoflash.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         this.btn_login_google = findViewById(R.id.btn_login_google);
         banner = findViewById(R.id.banner);
 
+
         this.btn_login_iniciar.setOnClickListener(this::login);
         this.btn_login_google.setOnClickListener(this::loginGoogle);
 
@@ -93,6 +97,11 @@ public class LoginActivity extends AppCompatActivity {
             launchHome(user);
         });
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 }
