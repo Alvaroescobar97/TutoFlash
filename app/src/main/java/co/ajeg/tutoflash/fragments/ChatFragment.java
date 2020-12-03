@@ -51,6 +51,6 @@ public class ChatFragment extends Fragment {
     }
 
     public void openCamera(View v){
-        galeria.openCamera();
+        galeria.openGaleria();
     }
 }
