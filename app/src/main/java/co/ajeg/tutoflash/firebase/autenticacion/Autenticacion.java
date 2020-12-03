@@ -22,6 +22,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.activities.PreLogin;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.OnCompleteListenerDatabase;
 import co.ajeg.tutoflash.model.User;
@@ -49,12 +50,22 @@ public class Autenticacion {
 
         Database.getCurrentUser(user ->{
           if(user != null){
+              if(!appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())){
+                  goToMainActivity();
+              }
 
           }else{
               if(!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName())){
                   goToLoginActivity();
               }
           }
+        });
+    }
+
+    public void goToMainActivity(){
+        this.appCompatActivity.runOnUiThread(()->{
+            Intent intent = new Intent(this.appCompatActivity, MainActivity.class);
+            this.appCompatActivity.startActivity(intent);
         });
     }
 
