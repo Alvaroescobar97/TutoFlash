@@ -24,11 +24,12 @@ public class Galeria {
     public static final int CAMERA_CALLBACK = 12;
     public static final int GALLERY_CALLBACK = 13;
     private File file;
+    OnCompleteListenerImage onCompleteListenerImage;
+
 
     public Galeria (AppCompatActivity activity){
 
         this.activity = activity;
-
 
         this.activity.runOnUiThread(()->{
             ActivityCompat.requestPermissions(this.activity, new String[]{
@@ -37,7 +38,10 @@ public class Galeria {
                     Manifest.permission.READ_EXTERNAL_STORAGE,
             },  PERMISSIONS_CALLBACK);
         });
+    }
 
+    public void getResultImage(OnCompleteListenerImage onCompleteListenerImage){
+        this.onCompleteListenerImage = onCompleteListenerImage;
     }
 
     public void openCamera(){
@@ -64,13 +68,21 @@ public class Galeria {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == CAMERA_CALLBACK && resultCode == this.activity.RESULT_OK){
             Bitmap image = BitmapFactory.decodeFile(file.getPath());
-            Bitmap thumbnail = Bitmap.createScaledBitmap(image, image.getWidth()/4, image.getHeight()/4, true);
+            //Bitmap thumbnail = Bitmap.createScaledBitmap(image, image.getWidth()/4, image.getHeight()/4, true);
+            if(onCompleteListenerImage != null){
+                onCompleteListenerImage.onLoad(image);
+            }
+
         }
 
         if(resultCode == CAMERA_CALLBACK && resultCode == this.activity.RESULT_OK){
             Uri uri = data.getData();
             String path = UtilDomi.getPath(this.activity, uri);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
+            //Bitmap thumbnail = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
+            if(onCompleteListenerImage != null){
+                onCompleteListenerImage.onLoad(bitmap);
+            }
         }
     }
 
@@ -94,6 +106,11 @@ public class Galeria {
 
             }
         });
-
     }
+
+    public interface OnCompleteListenerImage{
+        void onLoad(Bitmap bitmap);
+    }
+
+
 }

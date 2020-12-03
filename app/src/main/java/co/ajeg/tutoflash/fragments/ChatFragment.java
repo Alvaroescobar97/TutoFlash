@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.galeria.Galeria;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +24,7 @@ public class ChatFragment extends Fragment {
     }
 
 
-    public static ChatFragment newInstance() {
+    public static ChatFragment newInstance(Galeria galeria) {
         ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
        // args.putString(ARG_PARAM1, param1);
@@ -38,6 +39,7 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
+
 
 
 
