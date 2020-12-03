@@ -8,17 +8,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiet_login_username"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="58dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
         android:hint="Nombre de Usuario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/banner"
         app:startIconDrawable="@drawable/baseline_person_black_24dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -32,9 +32,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="58dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="58dp"
+        android:layout_marginEnd="50dp"
         android:hint="Contraseña"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,34 +54,39 @@
 
     <Button
         android:id="@+id/btn_login_iniciar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/blue"
         android:text="Iniciar Sesión"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="528dp" />
 
     <ImageView
         android:id="@+id/banner"
         android:layout_width="184dp"
         android:layout_height="107dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="90dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/banner"
         tools:srcCompat="@drawable/banner" />
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/btn_login_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Google"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_iniciar" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_iniciar"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
