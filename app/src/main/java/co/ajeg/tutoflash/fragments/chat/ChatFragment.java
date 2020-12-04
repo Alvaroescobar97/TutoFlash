@@ -50,22 +50,16 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
         RecyclerView rv_chat_personas = view.findViewById(R.id.rv_chat_personas);
+        TextView tv_chat_no_chats= view.findViewById(R.id.tv_chat_no_chats);
 
         List<ChatPerson> chatsPersonas = new ArrayList<>();
 
+
+        if(chatsPersonas.size() == 0){
+            tv_chat_no_chats.setVisibility(View.VISIBLE);
+        }
+
         AdapterList<ChatPerson> adapterList = new AdapterList(rv_chat_personas, chatsPersonas, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
-
-            /*
-
-            private CircleImageView civ_item_materia_tutor_image;
-            private TextView tv_item_materia_tutor_name;
-            private TextView tv_item_materia_tutor_descripcion;
-            private TextView tv_item_materia_tutor_calificacion;
-            private RatingBar rb_item_materia_tutor_calificacion;
-            private TextView tv_item_materia_tutor_precio;
-
-             */
-
 
             private CircleImageView civ_item_chat_persona_image;
             private TextView tv_item_chat_persona_name;
@@ -73,19 +67,9 @@ public class ChatFragment extends Fragment {
             private TextView tv_item_chat_persona_fecha;
 
 
+
             @Override
             public void onCreateView(View v) {
-
-                /*
-
-                this.civ_item_materia_tutor_image = v.findViewById(R.id.civ_item_materia_tutor_image);
-                this.tv_item_materia_tutor_name = v.findViewById(R.id.tv_item_materia_tutor_name);
-                this.tv_item_materia_tutor_descripcion = v.findViewById(R.id.tv_item_materia_tutor_descripcion);
-                this.tv_item_materia_tutor_calificacion = v.findViewById(R.id.tv_item_materia_tutor_calificacion);
-                this.rb_item_materia_tutor_calificacion = v.findViewById(R.id.rb_item_materia_tutor_calificacion);
-                this.tv_item_materia_tutor_precio = v.findViewById(R.id.tv_item_materia_tutor_precio);
-
-                 */
 
                 this.civ_item_chat_persona_image = v.findViewById(R.id.civ_item_chat_persona_image);
                 this.tv_item_chat_persona_name = v.findViewById(R.id.tv_item_chat_persona_name);
