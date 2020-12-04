@@ -2,6 +2,9 @@ package co.ajeg.tutoflash.firebase.storage;
 
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -34,20 +37,39 @@ public class StorageFirebase {
         }).start();
     }
 
-    static public void gerUrlFile(String[] ruta, OnCompleteListenerStorage onCompleteListenerStorage){
+    static public void gerUrlFile(AppCompatActivity appCompatActivity, String[] ruta, OnCompleteListenerStorage onCompleteListenerStorage){
+        appCompatActivity.runOnUiThread(()->{
+            gerUrlFileNormal(ruta, onCompleteListenerStorage);
+        });
+
+    }
+
+    static public void gerUrlFile(FragmentActivity fragmentActivity, String[] ruta, OnCompleteListenerStorage onCompleteListenerStorage){
+        fragmentActivity.runOnUiThread(()->{
+            gerUrlFileNormal(ruta, onCompleteListenerStorage);
+        });
+
+    }
+
+    static private void gerUrlFileNormal(String[] ruta, OnCompleteListenerStorage onCompleteListenerStorage){
+        FirebaseStorage fs = FirebaseStorage.getInstance();
+        String url = getRoutes(ruta);
+        if(url != null) {
+            fs.getReference().child(url).getDownloadUrl().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    String urlFirebaseStorege = task.getResult().toString();
+                    onCompleteListenerStorage.onLoad(urlFirebaseStorege);
+                }else{
+                    onCompleteListenerStorage.onLoad(null);
+                }
+            });
+        }
+    }
+
+
+    static private void gerUrlFile(String[] ruta, OnCompleteListenerStorage onCompleteListenerStorage){
         new Thread(()->{
-            FirebaseStorage fs = FirebaseStorage.getInstance();
-            String url = getRoutes(ruta);
-            if(url != null) {
-                fs.getReference().child(url).getDownloadUrl().addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        String urlFirebaseStorege = task.getResult().toString();
-                        onCompleteListenerStorage.onLoad(urlFirebaseStorege);
-                    }else{
-                        onCompleteListenerStorage.onLoad(null);
-                    }
-                });
-            }
+            gerUrlFileNormal(ruta, onCompleteListenerStorage);
 
 
         }).start();

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -15,13 +16,21 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreen.this, PreLogin.class);
+        new Handler().postDelayed(()->{
+            new Autenticacion(this, (user)->{
+                 Intent intent = null;
+
+                if(user != null){
+                    intent = new Intent(SplashScreen.this, PreLogin.class);
+                }else{
+                    intent = new Intent(SplashScreen.this, MainActivity.class);
+                }
+
                 startActivity(intent);
                 finish();
-            }
+            });
+
+
         },3000);
     }
 }

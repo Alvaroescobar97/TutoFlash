@@ -40,56 +40,72 @@ public class Autenticacion {
 
     static public User user;
 
-    public Autenticacion(AppCompatActivity appCompatActivity){
+    public Autenticacion(AppCompatActivity appCompatActivity) {
+
+        this.inicializar(appCompatActivity, null);
+    }
+
+    public Autenticacion(AppCompatActivity appCompatActivity, OnCompleteListenerUser onCompleteListenerUser) {
+        this.inicializar(appCompatActivity, onCompleteListenerUser);
+    }
+
+    private void inicializar(AppCompatActivity appCompatActivity, OnCompleteListenerUser onCompleteListenerUser) {
         this.appCompatActivity = appCompatActivity;
-        this.auth = FirebaseAuth.getInstance();
+        this.appCompatActivity.runOnUiThread(() -> {
 
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(this.appCompatActivity.getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+            this.auth = FirebaseAuth.getInstance();
 
-        googleSignInClient = GoogleSignIn.getClient(this.appCompatActivity, gso);
+            // Configure Google Sign In
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(this.appCompatActivity.getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
 
-        Database.getCurrentUser(user ->{
-          if(user != null){
-              if(appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())){
-                  goToMainActivity();
-              }
+            googleSignInClient = GoogleSignIn.getClient(this.appCompatActivity, gso);
 
-          }else{
-              if(!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName()) &&
-                      !appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName()) &&
-                      appCompatActivity.getClass().getSimpleName().equals(RegistroActivity.class.getSimpleName()) == false
-              ){
-                  goToLoginActivity();
-              }
-          }
+            Database.getCurrentUser(user -> {
+                if (onCompleteListenerUser == null) {
+                    if (user != null) {
+                        if (appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())) {
+                            goToMainActivity();
+                        }
+                    } else {
+                        if (!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName()) &&
+                                !appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName()) &&
+                                appCompatActivity.getClass().getSimpleName().equals(RegistroActivity.class.getSimpleName()) == false
+                        ) {
+                            goToLoginActivity();
+                        }
+                    }
+                } else {
+                    onCompleteListenerUser.onLoad(user);
+                }
+            });
         });
     }
 
-    public void goToMainActivity(){
-        this.appCompatActivity.runOnUiThread(()->{
+
+    public void goToMainActivity() {
+        this.appCompatActivity.runOnUiThread(() -> {
             Intent intent = new Intent(this.appCompatActivity, MainActivity.class);
             this.appCompatActivity.startActivity(intent);
         });
     }
 
-    public void goToLoginActivity(){
-        this.appCompatActivity.runOnUiThread(()->{
+    public void goToLoginActivity() {
+        this.appCompatActivity.runOnUiThread(() -> {
             Intent intent = new Intent(this.appCompatActivity, LoginActivity.class);
             this.appCompatActivity.startActivity(intent);
         });
     }
 
-    public static void logout(){
+    public static void logout() {
         user = null;
         FirebaseAuth.getInstance().signOut();
     }
 
-    public void loginWithGoogle(){
-        this.appCompatActivity.runOnUiThread(()->{
+    public void loginWithGoogle() {
+        this.appCompatActivity.runOnUiThread(() -> {
 
             Intent signInIntent = this.googleSignInClient.getSignInIntent();
             this.appCompatActivity.startActivityForResult(signInIntent, this.RC_SIGN_IN);
@@ -97,14 +113,14 @@ public class Autenticacion {
     }
 
 
-    public void login(String email, String pass, OnCompleteListenerUser onCompleteListenerUser){
-        this.appCompatActivity.runOnUiThread(()->{
+    public void login(String email, String pass, OnCompleteListenerUser onCompleteListenerUser) {
+        this.appCompatActivity.runOnUiThread(() -> {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             String id = task.getResult().getUser().getUid();
                             Database.getUserDatabase(id, onCompleteListenerUser);
-                        }else{
+                        } else {
                             onCompleteListenerUser.onLoad(null);
                         }
                     });
@@ -112,22 +128,22 @@ public class Autenticacion {
 
     }
 
-    public void registro(String email, String pass, User user){
+    public void registro(String email, String pass, User user) {
         registro(email, pass, user, null);
     }
 
-    public void registro(String email, String pass, User user, OnCompleteListenerUser onCompleteListenerUser){
-        this.appCompatActivity.runOnUiThread(()->{
+    public void registro(String email, String pass, User user, OnCompleteListenerUser onCompleteListenerUser) {
+        this.appCompatActivity.runOnUiThread(() -> {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             user.setId(task.getResult().getUser().getUid());
-                            if(user.getImage().equals("") == false){
+                            if (user.getImage().equals("") == false) {
                                 user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getId());
                             }
                             Database.createUser(user, onCompleteListenerUser);
-                        }else{
-                            if(onCompleteListenerUser != null){
+                        } else {
+                            if (onCompleteListenerUser != null) {
                                 onCompleteListenerUser.onLoad(null);
                             }
                         }
@@ -137,7 +153,7 @@ public class Autenticacion {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data, OnCompleteListenerUser onCompleteListenerUser) {
-        this.appCompatActivity.runOnUiThread(()->{
+        this.appCompatActivity.runOnUiThread(() -> {
             if (requestCode == RC_SIGN_IN) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 if (task.isSuccessful()) {
@@ -164,27 +180,25 @@ public class Autenticacion {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         this.auth.signInWithCredential(credential)
                 .addOnCompleteListener(this.appCompatActivity, task -> {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
-                            String name= user.getDisplayName();
-                            String image = user.getPhotoUrl().toString();
-                            String email = user.getEmail();
-                            String carrera = "Estudiante";
-                            String date = (new Date()).toString();
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = auth.getCurrentUser();
+                        String name = user.getDisplayName();
+                        String image = user.getPhotoUrl().toString();
+                        String email = user.getEmail();
+                        String carrera = "Estudiante";
+                        String date = (new Date()).toString();
 
-                            User usuario = new User(user.getUid(), date, name, email, carrera, image);
-                            Database.createUser(usuario);
+                        User usuario = new User(user.getUid(), date, name, email, carrera, image);
+                        Database.createUser(usuario, onCompleteListenerUser);
+                    } else {
 
-                            onCompleteListenerUser.onLoad(usuario);
-                        } else {
+                        onCompleteListenerUser.onLoad(null);
 
-                            onCompleteListenerUser.onLoad(null);
-
-                        }
+                    }
                 });
     }
 
-    public void getCurrentUser(OnCompleteListenerUser onCompleteListenerUser){
+    public void getCurrentUser(OnCompleteListenerUser onCompleteListenerUser) {
         Database.getCurrentUser(onCompleteListenerUser);
     }
 
