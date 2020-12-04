@@ -46,7 +46,7 @@ public class Database {
                 DocumentSnapshot documentSnapshot = task.getResult();
                 if(documentSnapshot.exists()){
                     User userDatabase = documentSnapshot.toObject(User.class);
-                    if(user.getImage() != null && user.getImage().equals("") == false){
+                    if(user.getImage() != null && user.getImage().equals("") == false && userDatabase.getImage().contains(DBROUTES.USERS_IMAGES) == false){
                         userDatabase.setImage(user.getImage());
                     }
                     Autenticacion.user = user;

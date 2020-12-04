@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
+import co.ajeg.tutoflash.activities.PreLogin;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 
@@ -51,6 +52,6 @@ public class PerfilFragment extends Fragment {
 
     public void cerrarSession(View v){
         Autenticacion.logout();
-        FragmentUtil.startActivity(LoginActivity.class);
+        FragmentUtil.startActivity(PreLogin.class);
     }
 }

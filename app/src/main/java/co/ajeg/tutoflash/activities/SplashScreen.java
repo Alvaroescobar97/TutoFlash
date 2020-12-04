@@ -20,7 +20,7 @@ public class SplashScreen extends AppCompatActivity {
             new Autenticacion(this, (user)->{
                  Intent intent = null;
 
-                if(user != null){
+                if(user == null){
                     intent = new Intent(SplashScreen.this, PreLogin.class);
                 }else{
                     intent = new Intent(SplashScreen.this, MainActivity.class);
