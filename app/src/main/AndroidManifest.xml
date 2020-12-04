@@ -17,8 +17,8 @@
         <activity android:name=".activities.MainActivity"></activity>
         <activity android:name=".activities.InicioActivity" />
         <activity android:name=".activities.RegistroActivity" />
-        <activity android:name=".activities.PreLogin" />
-        <activity android:name=".activities.SplashScreen">
+        <activity android:name=".activities.SplashScreen" />
+        <activity android:name=".activities.PreLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
