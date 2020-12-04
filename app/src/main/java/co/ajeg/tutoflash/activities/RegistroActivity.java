@@ -10,9 +10,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
 import co.ajeg.tutoflash.galeria.Galeria;
+import co.ajeg.tutoflash.model.User;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -26,6 +31,7 @@ public class RegistroActivity extends AppCompatActivity implements Galeria.OnCom
     private TextInputLayout til_registro_re_password;
     private Button btn_registro_crear;
     private Galeria galeria;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +64,13 @@ public class RegistroActivity extends AppCompatActivity implements Galeria.OnCom
         String rePassword = this.til_registro_nombre.getEditText().getText().toString();
 
         if(!nombre.equals("") && !email.equals("") && !carrera.equals("")  && !password.equals("") && password.equals(rePassword)){
-
+            //String id, String date, String name, String email, String carrera, String image
+            Date date = new Date();
+            if (path != null) {
+                StorageFirebase.uploadFile(new String[]{"aplicacion", "profiles", uid}, path, (urlResult)-> {});
+            }
+            String url = StorageFirebase.
+            User user = new User(id, date.toString(), nombre, email, carrera, image);
         }
 
     }
@@ -75,6 +87,7 @@ public class RegistroActivity extends AppCompatActivity implements Galeria.OnCom
 
     @Override
     public void onLoad(Bitmap bitmap, String path) {
-
+        civ_registro_imagen.setImageBitmap(bitmap);
+        this.path = path;
     }
 }
