@@ -18,7 +18,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.fragments.CalendarioFragment;
-import co.ajeg.tutoflash.fragments.ChatFragment;
+import co.ajeg.tutoflash.fragments.chat.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
 import co.ajeg.tutoflash.fragments.PerfilFragment;
 import co.ajeg.tutoflash.fragments.materias.HomeFragment;
