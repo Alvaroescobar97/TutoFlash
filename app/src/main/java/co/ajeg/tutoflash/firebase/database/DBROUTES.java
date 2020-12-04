@@ -2,11 +2,16 @@ package co.ajeg.tutoflash.firebase.database;
 
 public interface DBROUTES {
 
-    static String USERS = "users";
-    static String USERS_NOTIFICACIONES = "notificaciones";
-    static String USERS_IMAGES = "aplicacion/profiles";
+    String USERS = "users";
+    String USERS_NOTIFICACIONES = "notificaciones";
+    String USERS_CHATS = "chats";
+    String USERS_IMAGES = "aplicacion/profiles";
 
-    static  String SOLUCITUDES = "solicitudes";
+    String CHATS = "chats";
+    String CHATS_MENSAJES = "mensajes";
+
+
+    String SOLUCITUDES = "solicitudes";
 
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseChat;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -67,7 +68,6 @@ public class ChatFragment extends Fragment {
             private TextView tv_item_chat_persona_fecha;
 
 
-
             @Override
             public void onCreateView(View v) {
 
@@ -79,9 +79,18 @@ public class ChatFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(ChatPerson elemnto, int position) {
+            public void onChangeView(ChatPerson elemnto, View view, int position) {
 
+                view.setOnClickListener( v -> {
+                    
+                });
             }
+
+        });
+
+
+        DatabaseChat.getAllChatsUser((chatPersonList)->{
+            adapterList.onUpdateData(chatPersonList);
         });
 
         return view;

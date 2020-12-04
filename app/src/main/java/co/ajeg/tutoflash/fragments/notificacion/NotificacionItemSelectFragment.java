@@ -76,7 +76,7 @@ public class NotificacionItemSelectFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(MateriaTutor tutor, int position) {
+            public void onChangeView(MateriaTutor tutor, View view, int position) {
 
             }
         });

@@ -6,6 +6,6 @@ public interface AdapterManagerList<T> {
 
     void onCreateView(View v);
 
-    void onChangeView(T elemnto, int position);
+    void onChangeView(T elemnto, View view, int position);
 
 }

@@ -62,7 +62,7 @@ public class ChatItemFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(ChatMensaje mensaje, int position) {
+            public void onChangeView(ChatMensaje mensaje, View view, int position) {
 
             }
         });

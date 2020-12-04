@@ -103,7 +103,7 @@ public class AdapterList<T> {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
-            this.result.onChangeView(this.lista.get(position), position);
+            this.result.onChangeView(this.lista.get(position), holder.view, position);
         }
 
 
@@ -114,8 +114,11 @@ public class AdapterList<T> {
         }
 
         public class ViewHolderDatos extends RecyclerView.ViewHolder {
+            private View view;
+
             public ViewHolderDatos(@NonNull View itemView) {
                 super(itemView);
+                this.view = itemView;
                 result.onCreateView(itemView);
             }
         }

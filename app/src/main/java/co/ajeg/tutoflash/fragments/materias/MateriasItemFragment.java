@@ -71,7 +71,7 @@ public class MateriasItemFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(MateriaTema tema, int position) {
+            public void onChangeView(MateriaTema tema, View view, int position) {
 
             }
         });

@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(Materia materia, int position) {
+            public void onChangeView(Materia materia, View view, int position) {
 
             }
         });

@@ -73,7 +73,7 @@ public class NotificacionFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(Notificacion notificacion, int position) {
+            public void onChangeView(Notificacion notificacion, View view, int position) {
 
             }
         });
