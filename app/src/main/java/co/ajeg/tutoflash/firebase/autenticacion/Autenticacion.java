@@ -114,7 +114,7 @@ public class Autenticacion {
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         user.setId(task.getResult().getUser().getUid());
-                        if(user.getImage().equals("")){
+                        if(user.getImage().equals("") == false){
                             user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getId());
                         }
                         Database.createUser(user, onCompleteListenerUser);
