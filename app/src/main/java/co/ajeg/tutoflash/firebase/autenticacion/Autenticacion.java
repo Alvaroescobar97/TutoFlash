@@ -25,6 +25,7 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.activities.PreLogin;
+import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.OnCompleteListenerDatabase;
 import co.ajeg.tutoflash.model.User;
@@ -113,6 +114,9 @@ public class Autenticacion {
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         user.setId(task.getResult().getUser().getUid());
+                        if(user.getImage().equals("")){
+                            user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getImage());
+                        }
                         Database.createUser(user, onCompleteListenerUser);
                     }else{
                         if(onCompleteListenerUser != null){
