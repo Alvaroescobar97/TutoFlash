@@ -4,15 +4,16 @@ public class ChatMensaje {
 
     private String id;
     private String autorId;
-
     private String mensaje;
+    private String fecha;
 
     public ChatMensaje(){}
 
-    public ChatMensaje(String id, String autorId, String mensaje) {
+    public ChatMensaje(String id, String autorId, String mensaje, String fecha) {
         this.id = id;
         this.autorId = autorId;
         this.mensaje = mensaje;
+        this.fecha = fecha;
     }
 
     public String getId() {
@@ -37,5 +38,13 @@ public class ChatMensaje {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }
