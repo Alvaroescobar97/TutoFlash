@@ -115,7 +115,7 @@ public class Autenticacion {
                     if(task.isSuccessful()){
                         user.setId(task.getResult().getUser().getUid());
                         if(user.getImage().equals("")){
-                            user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getImage());
+                            user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getId());
                         }
                         Database.createUser(user, onCompleteListenerUser);
                     }else{
