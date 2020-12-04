@@ -110,6 +110,7 @@ public class Autenticacion {
     }
 
     static public void registro(String email, String pass, User user, OnCompleteListenerUser onCompleteListenerUser){
+
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
