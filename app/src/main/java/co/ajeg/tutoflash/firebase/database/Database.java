@@ -29,9 +29,7 @@ public class Database {
 
     public Database(AppCompatActivity appCompatActivity) {
         this.appCompatActivity = appCompatActivity;
-
         this.getCurrentUser();
-
     }
 
     static public void createUser(User user) {
@@ -48,6 +46,7 @@ public class Database {
                 DocumentSnapshot documentSnapshot = task.getResult();
                 if(documentSnapshot.exists()){
                     User userDatabase = documentSnapshot.toObject(User.class);
+                    Autenticacion.user = user;
                     if(onCompleteListenerUser != null){
                         onCompleteListenerUser.onLoad(userDatabase);
                     }
@@ -65,6 +64,7 @@ public class Database {
 
     static private void createUserInDatabase(DocumentReference documentReference, User user, Autenticacion.OnCompleteListenerUser onCompleteListenerUser){
         documentReference.set(user).addOnCompleteListener((task1) -> {
+            Autenticacion.user = user;
             if (onCompleteListenerUser != null) {
                 if (task1.isSuccessful()) {
                     onCompleteListenerUser.onLoad(user);
