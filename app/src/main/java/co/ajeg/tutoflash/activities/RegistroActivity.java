@@ -1,7 +1,10 @@
 package co.ajeg.tutoflash.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,10 +12,11 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputLayout;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.galeria.Galeria;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class RegistroActivity extends AppCompatActivity {
+public class RegistroActivity extends AppCompatActivity implements Galeria.OnCompleteListenerImage {
 
     private CircleImageView civ_registro_imagen;
     private TextInputLayout til_registro_nombre;
@@ -21,12 +25,15 @@ public class RegistroActivity extends AppCompatActivity {
     private TextInputLayout til_registro_password;
     private TextInputLayout til_registro_re_password;
     private Button btn_registro_crear;
+    private Galeria galeria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
+        galeria = new Galeria(this);
+        galeria.getResultImage(this);
         this.civ_registro_imagen = findViewById(R.id.civ_registro_imagen);
 
         this.til_registro_nombre = findViewById(R.id.til_registro_nombre);
@@ -37,8 +44,10 @@ public class RegistroActivity extends AppCompatActivity {
         this.btn_registro_crear = findViewById(R.id.btn_registro_crear);
 
         this.btn_registro_crear.setOnClickListener(this::crearUsuario);
-
+        this.civ_registro_imagen.setOnClickListener(this::addphoto);
     }
+
+
 
     public void crearUsuario(View v){
 
@@ -51,6 +60,21 @@ public class RegistroActivity extends AppCompatActivity {
         if(!nombre.equals("") && !email.equals("") && !carrera.equals("")  && !password.equals("") && password.equals(rePassword)){
 
         }
+
+    }
+
+    private void addphoto(View v){
+        galeria.openGaleria();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        galeria.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onLoad(Bitmap bitmap, String path) {
 
     }
 }
