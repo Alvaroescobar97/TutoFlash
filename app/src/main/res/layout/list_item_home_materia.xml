@@ -6,7 +6,7 @@
     android:layout_height="75dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView2"
+        android:id="@+id/civ_item_materia_tutor_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="7dp"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tv_item_home_materia_fecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -28,12 +28,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="239dp"
         android:layout_height="60dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="7dp"
-        app:layout_constraintStart_toEndOf="@+id/circleImageView2"
+        app:layout_constraintStart_toEndOf="@+id/civ_item_home_materia_image"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_item_home_materia_name"
             android:layout_width="212dp"
             android:layout_height="18dp"
             android:text="Nombre de usuario"
