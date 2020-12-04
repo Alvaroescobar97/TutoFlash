@@ -25,6 +25,7 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.activities.PreLogin;
+import co.ajeg.tutoflash.activities.RegistroActivity;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.OnCompleteListenerDatabase;
@@ -58,7 +59,10 @@ public class Autenticacion {
               }
 
           }else{
-              if(!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName()) && !appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName())){
+              if(!appCompatActivity.getClass().getSimpleName().equals(LoginActivity.class.getSimpleName()) &&
+                      !appCompatActivity.getClass().getSimpleName().equals(PreLogin.class.getSimpleName()) &&
+                      appCompatActivity.getClass().getSimpleName().equals(RegistroActivity.class.getSimpleName()) == false
+              ){
                   goToLoginActivity();
               }
           }
@@ -94,36 +98,42 @@ public class Autenticacion {
 
 
     public void login(String email, String pass, OnCompleteListenerUser onCompleteListenerUser){
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        String id = task.getResult().getUser().getUid();
-                        Database.getUserDatabase(id, onCompleteListenerUser);
-                    }else{
-                        onCompleteListenerUser.onLoad(null);
-                    }
-                });
+        this.appCompatActivity.runOnUiThread(()->{
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            String id = task.getResult().getUser().getUid();
+                            Database.getUserDatabase(id, onCompleteListenerUser);
+                        }else{
+                            onCompleteListenerUser.onLoad(null);
+                        }
+                    });
+        });
+
     }
 
-    static public void registro(String email, String pass, User user){
+    public void registro(String email, String pass, User user){
         registro(email, pass, user, null);
     }
 
-    static public void registro(String email, String pass, User user, OnCompleteListenerUser onCompleteListenerUser){
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        user.setId(task.getResult().getUser().getUid());
-                        if(user.getImage().equals("") == false){
-                            user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getId());
+    public void registro(String email, String pass, User user, OnCompleteListenerUser onCompleteListenerUser){
+        this.appCompatActivity.runOnUiThread(()->{
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            user.setId(task.getResult().getUser().getUid());
+                            if(user.getImage().equals("") == false){
+                                user.setImage(DBROUTES.USERS_IMAGES + "/" + user.getId());
+                            }
+                            Database.createUser(user, onCompleteListenerUser);
+                        }else{
+                            if(onCompleteListenerUser != null){
+                                onCompleteListenerUser.onLoad(null);
+                            }
                         }
-                        Database.createUser(user, onCompleteListenerUser);
-                    }else{
-                        if(onCompleteListenerUser != null){
-                            onCompleteListenerUser.onLoad(null);
-                        }
-                    }
-                });
+                    });
+        });
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data, OnCompleteListenerUser onCompleteListenerUser) {
