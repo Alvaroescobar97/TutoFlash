@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
     public void addMateriaListPrincipal(View v){
         FragmentUtil.getActivity(activity->{
-            FragmentUtil.replaceFragment(R.id.fragment_container, activity.materiasSolicitarFragment);
+            FragmentUtil.replaceFragmentInMain(activity.materiasSolicitarFragment);
         });
 
     }

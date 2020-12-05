@@ -46,6 +46,7 @@ public class HeaderFragment extends Fragment {
 
     private TextView tv_header_title;
     private ImageView btn_image_home_perfil;
+    private ImageView btn_header_back;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,19 +57,32 @@ public class HeaderFragment extends Fragment {
         this.tv_header_title = view.findViewById(R.id.tv_header_title);
         this.tv_header_title.setText("Inicio");
 
+        this.btn_header_back = view.findViewById(R.id.btn_header_back);
+        this.btn_header_back.setOnClickListener(this::onClickGoToBack);
+
         btn_image_home_perfil = view.findViewById(R.id.btn_image_home_perfil);
 
         btn_image_home_perfil.setOnClickListener(this::onClickVerPerfil);
 
-
+        FragmentUtil.setOnChangeFragmentNav((fragments)->{
+            if(fragments.size() == 0){
+                this.btn_header_back.setVisibility(View.INVISIBLE);
+            }else{
+                this.btn_header_back.setVisibility(View.VISIBLE);
+            }
+        });
 
         return view;
     }
 
+    private void onClickGoToBack(View v){
+        FragmentUtil.goToBackFragment();
+    }
 
     private void onClickVerPerfil(View v){
         FragmentUtil.getActivity((activity)->{
-            FragmentUtil.replaceFragment(R.id.fragment_container, activity.perfilFragment);
+
+            FragmentUtil.replaceFragmentInMain(activity.perfilFragment);
         });
     }
 

@@ -3,6 +3,7 @@ package co.ajeg.tutoflash.fragments.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.MotionEvent;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.ArrayList;
+
+import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 
 public class FragmentUtil {
@@ -21,14 +25,60 @@ public class FragmentUtil {
     public static int DRAWABLE_TOP = 1;
     public static int DRAWABLE_RIGHT = 2;
     public static int DRAWABLE_BOTTOM = 3;
+    public static ArrayList<Fragment> fragmentsNav;
+    public static OnChangeFragmentNav onChangeFragmentNav;
+    public static Fragment currentFragment;
 
     public FragmentUtil(MainActivity activity){
         this.activity = activity;
+        this.fragmentsNav = new ArrayList<>();
+    }
+
+    public static void setOnChangeFragmentNav(OnChangeFragmentNav onChange){
+        onChangeFragmentNav = onChange;
+        onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
+    }
+
+    public static void goToBackFragment(){
+        if(fragmentsNav != null && fragmentsNav.size() > 0){
+            int index = fragmentsNav.size() - 1;
+            Fragment fragment = fragmentsNav.get(index);
+            fragmentsNav.remove(index);
+
+            if(onChangeFragmentNav != null){
+                onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
+            }
+
+            replaceFragment(R.id.fragment_container, fragment);
+        }
+    }
+
+    public static void replaceFragmentInMain(Fragment fragment){
+        if(fragmentsNav != null){
+            if(currentFragment != null){
+                fragmentsNav.add(currentFragment);
+            }
+
+            if(onChangeFragmentNav != null){
+                onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
+            }
+        }
+        replaceFragment(R.id.fragment_container, fragment);
+    }
+
+    public static void resetFragmentNav(){
+        if(fragmentsNav != null){
+            fragmentsNav.clear();
+            if(onChangeFragmentNav != null){
+                onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
+            }
+        }
     }
 
     public static void replaceFragment(int layout, Fragment fragment){
         FragmentActivity appCompatActivity = activity;
         appCompatActivity.runOnUiThread(()->{
+            currentFragment = fragment;
             FragmentManager fragmentManager = appCompatActivity.getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(layout, fragment);
@@ -71,5 +121,9 @@ public class FragmentUtil {
 
     public interface OnGetActivityFrament{
         void onLoad(MainActivity mainActivity);
+    }
+
+    public interface OnChangeFragmentNav{
+        void onChangeFragmentNav(ArrayList<Fragment> fragments);
     }
 }

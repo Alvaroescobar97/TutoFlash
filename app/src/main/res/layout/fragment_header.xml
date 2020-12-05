@@ -8,6 +8,16 @@
     tools:context=".fragments.HeaderFragment">
 
 
+    <ImageView
+        android:id="@+id/btn_header_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/icon_header_back"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_header_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_header_title"
         android:layout_width="255dp"

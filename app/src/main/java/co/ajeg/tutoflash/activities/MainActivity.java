@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
 
     private boolean onNavigationItemSelected(@NonNull MenuItem item){
 
+        FragmentUtil.resetFragmentNav();
+
         switch (item.getItemId()){
             case R.id.nav_item_inicio:
                 fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
