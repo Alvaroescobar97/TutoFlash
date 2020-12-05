@@ -56,41 +56,11 @@ public class HeaderFragment extends Fragment {
 
         btn_image_home_perfil.setOnClickListener(this::onClickVerPerfil);
 
-        ImageView iv_home_header_imagen = view.findViewById(R.id.iv_home_header_imagen);
-        TextView tv_home_header_username = view.findViewById(R.id.tv_home_header_username);
 
-        User user = Autenticacion.user;
-
-
-
-        if(user != null ){
-            if(user.getImage().equals("") == false){
-
-                if (user.getImage().contains(DBROUTES.USERS_IMAGES)){
-
-                    StorageFirebase.gerUrlFile(this.getActivity(), new String[]{user.getImage()}, (url)->{
-                        Toast.makeText(this.getActivity(), "" + url, Toast.LENGTH_SHORT).show();
-                        this.getImageViewProfile(url, iv_home_header_imagen );
-                    });
-
-                }else{
-                    String urlImage = user.getImage();
-                    this.getImageViewProfile(urlImage, iv_home_header_imagen );
-                }
-            }
-
-           tv_home_header_username.setText(user.getName());
-        }
 
         return view;
     }
 
-    private void getImageViewProfile(String urlImage, ImageView circleImageView) {
-        Glide.with(circleImageView)
-                .load(urlImage)
-                .apply(RequestOptions.circleCropTransform())
-                .into(circleImageView);
-    }
 
     private void onClickVerPerfil(View v){
         FragmentUtil.getActivity((activity)->{

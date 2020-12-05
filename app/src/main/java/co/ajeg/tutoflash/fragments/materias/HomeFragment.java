@@ -10,7 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +24,11 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.DBROUTES;
+import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.Materia;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -89,10 +98,43 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        ImageView iv_home_header_imagen = view.findViewById(R.id.iv_home_header_imagen);
+        TextView tv_home_header_username = view.findViewById(R.id.tv_home_header_username);
+
+        User user = Autenticacion.user;
+
+        if(user != null ){
+            if(user.getImage().equals("") == false){
+
+                if (user.getImage().contains(DBROUTES.USERS_IMAGES)){
+
+                    StorageFirebase.gerUrlFile(this.getActivity(), new String[]{user.getImage()}, (url)->{
+                        Toast.makeText(this.getActivity(), "" + url, Toast.LENGTH_SHORT).show();
+                        this.getImageViewProfile(url, iv_home_header_imagen );
+                    });
+
+                }else{
+                    String urlImage = user.getImage();
+                    this.getImageViewProfile(urlImage, iv_home_header_imagen );
+                }
+            }
+
+            tv_home_header_username.setText(user.getName());
+        }
+
+
         btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
 
         return view;
     }
+
+    private void getImageViewProfile(String urlImage, ImageView circleImageView) {
+        Glide.with(circleImageView)
+                .load(urlImage)
+                .apply(RequestOptions.circleCropTransform())
+                .into(circleImageView);
+    }
+
 
     public void addMateriaListPrincipal(View v){
         FragmentUtil.getActivity(activity->{
