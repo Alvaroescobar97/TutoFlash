@@ -60,7 +60,7 @@ public class DatabaseNotificacion {
         User user = Autenticacion.getUser();
         CollectionReference collectionReference = null;
         if(user != null){
-            getRefCollectionAllNotificaciones(user.getId());
+            collectionReference = getRefCollectionAllNotificaciones(user.getId());
         }
         return collectionReference;
     }
@@ -71,6 +71,7 @@ public class DatabaseNotificacion {
                 .collection(DBROUTES.USERS)
                 .document(userId)
                 .collection(DBROUTES.USERS_NOTIFICACIONES);
+
         return collectionReference;
     }
 

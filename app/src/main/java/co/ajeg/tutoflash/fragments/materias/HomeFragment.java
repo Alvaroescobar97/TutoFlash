@@ -10,15 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -26,11 +30,14 @@ import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.chat.ChatMensaje;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.Materia;
+import co.ajeg.tutoflash.model.materia.MateriaTema;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -38,7 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements DatabaseMateria.OnCompleteListenerAllMaterias {
 
     MainActivity mainActivity;
 
@@ -57,27 +64,44 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+    private EditText et_home_busqueda;
+    private DatabaseMateria databaseMateria;
+    private List<Materia> materiaList;
+    private AdapterList<Materia> adapterList;
+    private RecyclerView rv_home_materias;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         this.mainActivity = FragmentUtil.getActivity();
+        databaseMateria = DatabaseMateria.getInstance(this.getActivity());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         this.mainActivity.headerFragment.changeTitleHeader("Inicio");
 
+        TextInputLayout til_home_busqueda = view.findViewById(R.id.til_home_busqueda);
+        this.et_home_busqueda = til_home_busqueda.getEditText();
+
+        this.et_home_busqueda.setOnTouchListener((v, event) -> {
+            boolean stateClick = FragmentUtil.onTouchEventIconDirectionUp(event, et_home_busqueda, FragmentUtil.DRAWABLE_RIGHT);
+            if(stateClick){
+                this.onFindMateria();
+            }
+            return stateClick;
+        });
 
         Button btn_home_agregar_materia = view.findViewById(R.id.btn_home_agregar_materia);
 
-        RecyclerView rv_home_materias = view.findViewById(R.id.rv_home_materias);
-        rv_home_materias.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        this.rv_home_materias = view.findViewById(R.id.rv_home_materias);
+        this.rv_home_materias.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        List<Materia> materias = new ArrayList<>();
+        if(this.materiaList == null){
+            this.materiaList = new ArrayList<>();
+        }
 
-
-        AdapterList<Materia> adapterList = new AdapterList(rv_home_materias, materias, R.layout.list_item_home_materia, new AdapterManagerList<Materia>() {
+        adapterList = new AdapterList(this.rv_home_materias, this.materiaList, R.layout.list_item_home_materia, new AdapterManagerList<Materia>() {
 
             private CircleImageView civ_item_home_materia_image;
             private TextView tv_item_home_materia_name;
@@ -122,8 +146,9 @@ public class HomeFragment extends Fragment {
             tv_home_header_username.setText(user.getName());
         }
 
-
         btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
+
+        this.databaseMateria.getAllMaterias(this);
 
         return view;
     }
@@ -141,5 +166,22 @@ public class HomeFragment extends Fragment {
             FragmentUtil.replaceFragment(R.id.fragment_container, activity.materiasSolicitarFragment);
         });
 
+    }
+
+    public void onFindMateria(){
+        if(this.et_home_busqueda != null){
+            String materiaString = et_home_busqueda.getText().toString();
+            this.databaseMateria.findMateriasForName(materiaString, (materiaList)->{
+                this.adapterList.onUpdateData(materiaList);
+            });
+        }
+    }
+
+    @Override
+    public void onLoadAllMaterias(List<Materia> materiaList){
+        this.materiaList = materiaList;
+        if(this.adapterList != null && this.materiaList != null && this.rv_home_materias != null){
+            this.adapterList.onUpdateData(this.materiaList);
+        }
     }
 }

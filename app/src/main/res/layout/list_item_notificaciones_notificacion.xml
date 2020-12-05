@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="75dp">
+    android:layout_height="75dp"
+    android:padding="5dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_item_notificaciones_notificacion_image"
+    <ImageView
+        android:id="@+id/iv_item_notificaciones_notificacion_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="7dp"
-        android:layout_marginTop="7dp"
         android:src="@drawable/ic_launcher_background"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,19 +20,23 @@
         android:id="@+id/tv_item_notificaciones_notificacion_fecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="15dp"
         android:text="1 - sep - 2020"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout6" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout6"
         android:layout_width="239dp"
         android:layout_height="60dp"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="7dp"
-        app:layout_constraintStart_toEndOf="@+id/civ_item_notificaciones_notificacion_image"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toBottomOf="@+id/iv_item_notificaciones_notificacion_image"
+        app:layout_constraintEnd_toStartOf="@+id/tv_item_notificaciones_notificacion_fecha"
+        app:layout_constraintStart_toEndOf="@+id/iv_item_notificaciones_notificacion_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_item_notificaciones_notificacion_image">
 
         <TextView
             android:id="@+id/tv_item_notificaciones_notificacion_name"
