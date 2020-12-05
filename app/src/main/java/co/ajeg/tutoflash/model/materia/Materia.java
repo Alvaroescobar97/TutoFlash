@@ -5,17 +5,16 @@ public class Materia {
     private String id;
     private String name;
     private String imagen;
-    private String fecha;
-
+    private String lastFecha;
 
     public Materia() {
     }
 
-    public Materia(String id, String name, String imagen, String fecha) {
+    public Materia(String id, String name, String imagen, String lastFecha) {
         this.id = id;
         this.name = name;
         this.imagen = imagen;
-        this.fecha = fecha;
+        this.lastFecha = lastFecha;
     }
 
     public String getId() {
@@ -43,10 +42,10 @@ public class Materia {
     }
 
     public String getFecha() {
-        return fecha;
+        return lastFecha;
     }
 
     public void setFecha(String fecha) {
-        this.fecha = fecha;
+        this.lastFecha = fecha;
     }
 }
