@@ -57,6 +57,9 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
+        tv_header_title.setText("Inicio");
+
         Button btn_home_agregar_materia = view.findViewById(R.id.btn_home_agregar_materia);
 
         RecyclerView rv_home_materias = view.findViewById(R.id.rv_home_materias);
@@ -93,7 +96,7 @@ public class HomeFragment extends Fragment {
 
     public void addMateriaListPrincipal(View v){
         FragmentUtil.getActivity(activity->{
-            FragmentUtil.replaceFragment(R.id.fragment_container, activity.materiasItemOfrecerFragment);
+            FragmentUtil.replaceFragment(R.id.fragment_container, activity.materiasSolicitarFragment);
         });
 
     }

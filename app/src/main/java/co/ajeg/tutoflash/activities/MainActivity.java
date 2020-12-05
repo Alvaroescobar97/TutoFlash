@@ -80,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
 
         perfilFragment = PerfilFragment.newInstance();
 
-        fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
         fragmentUtil.replaceFragment(R.id.fragment_container_header, headerFragment);
+        fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
+
 
 
        // NotificacionUtil.createNotification(this, "prueba", "Esto es una prueba de notificacion");

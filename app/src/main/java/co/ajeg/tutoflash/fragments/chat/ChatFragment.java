@@ -58,6 +58,9 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
+        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
+        tv_header_title.setText("Chats");
+
         RecyclerView rv_chat_personas = view.findViewById(R.id.rv_chat_personas);
         rv_chat_personas.setLayoutManager(new LinearLayoutManager(this.getContext()));
 

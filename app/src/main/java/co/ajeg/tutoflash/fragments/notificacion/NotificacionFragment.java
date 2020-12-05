@@ -47,6 +47,9 @@ public class NotificacionFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notificacion, container, false);
 
+        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
+        tv_header_title.setText("Notificaciones");
+
         RecyclerView rv_notificaciones_lista = view.findViewById(R.id.rv_notificaciones_lista);
 
         List<Notificacion> chatsPersonas = new ArrayList<>();
