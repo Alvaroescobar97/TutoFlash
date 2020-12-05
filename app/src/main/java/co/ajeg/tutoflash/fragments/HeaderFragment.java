@@ -44,6 +44,7 @@ public class HeaderFragment extends Fragment {
         return fragment;
     }
 
+    private TextView tv_header_title;
     private ImageView btn_image_home_perfil;
 
     @Override
@@ -51,6 +52,9 @@ public class HeaderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_header, container, false);
+
+        this.tv_header_title = view.findViewById(R.id.tv_header_title);
+        this.tv_header_title.setText("Inicio");
 
         btn_image_home_perfil = view.findViewById(R.id.btn_image_home_perfil);
 
@@ -66,5 +70,11 @@ public class HeaderFragment extends Fragment {
         FragmentUtil.getActivity((activity)->{
             FragmentUtil.replaceFragment(R.id.fragment_container, activity.perfilFragment);
         });
+    }
+
+    public void changeTitleHeader(String title){
+       if(this.tv_header_title != null){
+           this.tv_header_title.setText(title);
+       }
     }
 }

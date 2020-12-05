@@ -14,8 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseNotificacion;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -25,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Use the {@link NotificacionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificacionFragment extends Fragment {
+public class NotificacionFragment extends Fragment implements DatabaseNotificacion.OnCompleteListenerAllNotificaciones {
 
     public NotificacionFragment() {
         // Required empty public constructor
@@ -41,20 +44,31 @@ public class NotificacionFragment extends Fragment {
         return fragment;
     }
 
+    private MainActivity mainActivity;
+    private DatabaseNotificacion databaseNotificacion;
+    private RecyclerView rv_notificaciones_lista;
+    private List<Notificacion> notificacions;
+    private AdapterList<Notificacion> adapterList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notificacion, container, false);
 
-        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
-        tv_header_title.setText("Notificaciones");
+        this.databaseNotificacion = DatabaseNotificacion.getInstance(this.getActivity());
+        this.mainActivity = FragmentUtil.getActivity();
 
-        RecyclerView rv_notificaciones_lista = view.findViewById(R.id.rv_notificaciones_lista);
+        this.mainActivity.headerFragment.changeTitleHeader("Notificaciones");
 
-        List<Notificacion> chatsPersonas = new ArrayList<>();
+        rv_notificaciones_lista = view.findViewById(R.id.rv_notificaciones_lista);
 
-        AdapterList<Notificacion> adapterList = new AdapterList(rv_notificaciones_lista, chatsPersonas, R.layout.list_item_notificaciones_notificacion, new AdapterManagerList<Notificacion>() {
+        if(this.notificacions == null){
+            this.notificacions = new ArrayList<>();
+        }
+
+
+         this.adapterList = new AdapterList(this.rv_notificaciones_lista, this.notificacions, R.layout.list_item_notificaciones_notificacion, new AdapterManagerList<Notificacion>() {
 
 
             private CircleImageView civ_item_notificaciones_notificacion_image;
@@ -81,6 +95,16 @@ public class NotificacionFragment extends Fragment {
 
         });
 
+        this.databaseNotificacion.getAllNotificaciones(this);
+
         return view;
+    }
+
+    @Override
+    public void onLoadAllNotificaciones(List<Notificacion> notificacions) {
+        this.notificacions = notificacions;
+        if(this.notificacions != null && this.adapterList != null && this.rv_notificaciones_lista != null){
+            this.adapterList.onUpdateData(this.notificacions);
+        }
     }
 }

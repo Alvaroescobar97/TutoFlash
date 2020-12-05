@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +28,7 @@ public class MateriasSolicitarFragment extends Fragment {
     public MateriasSolicitarFragment() {
         // Required empty public constructor
     }
-    
+
     public static MateriasSolicitarFragment newInstance() {
         MateriasSolicitarFragment fragment = new MateriasSolicitarFragment();
         Bundle args = new Bundle();
@@ -37,6 +39,7 @@ public class MateriasSolicitarFragment extends Fragment {
 
     String[] categoriasNameList = {"Matematicas", "Fisica", "Literatura", "Ingles", "Programación", "Sistemas"};
 
+    private MainActivity mainActivity;
     private AppCompatAutoCompleteTextView til_act_materias_ofrecer_list_opciones;
     private TextInputLayout til_materias_ofrecer_tema;
     private TextInputLayout til_materias_ofrecer_descripcion;
@@ -49,8 +52,8 @@ public class MateriasSolicitarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_materias_solicitar, container, false);
 
-        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
-        tv_header_title.setText("Solicitar tutor");
+        this.mainActivity = FragmentUtil.getActivity();
+        this.mainActivity.headerFragment.changeTitleHeader("Solicitar tutor");
 
 
         til_materias_ofrecer_tema = view.findViewById(R.id.til_materias_ofrecer_tema);

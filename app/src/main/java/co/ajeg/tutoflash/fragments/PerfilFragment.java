@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
+import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.activities.PreLogin;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
@@ -35,6 +36,7 @@ public class PerfilFragment extends Fragment {
         return fragment;
     }
 
+    private MainActivity mainActivity;
     private Button btn_perfil_cerrar_session;
 
     @Override
@@ -43,9 +45,11 @@ public class PerfilFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
 
+        this.mainActivity = FragmentUtil.getActivity();
+        this.mainActivity.headerFragment.changeTitleHeader("Perfil");
 
-        btn_perfil_cerrar_session = view.findViewById(R.id.btn_perfil_cerrar_session);
-        btn_perfil_cerrar_session.setOnClickListener(this::cerrarSession);
+        this.btn_perfil_cerrar_session = view.findViewById(R.id.btn_perfil_cerrar_session);
+        this.btn_perfil_cerrar_session.setOnClickListener(this::cerrarSession);
 
         return view;
     }
@@ -53,5 +57,6 @@ public class PerfilFragment extends Fragment {
     public void cerrarSession(View v){
         Autenticacion.logout();
         FragmentUtil.startActivity(PreLogin.class);
+        this.mainActivity.finish();
     }
 }

@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CalendarioFragment#newInstance} factory method to
@@ -31,6 +34,8 @@ public class CalendarioFragment extends Fragment {
         return fragment;
     }
 
+    private MainActivity mainActivity;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,8 +43,8 @@ public class CalendarioFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calendario, container, false);
 
-        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
-        tv_header_title.setText("Calendario");
+        mainActivity = FragmentUtil.getActivity();
+        mainActivity.headerFragment.changeTitleHeader("Calendario");
 
 
         return view;

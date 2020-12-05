@@ -66,8 +66,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        TextView tv_header_title = this.getActivity().findViewById(R.id.tv_header_title);
-        tv_header_title.setText("Inicio");
+        this.mainActivity.headerFragment.changeTitleHeader("Inicio");
+
 
         Button btn_home_agregar_materia = view.findViewById(R.id.btn_home_agregar_materia);
 
