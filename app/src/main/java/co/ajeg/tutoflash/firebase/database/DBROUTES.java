@@ -10,8 +10,8 @@ public interface DBROUTES {
     String CHATS = "chats";
     String CHATS_MENSAJES = "mensajes";
 
-
-    String SOLUCITUDES = "solicitudes";
+    String MATERIAS = "materias";
+    String MATERIAS_SOLUCITUDES = "solicitudes";
 
 
 }

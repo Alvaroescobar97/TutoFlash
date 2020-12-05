@@ -72,13 +72,13 @@ public class NotificacionFragment extends Fragment {
                 this.tv_item_notificaciones_notificacion_descripcion = v.findViewById(R.id.tv_item_notificaciones_notificacion_descripcion);
                 this.tv_item_notificaciones_notificacion_fecha = v.findViewById(R.id.tv_item_notificaciones_notificacion_fecha);
 
-
             }
 
             @Override
             public void onChangeView(Notificacion notificacion, View view, int position) {
 
             }
+
         });
 
         return view;

@@ -3,6 +3,7 @@ package co.ajeg.tutoflash.model.materia;
 public class MateriaTema {
 
     private String id;
+    private String autorId;
     private String title;
     private String descripcion;
     private String informacion;
