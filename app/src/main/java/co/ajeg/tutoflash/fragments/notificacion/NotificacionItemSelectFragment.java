@@ -46,7 +46,7 @@ public class NotificacionItemSelectFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notificacion_item_select, container, false);
 
-        RecyclerView rv_chat_personas = view.findViewById(R.id.rv_chat_personas);
+        RecyclerView rv_chat_personas = view.findViewById(R.id.rv_notificaciones_lista);
 
         List<MateriaTutor> materiaTutors = new ArrayList<>();
 

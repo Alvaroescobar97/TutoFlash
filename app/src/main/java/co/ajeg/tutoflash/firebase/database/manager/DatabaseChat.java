@@ -1,12 +1,14 @@
 package co.ajeg.tutoflash.firebase.database.manager;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -20,42 +22,77 @@ import co.ajeg.tutoflash.model.chat.ChatPerson;
 
 public class DatabaseChat {
 
-    public static void getAllChatsUser(OnCompleteListenerChats onCompleteListenerChats){
-        CollectionReference collectionReference = getReferenceCollectionUserChats();
-        if(collectionReference != null){
-            collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    List<ChatPerson> listaChatsDatabase = value.toObjects(ChatPerson.class);
-                    onCompleteListenerChats.onLoad(listaChatsDatabase);
-                }
-            });
-        }else{
-            onCompleteListenerChats.onLoad(new ArrayList<>());
-        }
+    static private FragmentActivity activity;
+    static private DatabaseChat thisClass;
+
+    private DatabaseChat(FragmentActivity activity){
+        this.activity = activity;
     }
 
-    public static void createNewChat(ChatPerson chatPerson, OnCompleteListenerChat onCompleteListenerChat){
-        CollectionReference collectionReference = getReferenceCollectionUserChats();
-        if(collectionReference != null){
-            collectionReference.document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((task)->{
-                if(task.isSuccessful()){
-                    onCompleteListenerChat.onLoad(chatPerson);
-                }else{
-                    onCompleteListenerChat.onLoad(null);
-                }
-            });
-        }else{
-            onCompleteListenerChat.onLoad(null);
+    static public DatabaseChat getInstance(FragmentActivity activity){
+        activity = activity;
+        if(thisClass == null){
+            thisClass = new DatabaseChat(activity);
         }
+        return thisClass;
     }
 
-    public static void sendMensaje(String chatid, ChatMensaje mensaje){
-        getReferenceChatMensajes(chatid).document(mensaje.getId()).set(mensaje);
+    public void getAllChatsUser(OnCompleteListenerChats onCompleteListenerChats){
+        this.activity.runOnUiThread(()->{
+            CollectionReference collectionReference = getReferenceCollectionUserChats();
+            if(collectionReference != null){
+                collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        List<ChatPerson> listaChatsDatabase = value.toObjects(ChatPerson.class);
+                        onCompleteListenerChats.onLoad(listaChatsDatabase);
+                    }
+                });
+            }else{
+                onCompleteListenerChats.onLoad(new ArrayList<>());
+            }
+        });
+
     }
+
+    public void getChatAllMensaje(String chatId, OnCompleteListenerChatMensajes onCompleteListenerChatMensajes){
+        this.activity.runOnUiThread(()->{
+            getReferenceChatMensajes(chatId).orderBy("date", Query.Direction.DESCENDING).addSnapshotListener((value, error)->{
+                List<ChatMensaje> mensajes = value.toObjects(ChatMensaje.class);
+                onCompleteListenerChatMensajes.onLoad(mensajes);
+            });
+        });
+
+    }
+
+    public void createNewChat(ChatPerson chatPerson, OnCompleteListenerChat onCompleteListenerChat){
+        this.activity.runOnUiThread(()->{
+            CollectionReference collectionReference = getReferenceCollectionUserChats();
+            if(collectionReference != null){
+                collectionReference.document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((task)->{
+                    if(task.isSuccessful()){
+                        onCompleteListenerChat.onLoad(chatPerson);
+                    }else{
+                        onCompleteListenerChat.onLoad(null);
+                    }
+                });
+            }else{
+                onCompleteListenerChat.onLoad(null);
+            }
+        });
+
+    }
+
+    public void sendMensaje(String chatid, ChatMensaje mensaje){
+        this.activity.runOnUiThread(()->{
+            getReferenceChatMensajes(chatid).document(mensaje.getId()).set(mensaje);
+        });
+
+    }
+
+
 
     private static CollectionReference getReferenceChatMensajes(String uidChat){
-
         CollectionReference collectionReference = getReferenceChat(uidChat)
                 .collection(DBROUTES.CHATS_MENSAJES);
 
@@ -72,7 +109,6 @@ public class DatabaseChat {
 
         return documentReference;
     }
-
 
     private static CollectionReference getReferenceCollectionUserChats(){
         User user = Autenticacion.getUser();
@@ -95,5 +131,9 @@ public class DatabaseChat {
 
     public interface OnCompleteListenerChat{
         void onLoad(ChatPerson chatPersonList);
+    }
+
+    public interface OnCompleteListenerChatMensajes{
+        void onLoad(List<ChatMensaje> chatMensajeList);
     }
 }

@@ -3,19 +3,23 @@ package co.ajeg.tutoflash.fragments.materias;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.Materia;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -27,6 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class HomeFragment extends Fragment {
 
+    MainActivity mainActivity;
 
 
     public HomeFragment() {
@@ -47,10 +52,16 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        this.mainActivity = FragmentUtil.getActivity();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        Button btn_home_agregar_materia = view.findViewById(R.id.btn_home_agregar_materia);
+
         RecyclerView rv_home_materias = view.findViewById(R.id.rv_home_materias);
+        rv_home_materias.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
         List<Materia> materias = new ArrayList<>();
 
 
@@ -75,7 +86,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
 
         return view;
+    }
+
+    public void addMateriaListPrincipal(View v){
+        FragmentUtil.getActivity(activity->{
+            FragmentUtil.replaceFragment(R.id.fragment_container, activity.materiasItemOfrecerFragment);
+        });
+
     }
 }

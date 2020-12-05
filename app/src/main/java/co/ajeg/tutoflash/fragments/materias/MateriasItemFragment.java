@@ -3,6 +3,7 @@ package co.ajeg.tutoflash.fragments.materias;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -47,6 +48,8 @@ public class MateriasItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_materias_item, container, false);
 
         RecyclerView rv_home_materias_item_lista = view.findViewById(R.id.rv_home_materias_item_lista);
+        rv_home_materias_item_lista.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
         List<MateriaTema> materiasTemas = new ArrayList<>();
 
 

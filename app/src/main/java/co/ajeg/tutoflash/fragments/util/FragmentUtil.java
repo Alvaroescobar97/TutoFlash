@@ -2,6 +2,8 @@ package co.ajeg.tutoflash.fragments.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.MotionEvent;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,6 +16,11 @@ import co.ajeg.tutoflash.activities.MainActivity;
 public class FragmentUtil {
 
     static private MainActivity activity;
+
+    public static int DRAWABLE_LEFT = 0;
+    public static int DRAWABLE_TOP = 1;
+    public static int DRAWABLE_RIGHT = 2;
+    public static int DRAWABLE_BOTTOM = 3;
 
     public FragmentUtil(MainActivity activity){
         this.activity = activity;
@@ -50,6 +57,16 @@ public class FragmentUtil {
             }
         }
         return activity;
+    }
+
+    static public boolean onTouchEventIconDirectionUp(MotionEvent event, EditText editText, int direccion){
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[direccion].getBounds().width())) {
+                // your action here
+               return true;
+            }
+        }
+        return false;
     }
 
     public interface OnGetActivityFrament{

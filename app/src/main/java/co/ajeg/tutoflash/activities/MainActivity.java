@@ -21,7 +21,11 @@ import co.ajeg.tutoflash.fragments.CalendarioFragment;
 import co.ajeg.tutoflash.fragments.chat.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
 import co.ajeg.tutoflash.fragments.PerfilFragment;
+import co.ajeg.tutoflash.fragments.chat.ChatItemFragment;
 import co.ajeg.tutoflash.fragments.materias.HomeFragment;
+import co.ajeg.tutoflash.fragments.materias.MateriasItemFragment;
+import co.ajeg.tutoflash.fragments.materias.MateriasItemOfrecerFragment;
+import co.ajeg.tutoflash.fragments.materias.MateriasSolicitarFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
@@ -29,9 +33,16 @@ import co.ajeg.tutoflash.galeria.Galeria;
 public class MainActivity extends AppCompatActivity implements Galeria.OnCompleteListenerImage {
 
     public HomeFragment homeFragment;
+    public MateriasItemFragment materiasItemFragment;
+    public MateriasItemOfrecerFragment materiasItemOfrecerFragment;
+    public MateriasSolicitarFragment materiasSolicitarFragment;
+
     public NotificacionFragment notificacionFragment;
     public CalendarioFragment calendarioFragment;
+
     public ChatFragment chatFragment;
+    public ChatItemFragment chatItemFragment;
+
     public PerfilFragment perfilFragment;
 
     public HeaderFragment headerFragment;
@@ -55,10 +66,18 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
         navigationView = findViewById(R.id.navegacion_view);
 
         headerFragment = HeaderFragment.newInstance();
+
         homeFragment = HomeFragment.newInstance();
+        materiasItemFragment = MateriasItemFragment.newInstance();
+        materiasItemOfrecerFragment = MateriasItemOfrecerFragment.newInstance();
+        materiasSolicitarFragment = MateriasSolicitarFragment.newInstance();
+
         notificacionFragment = NotificacionFragment.newInstance();
         calendarioFragment = CalendarioFragment.newInstance();
+
         chatFragment = ChatFragment.newInstance();
+        chatItemFragment = ChatItemFragment.newInstance();
+
         perfilFragment = PerfilFragment.newInstance();
 
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
