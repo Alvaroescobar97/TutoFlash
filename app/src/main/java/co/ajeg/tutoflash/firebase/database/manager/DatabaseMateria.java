@@ -19,6 +19,7 @@ public class DatabaseMateria {
     private static FragmentActivity activity;
     private static DatabaseMateria thisClass;
     private ListenerRegistration listenerSolicitudes;
+    private ListenerRegistration listenerMaterias;
 
     private DatabaseMateria(FragmentActivity activity) {
         this.activity = activity;
@@ -32,37 +33,37 @@ public class DatabaseMateria {
         return thisClass;
     }
 
-    public void findMateriasForName(String name, OnCompleteListenerAllMaterias onCompleteListenerAllMaterias){
+    public void findMateriasForName(String name, OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
         String temaString = name.trim().replaceAll(" ", "").toLowerCase();
-        activity.runOnUiThread(()-> {
+        activity.runOnUiThread(() -> {
             getRefCollectionAllMaterias().whereEqualTo("name", temaString).get().addOnCompleteListener((task) -> {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     List<Materia> materias = task.getResult().toObjects(Materia.class);
                     onCompleteListenerAllMaterias.onLoadAllMaterias(materias);
-                }else{
+                } else {
                     onCompleteListenerAllMaterias.onLoadAllMaterias(null);
                 }
             });
         });
     }
 
-    public void createTema(Materia materia, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema){
-        activity.runOnUiThread(()->{
+    public void createTema(Materia materia, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
+        activity.runOnUiThread(() -> {
             String temaString = materia.getName().trim().replaceAll(" ", "").toLowerCase();
             getRefCollectionAllMaterias().document(temaString).get().addOnCompleteListener(result -> {
-                if(result.isSuccessful()){
-                    if(result.getResult().exists()){
+                if (result.isSuccessful()) {
+                    if (result.getResult().exists()) {
                         crearTemaDatabase(materia.getName(), materiaTema, onCompleteListenerTema);
-                    }else{
-                        getRefCollectionAllMaterias().document(temaString).set(materia).addOnCompleteListener((task)->{
-                            if(task.isSuccessful()){
+                    } else {
+                        getRefCollectionAllMaterias().document(temaString).set(materia).addOnCompleteListener((task) -> {
+                            if (task.isSuccessful()) {
                                 crearTemaDatabase(materia.getName(), materiaTema, onCompleteListenerTema);
-                            }else{
+                            } else {
                                 onCompleteListenerTema.onLoadTema(null);
                             }
                         });
                     }
-                }else{
+                } else {
                     onCompleteListenerTema.onLoadTema(null);
                 }
             });
@@ -70,13 +71,13 @@ public class DatabaseMateria {
         });
     }
 
-    private void crearTemaDatabase(String temaString, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema){
+    private void crearTemaDatabase(String temaString, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
         getRefCollectionAllSolicitudes(temaString)
                 .document(materiaTema.getId())
-                .set(materiaTema).addOnCompleteListener((task)->{
-            if(task != null){
+                .set(materiaTema).addOnCompleteListener((task) -> {
+            if (task != null) {
                 onCompleteListenerTema.onLoadTema(materiaTema);
-            }else{
+            } else {
                 onCompleteListenerTema.onLoadTema(null);
             }
         });
@@ -84,17 +85,22 @@ public class DatabaseMateria {
 
     public void getAllMaterias(OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
         activity.runOnUiThread(() -> {
-            getRefCollectionAllMaterias().addSnapshotListener((value, error) -> {
+            if (this.listenerMaterias != null) {
+                this.stopListenerMaterias();
+            }
+
+            this.listenerMaterias = getRefCollectionAllMaterias().addSnapshotListener((value, error) -> {
                 List<Materia> materias = value.toObjects(Materia.class);
                 onCompleteListenerAllMaterias.onLoadAllMaterias(materias);
             });
+
         });
     }
 
     public void getAllSolicitudes(String materiaId, OnCompleteListenerAllSoliticudes onCompleteListenerAllSoliticudes) {
         activity.runOnUiThread(() -> {
             if (this.listenerSolicitudes != null) {
-              this.stopListenerSolicitudes();
+                this.stopListenerSolicitudes();
             }
 
             this.listenerSolicitudes = getRefCollectionAllSolicitudes(materiaId).addSnapshotListener((value, error) -> {
@@ -108,6 +114,13 @@ public class DatabaseMateria {
         if (listenerSolicitudes != null) {
             listenerSolicitudes.remove();
             listenerSolicitudes = null;
+        }
+    }
+
+    public void stopListenerMaterias() {
+        if (listenerMaterias != null) {
+            listenerMaterias.remove();
+            listenerMaterias = null;
         }
     }
 
@@ -133,7 +146,7 @@ public class DatabaseMateria {
         void onLoadAllSolicitudes(List<MateriaTema> materiaTemaList);
     }
 
-    public interface OnCompleteListenerTema{
+    public interface OnCompleteListenerTema {
         void onLoadTema(MateriaTema materiaTema);
     }
 

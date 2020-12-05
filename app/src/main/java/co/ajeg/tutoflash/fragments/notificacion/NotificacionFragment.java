@@ -23,26 +23,8 @@ import co.ajeg.tutoflash.firebase.database.manager.DatabaseNotificacion;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificacionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NotificacionFragment extends Fragment implements DatabaseNotificacion.OnCompleteListenerAllNotificaciones {
-
-    public NotificacionFragment() {
-        // Required empty public constructor
-    }
-
-
-    public static NotificacionFragment newInstance() {
-        NotificacionFragment fragment = new NotificacionFragment();
-        Bundle args = new Bundle();
-        // args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     private MainActivity mainActivity;
     private DatabaseNotificacion databaseNotificacion;
@@ -50,14 +32,19 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
     private List<Notificacion> notificacions;
     private AdapterList<Notificacion> adapterList;
 
+    public NotificacionFragment(MainActivity mainActivity) {
+        // Required empty public constructor
+        this.mainActivity = mainActivity;
+        this.databaseNotificacion = DatabaseNotificacion.getInstance(mainActivity);
+        this.databaseNotificacion.getAllNotificaciones(this);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notificacion, container, false);
-
-        this.databaseNotificacion = DatabaseNotificacion.getInstance(this.getActivity());
-        this.mainActivity = FragmentUtil.getActivity();
 
         this.mainActivity.headerFragment.changeTitleHeader("Notificaciones");
 
@@ -93,9 +80,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
             }
 
         });
-
-        this.databaseNotificacion.getAllNotificaciones(this);
-
+        
         return view;
     }
 
@@ -103,14 +88,12 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
     public void onLoadAllNotificaciones(List<Notificacion> notificacions) {
         this.notificacions = notificacions;
 
-
+        this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
+        this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
+        this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
 
         if (this.notificacions != null && this.adapterList != null && this.rv_notificaciones_lista != null) {
             //String id, String type, String title, String informacion, String descripcion, String imgUrl
-
-            this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
-            this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
-            this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
 
             this.adapterList.onUpdateData(this.notificacions);
         }

@@ -40,7 +40,6 @@ public class MateriasItemFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,10 +51,7 @@ public class MateriasItemFragment extends Fragment {
 
         List<MateriaTema> materiasTemas = new ArrayList<>();
 
-
         AdapterList<MateriaTema> adapterList = new AdapterList(rv_home_materias_item_lista, materiasTemas, R.layout.list_item_home_tema, new AdapterManagerList<MateriaTema>() {
-
-
 
             private CircleImageView civ_item_home_tema_image;
             private TextView tv_item_home_tema_name;

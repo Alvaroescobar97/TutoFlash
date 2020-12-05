@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
         homeFragment = HomeFragment.newInstance();
         materiasItemFragment = MateriasItemFragment.newInstance();
         materiasItemOfrecerFragment = MateriasItemOfrecerFragment.newInstance();
-        materiasSolicitarFragment = MateriasSolicitarFragment.newInstance();
+        materiasSolicitarFragment = new MateriasSolicitarFragment(this);
 
-        notificacionFragment = NotificacionFragment.newInstance();
+        notificacionFragment = new NotificacionFragment(this);
         calendarioFragment = CalendarioFragment.newInstance();
 
         chatFragment = ChatFragment.newInstance();
