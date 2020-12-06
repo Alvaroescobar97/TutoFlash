@@ -30,7 +30,7 @@ import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
 
-public class MainActivity extends AppCompatActivity implements Galeria.OnCompleteListenerImage {
+public class MainActivity extends AppCompatActivity {
 
     public HomeFragment homeFragment;
     public MateriasItemFragment materiasItemFragment;
@@ -51,15 +51,11 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
     FragmentUtil fragmentUtil;
 
     private BottomNavigationView navigationView;
-    private Galeria galeria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        this.galeria = new Galeria(this);
-        this.galeria.getResultImage(this);
 
         fragmentUtil = new FragmentUtil(this);
 
@@ -67,15 +63,15 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
 
         headerFragment = HeaderFragment.newInstance();
 
-        homeFragment = HomeFragment.newInstance();
-        materiasItemFragment = MateriasItemFragment.newInstance();
-        materiasItemOfrecerFragment = MateriasItemOfrecerFragment.newInstance();
+        homeFragment = new HomeFragment(this);
+        materiasItemFragment = new MateriasItemFragment(this);
+        materiasItemOfrecerFragment = new MateriasItemOfrecerFragment(this);
         materiasSolicitarFragment = new MateriasSolicitarFragment(this);
 
         notificacionFragment = new NotificacionFragment(this);
         calendarioFragment = CalendarioFragment.newInstance();
 
-        chatFragment = ChatFragment.newInstance();
+        chatFragment = new ChatFragment(this);
         chatItemFragment = ChatItemFragment.newInstance();
 
         perfilFragment = PerfilFragment.newInstance();
@@ -124,27 +120,7 @@ public class MainActivity extends AppCompatActivity implements Galeria.OnComplet
     @Override
     protected void onStart() {
         super.onStart();
-        this.galeria.getResultImage(this);
         this.autenticacion = new Autenticacion(this);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        this.galeria.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.galeria.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    @Override
-    public void onLoad(Bitmap bitmap, String path) {
-        runOnUiThread(()->{
-            Toast.makeText(this, "Llego una imagen", Toast.LENGTH_SHORT).show();
-        });
-    }
 }
