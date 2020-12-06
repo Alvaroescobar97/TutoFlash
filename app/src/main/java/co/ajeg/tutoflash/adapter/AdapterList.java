@@ -51,7 +51,9 @@ public class AdapterList<T> {
             this.adaptador.lista.add(o);
         }
         this.adaptador.notifyDataSetChanged();
-        this.recyclerView.setAdapter(this.adaptador);
+        if(this.recyclerView != null){
+            this.recyclerView.setAdapter(this.adaptador);
+        }
     }
 
     public void onUpdateData(ArrayList<T> items) {
@@ -60,7 +62,9 @@ public class AdapterList<T> {
             this.adaptador.lista.add(o);
         }
         this.adaptador.notifyDataSetChanged();
-        this.recyclerView.setAdapter(this.adaptador);
+        if(this.recyclerView != null){
+            this.recyclerView.setAdapter(this.adaptador);
+        }
     }
 
     public AdapterManager getAdapter(){
