@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.materia.MateriaTema;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MateriasItemOfrecerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MateriasItemOfrecerFragment extends Fragment {
 
     private MainActivity mainActivity;
+    private User autor;
+    private MateriaTema materiaTema;
 
     public MateriasItemOfrecerFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -36,5 +36,11 @@ public class MateriasItemOfrecerFragment extends Fragment {
         return view;
     }
 
+    public void setCurrentTema(MateriaTema materiaTema){
+        this.materiaTema = materiaTema;
+    }
 
+    public void setAutorId(User autor) {
+        this.autor = autor;
+    }
 }

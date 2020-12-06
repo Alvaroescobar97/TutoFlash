@@ -37,7 +37,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
             android:hint="Example TextInputLayout">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/act_materias_ofrecer_list_opciones"
+                android:id="@+id/act_materias_solicitar_list_opciones"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
@@ -46,7 +46,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_materias_ofrecer_tema"
+            android:id="@+id/til_materias_solicitar_tema"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -65,7 +65,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_materias_ofrecer_descripcion"
+            android:id="@+id/til_materias_solicitar_descripcion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -74,7 +74,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_materias_ofrecer_tema">
+            app:layout_constraintTop_toBottomOf="@+id/til_materias_solicitar_tema">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_materias_ofrecer_informacion"
+            android:id="@+id/til_materias_solicitar_informacion"
             android:layout_width="320dp"
             android:layout_height="75dp"
             android:layout_marginTop="10dp"
@@ -93,7 +93,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_materias_ofrecer_descripcion">
+            app:layout_constraintTop_toBottomOf="@+id/til_materias_solicitar_descripcion">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -103,7 +103,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_materias_ofrecer_tiempo"
+            android:id="@+id/til_materias_solicitar_tiempo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -112,7 +112,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_materias_ofrecer_informacion">
+            app:layout_constraintTop_toBottomOf="@+id/til_materias_solicitar_informacion">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -123,7 +123,7 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/btn_materias_ofrecer_solicitar"
+        android:id="@+id/btn_materias_solicitar_solicitar"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="50dp"
@@ -132,13 +132,13 @@ tools:context=".fragments.materias.MateriasSolicitarFragment">
         android:backgroundTint="@color/blue"
         android:text="Solicitar"
         app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_materias_ofrecer_cancelar"
+        app:layout_constraintBottom_toTopOf="@+id/btn_materias_solicitar_cancelar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_materias_ofrecer_cancelar"
+        android:id="@+id/btn_materias_solicitar_cancelar"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="0dp"
         android:layout_height="55dp"

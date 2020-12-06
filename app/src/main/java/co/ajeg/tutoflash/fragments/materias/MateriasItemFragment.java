@@ -28,9 +28,9 @@ import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
@@ -81,7 +81,6 @@ public class MateriasItemFragment extends Fragment {
                 this.tv_item_home_tema_rol = v.findViewById(R.id.tv_item_home_tema_rol);
                 this.tv_item_home_tema_username = v.findViewById(R.id.tv_item_home_tema_username);
                 this.tv_item_home_tema_fecha = v.findViewById(R.id.tv_item_home_tema_fecha);
-
             }
 
             @Override
@@ -92,12 +91,29 @@ public class MateriasItemFragment extends Fragment {
                 this.tv_item_home_tema_name.setText(tema.getTitle());
                 this.tv_item_home_tema_rol.setText(tema.getDescripcion());
                 this.tv_item_home_tema_fecha.setText(strDate);
+
                 databaseMateria.getNameUserId(tema.getAutorId(), (autor)->{
-                    this.tv_item_home_tema_username.setText(autor.getName());
-                    DatabaseUser.getImageUrlProfile(thisFragment, autor.getImage(), (urlImage)->{
-                        getImageViewProfile(urlImage, this.iv_item_home_tema_image);
-                    });
+                    if(autor != null){
+                        view.setOnClickListener(v->{
+                            mainActivity.materiasItemOfrecerFragment.setAutorId(autor);
+                            mainActivity.materiasItemOfrecerFragment.setCurrentTema(tema);
+                            FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
+                        });
+
+                        this.tv_item_home_tema_username.setText(autor.getName());
+                        DatabaseUser.getImageUrlProfile(thisFragment, autor.getImage(), (urlImage)->{
+                            getImageViewProfile(urlImage, this.iv_item_home_tema_image);
+                        });
+
+                    }else{
+                        view.setOnClickListener(v->{
+                            FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
+                        });
+                    }
+
                 });
+
+
             }
 
             private void getImageViewProfile(String urlImage, ImageView imageView) {

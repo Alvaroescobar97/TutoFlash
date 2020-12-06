@@ -1,9 +1,7 @@
 package co.ajeg.tutoflash.fragments.materias;
 
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
 
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,7 +25,6 @@ import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
-import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
 
 
@@ -38,11 +33,11 @@ public class MateriasSolicitarFragment extends Fragment {
     private MainActivity mainActivity;
     private DatabaseMateria databaseMateria;
 
-    private AppCompatAutoCompleteTextView til_act_materias_ofrecer_list_opciones;
-    private TextInputLayout til_materias_ofrecer_tema;
-    private TextInputLayout til_materias_ofrecer_descripcion;
-    private TextInputLayout til_materias_ofrecer_informacion;
-    private TextInputLayout til_materias_ofrecer_tiempo;
+    private AppCompatAutoCompleteTextView act_materias_solicitar_list_opciones;
+    private TextInputLayout til_materias_solicitar_tema;
+    private TextInputLayout til_materias_solicitar_descripcion;
+    private TextInputLayout til_materias_solicitar_informacion;
+    private TextInputLayout til_materias_solicitar_tiempo;
 
     private Map<String, String> categoriasNameListAll;
     String[] categoriasNameList = {"Matematicas", "Fisica", "Literatura", "Ingles", "Programación", "Sistemas"};
@@ -84,16 +79,16 @@ public class MateriasSolicitarFragment extends Fragment {
 
         this.mainActivity.headerFragment.changeTitleHeader("Solicitar tutor");
 
-        til_materias_ofrecer_tema = view.findViewById(R.id.til_materias_ofrecer_tema);
-        til_materias_ofrecer_descripcion = view.findViewById(R.id.til_materias_ofrecer_descripcion);
-        til_materias_ofrecer_informacion = view.findViewById(R.id.til_materias_ofrecer_informacion);
-        til_materias_ofrecer_tiempo = view.findViewById(R.id.til_materias_ofrecer_tiempo);
+        til_materias_solicitar_tema = view.findViewById(R.id.til_materias_solicitar_tema);
+        til_materias_solicitar_descripcion = view.findViewById(R.id.til_materias_solicitar_descripcion);
+        til_materias_solicitar_informacion = view.findViewById(R.id.til_materias_solicitar_informacion);
+        til_materias_solicitar_tiempo = view.findViewById(R.id.til_materias_solicitar_tiempo);
 
-        Button btn_materias_ofrecer_solicitar = view.findViewById(R.id.btn_materias_ofrecer_solicitar);
-        Button btn_materias_ofrecer_cancelar = view.findViewById(R.id.btn_materias_ofrecer_cancelar);
+        Button btn_materias_ofrecer_solicitar = view.findViewById(R.id.btn_materias_solicitar_solicitar);
+        Button btn_materias_ofrecer_cancelar = view.findViewById(R.id.btn_materias_solicitar_cancelar);
 
         //initiate an auto complete text view
-        til_act_materias_ofrecer_list_opciones = view.findViewById(R.id.act_materias_ofrecer_list_opciones);
+        act_materias_solicitar_list_opciones = view.findViewById(R.id.act_materias_solicitar_list_opciones);
 
         this.getNameMaterias();
 
@@ -114,21 +109,21 @@ public class MateriasSolicitarFragment extends Fragment {
         for (Map.Entry<String, String> entry : categoriasNameListAll.entrySet()) {
             listNamesMaterias.add(entry.getValue());
         }
-        if (til_act_materias_ofrecer_list_opciones != null) {
+        if (act_materias_solicitar_list_opciones != null) {
             ArrayAdapter adapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, listNamesMaterias);
 
-            til_act_materias_ofrecer_list_opciones.setAdapter(adapter);
-            til_act_materias_ofrecer_list_opciones.setThreshold(1);//start searching from 1 character
-            til_act_materias_ofrecer_list_opciones.setAdapter(adapter);   //set the adapter for displaying country name list;
+            act_materias_solicitar_list_opciones.setAdapter(adapter);
+            act_materias_solicitar_list_opciones.setThreshold(1);//start searching from 1 character
+            act_materias_solicitar_list_opciones.setAdapter(adapter);   //set the adapter for displaying country name list;
         }
     }
 
     public void onClickSolicitar(View v) {
-        String tema = this.til_materias_ofrecer_tema.getEditText().getText().toString();
-        String descripcion = this.til_materias_ofrecer_descripcion.getEditText().getText().toString();
-        String informacion = this.til_materias_ofrecer_informacion.getEditText().getText().toString();
-        String tiempo = this.til_materias_ofrecer_tiempo.getEditText().getText().toString();
-        String materiaName = this.til_act_materias_ofrecer_list_opciones.getText().toString();
+        String tema = this.til_materias_solicitar_tema.getEditText().getText().toString();
+        String descripcion = this.til_materias_solicitar_descripcion.getEditText().getText().toString();
+        String informacion = this.til_materias_solicitar_informacion.getEditText().getText().toString();
+        String tiempo = this.til_materias_solicitar_tiempo.getEditText().getText().toString();
+        String materiaName = this.act_materias_solicitar_list_opciones.getText().toString();
 
         if (!tema.equals("")
                 && !descripcion.equals("")
@@ -164,10 +159,10 @@ public class MateriasSolicitarFragment extends Fragment {
     }
 
     public void resetView() {
-        this.til_materias_ofrecer_tema.getEditText().setText("");
-        this.til_materias_ofrecer_descripcion.getEditText().setText("");
-        this.til_materias_ofrecer_informacion.getEditText().setText("");
-        this.til_materias_ofrecer_tiempo.getEditText().setText("");
-        this.til_act_materias_ofrecer_list_opciones.setText("");
+        this.til_materias_solicitar_tema.getEditText().setText("");
+        this.til_materias_solicitar_descripcion.getEditText().setText("");
+        this.til_materias_solicitar_informacion.getEditText().setText("");
+        this.til_materias_solicitar_tiempo.getEditText().setText("");
+        this.act_materias_solicitar_list_opciones.setText("");
     }
 }
