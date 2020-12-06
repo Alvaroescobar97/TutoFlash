@@ -61,6 +61,9 @@ public class NotificacionTemaColaborarFragment extends Fragment {
         this.btn_notificacion_tema_colaborar_desertar = view.findViewById(R.id.btn_notificacion_tema_colaborar_desertar);
 
 
+        if(this.notificacion != null){
+            
+        }
 
 
         return view;

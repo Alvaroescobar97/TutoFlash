@@ -7,109 +7,129 @@ android:layout_height="match_parent"
 android:background="#E8E8E8"
 tools:context=".fragments.notificacion.NotificacionTemaTutorFragment">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/constraintLayout8"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFF"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="414dp"
-        android:layout_height="wrap_content"
-        android:background="@color/blue"
-        android:padding="10dp"
+        android:id="@+id/constraintLayout8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="7dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_notificacion_tema_tutor_tema"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout13"
+            android:layout_width="414dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="130dp"
-            android:layout_marginTop="13dp"
-            android:text="Nombre del tema"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:background="@color/blue"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_notificacion_tema_tutor_usuario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="130dp"
+                android:layout_marginTop="13dp"
+                android:text="Nombre de usuario"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_notificacion_tema_tutor_tema"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Carrera"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_notificacion_tema_tutor_usuario"
+                app:layout_constraintTop_toBottomOf="@+id/tv_notificacion_tema_tutor_usuario" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_notificacion_tema_tutor_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_notificacion_tema_tutor_precio">
+
+            <TextView
+                android:id="@+id/tv_notificacion_tema_tutor_descripcion"
+                android:layout_width="377dp"
+                android:layout_height="122dp"
+                android:text="Descripción sobre el tema especifico"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Horarios disponibles:"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_notificacion_tema_tutor_descripcion" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_notificacion_tema_tutor_horarios"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tv_notificacion_tema_tutor_usuario"
-            android:layout_width="0dp"
+            android:id="@+id/tv_notificacion_tema_tutor_precio"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Nombre de usuario"
+            android:layout_marginTop="5dp"
+            android:text="Precio"
+            android:textColor="@color/blue"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_notificacion_tema_tutor_tema"
-            app:layout_constraintTop_toBottomOf="@+id/tv_notificacion_tema_tutor_tema" />
+            app:layout_constraintStart_toEndOf="@+id/iv_notificacion_tema_tutor_image"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout13" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/iv_notificacion_tema_tutor_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout11"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="5dp"
-        android:padding="15dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_notificacion_tema_tutor_image">
-
-        <TextView
-            android:id="@+id/tv_notificacion_tema_tutor_descripcion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Descripción sobre el tema especifico"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Tiempo estimado:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_notificacion_tema_tutor_descripcion" />
-
-        <TextView
-            android:id="@+id/tv_notificacion_tema_tutor_tiempo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="xxxxxxx"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textView6"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toTopOf="@+id/textView6" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/btn_notificacion_tema_tutor_seleccionar"

@@ -26,6 +26,7 @@ import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
@@ -115,12 +116,20 @@ public class NotificacionTemaCreateFragment extends Fragment {
                         this.tv_item_materia_tutor_calificacion;
                         this.rb_item_materia_tutor_calificacion;
                          */
+
+                        view.setOnClickListener(v->{
+                            mainActivity.notificacionTemaTutorFragment.setCurrentMateriaTutor(tutor);
+                            mainActivity.notificacionTemaTutorFragment.setCurrentTutor(userTutor);
+                            FragmentUtil.replaceFragmentInMain(mainActivity.notificacionTemaTutorFragment);
+                        });
                     }
                 });
 
 
                 this.tv_item_materia_tutor_descripcion.setText(tutor.getDescripcion());
                 this.tv_item_materia_tutor_precio.setText("$ " + tutor.getPrecio());
+
+
 
             }
 

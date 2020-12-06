@@ -31,6 +31,7 @@ import co.ajeg.tutoflash.fragments.materias.MateriasSolicitarFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaColaborarFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaCreateFragment;
+import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaTutorFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public MateriasSolicitarFragment materiasSolicitarFragment;
 
     public NotificacionFragment notificacionFragment;
+    public NotificacionTemaTutorFragment notificacionTemaTutorFragment;
     public NotificacionTemaCreateFragment notificacionTemaCreateFragment;
     public NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
 
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         materiasSolicitarFragment = new MateriasSolicitarFragment(this);
 
         notificacionFragment = new NotificacionFragment(this);
+        notificacionTemaTutorFragment = new NotificacionTemaTutorFragment(this);
         notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
         notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
 
