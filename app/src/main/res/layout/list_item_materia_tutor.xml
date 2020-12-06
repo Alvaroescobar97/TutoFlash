@@ -6,7 +6,7 @@
     android:layout_height="75dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/tv_item_materia_tutor_name"
+        android:id="@+id/iv_item_materia_tutor_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="7dp"
@@ -28,12 +28,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="265dp"
         android:layout_height="60dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="7dp"
-        app:layout_constraintStart_toEndOf="@+id/tv_item_materia_tutor_name"
+        app:layout_constraintStart_toEndOf="@+id/iv_item_materia_tutor_image"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_item_home_materia_name"
+            android:id="@+id/tv_item_materia_tutor_name"
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:layout_marginTop="2dp"
@@ -46,11 +47,11 @@
             android:id="@+id/tv_item_materia_tutor_descripcion"
             android:layout_width="match_parent"
             android:layout_height="16dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="3dp"
             android:text="Descripcion"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_home_materia_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_materia_tutor_name" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="235dp"

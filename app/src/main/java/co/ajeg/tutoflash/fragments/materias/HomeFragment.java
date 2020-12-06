@@ -20,9 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -34,27 +32,33 @@ import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
-import co.ajeg.tutoflash.model.chat.ChatMensaje;
-import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.Materia;
-import co.ajeg.tutoflash.model.materia.MateriaTema;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class HomeFragment extends Fragment implements DatabaseMateria.OnCompleteListenerAllMaterias {
 
     private EditText et_home_busqueda;
-    private DatabaseMateria databaseMateria;
+    private static DatabaseMateria databaseMateria;
     private List<Materia> materiaList;
     private AdapterList<Materia> adapterList;
     private RecyclerView rv_home_materias;
     private MainActivity mainActivity;
+    private boolean realTimeIsActiva = false;
 
     public HomeFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.materiaList = new ArrayList<>();
         this.databaseMateria = DatabaseMateria.getInstance(this.mainActivity);
-        this.databaseMateria.getAllMaterias(this);
+    }
+
+    public static HomeFragment newInstance(MainActivity mainActivity) {
+        HomeFragment fragment = new HomeFragment(mainActivity);
+        Bundle args = new Bundle();
+
+
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -86,23 +90,36 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
         adapterList = new AdapterList(this.rv_home_materias, this.materiaList, R.layout.list_item_home_materia, new AdapterManagerList<Materia>() {
 
-            private CircleImageView civ_item_home_materia_image;
+            private ImageView iv_item_home_materia_image;
             private TextView tv_item_home_materia_name;
             private TextView tv_item_home_materia_fecha;
 
             @Override
             public void onCreateView(View v) {
 
-                this.civ_item_home_materia_image = v.findViewById(R.id.civ_item_home_materia_image);
-                this.tv_item_home_materia_name = v.findViewById(R.id.tv_item_home_materia_name);
-                this.tv_item_home_materia_fecha = v.findViewById(R.id.tv_item_home_materia_fecha);
+                iv_item_home_materia_image = v.findViewById(R.id.iv_item_home_materia_image);
+                tv_item_home_materia_name = v.findViewById(R.id.tv_item_home_materia_name);
+                tv_item_home_materia_fecha = v.findViewById(R.id.tv_item_home_materia_fecha);
 
             }
 
             @Override
             public void onChangeView(Materia materia, View view, int position) {
+                int nEntradas = materia.getnEntradas();
+                tv_item_home_materia_name.setText(ucFirst(materia.getName()));
+                tv_item_home_materia_fecha.setText(nEntradas + " entradas");
+
+                view.setOnClickListener((v)->{
+                    
+                });
 
             }
+
+            public String ucFirst(String str) {
+                if (str == null || str.isEmpty()) return str;
+                else return str.substring(0, 1).toUpperCase() + str.substring(1);
+            }
+
         });
 
         ImageView iv_home_header_imagen = view.findViewById(R.id.iv_home_header_imagen);
@@ -131,6 +148,10 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
         btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
 
+        if(this.realTimeIsActiva == false){
+            this.realTimeIsActiva = true;
+            databaseMateria.getAllMaterias(this);
+        }
 
 
         return view;

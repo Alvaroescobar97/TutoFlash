@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         headerFragment = HeaderFragment.newInstance();
 
-        homeFragment = new HomeFragment(this);
+        homeFragment = HomeFragment.newInstance(this);
         materiasItemFragment = new MateriasItemFragment(this);
         materiasItemOfrecerFragment = new MateriasItemOfrecerFragment(this);
         materiasSolicitarFragment = new MateriasSolicitarFragment(this);

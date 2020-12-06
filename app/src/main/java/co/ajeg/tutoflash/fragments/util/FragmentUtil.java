@@ -27,11 +27,16 @@ public class FragmentUtil {
     public static int DRAWABLE_BOTTOM = 3;
     public static ArrayList<Fragment> fragmentsNav;
     public static OnChangeFragmentNav onChangeFragmentNav;
+    public static OnChangeFragmentNav onChangeFragmentNavActivity;
     public static Fragment currentFragment;
 
     public FragmentUtil(MainActivity activity){
         this.activity = activity;
         this.fragmentsNav = new ArrayList<>();
+    }
+
+    public static void setOnChangeBackActivity(OnChangeFragmentNav onChange){
+        onChangeFragmentNavActivity = onChange;
     }
 
     public static void setOnChangeFragmentNav(OnChangeFragmentNav onChange){
@@ -49,6 +54,10 @@ public class FragmentUtil {
                 onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
             }
 
+            if(onChangeFragmentNavActivity != null){
+                onChangeFragmentNavActivity.onChangeFragmentNav(fragmentsNav);
+            }
+
             replaceFragment(R.id.fragment_container, fragment);
         }
     }
@@ -62,6 +71,10 @@ public class FragmentUtil {
             if(onChangeFragmentNav != null){
                 onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
             }
+
+            if(onChangeFragmentNavActivity != null){
+                onChangeFragmentNavActivity.onChangeFragmentNav(fragmentsNav);
+            }
         }
         replaceFragment(R.id.fragment_container, fragment);
     }
@@ -69,8 +82,13 @@ public class FragmentUtil {
     public static void resetFragmentNav(){
         if(fragmentsNav != null){
             fragmentsNav.clear();
+
             if(onChangeFragmentNav != null){
                 onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);
+            }
+
+            if(onChangeFragmentNavActivity != null){
+                onChangeFragmentNavActivity.onChangeFragmentNav(fragmentsNav);
             }
         }
     }

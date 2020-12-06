@@ -17,7 +17,6 @@ import java.util.List;
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
-import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -65,7 +64,7 @@ public class NotificacionItemSelectFragment extends Fragment {
             @Override
             public void onCreateView(View v) {
 
-                this.civ_item_materia_tutor_image = v.findViewById(R.id.civ_item_materia_tutor_image);
+                this.civ_item_materia_tutor_image = v.findViewById(R.id.iv_item_materia_tutor_image);
                 this.tv_item_materia_tutor_name = v.findViewById(R.id.tv_item_materia_tutor_name);
                 this.tv_item_materia_tutor_descripcion = v.findViewById(R.id.tv_item_materia_tutor_descripcion);
                 this.tv_item_materia_tutor_calificacion = v.findViewById(R.id.tv_item_materia_tutor_calificacion);

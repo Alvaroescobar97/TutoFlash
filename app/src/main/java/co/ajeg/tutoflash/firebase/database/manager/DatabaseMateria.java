@@ -1,12 +1,20 @@
 package co.ajeg.tutoflash.firebase.database.manager;
 
+import android.widget.Toast;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
@@ -47,14 +55,32 @@ public class DatabaseMateria {
         });
     }
 
-    public void createTema(Materia materia, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
+    public void createTema(String materiaName, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
         activity.runOnUiThread(() -> {
-            String temaString = materia.getName().trim().replaceAll(" ", "").toLowerCase();
+            String temaString = materiaName.trim().replaceAll(" ", "").toLowerCase();
             getRefCollectionAllMaterias().document(temaString).get().addOnCompleteListener(result -> {
                 if (result.isSuccessful()) {
-                    if (result.getResult().exists()) {
-                        crearTemaDatabase(materia.getName(), materiaTema, onCompleteListenerTema);
+                    DocumentSnapshot documentReference = result.getResult();
+                    if (documentReference.exists()) {
+                        Materia materia = documentReference.toObject(Materia.class);
+
+
+                        materia.setLastFecha((new Date()).toString());
+                        materia.setnEntradas(materia.getnEntradas() + 1);
+
+                        getRefCollectionAllMaterias().document(materia.getName()).set(materia).addOnCompleteListener((task) -> {
+                            if(task.isSuccessful()){
+                                crearTemaDatabase(temaString, materiaTema, onCompleteListenerTema);
+                            }else{
+                                onCompleteListenerTema.onLoadTema(null);
+                            }
+                        });
+
                     } else {
+                        String uid = UUID.randomUUID().toString();
+                        String date = (new Date()).toString();
+                        //String id, String name, String imagen, String lastFecha
+                        Materia materia = new Materia(uid, temaString, date, 1);
                         getRefCollectionAllMaterias().document(temaString).set(materia).addOnCompleteListener((task) -> {
                             if (task.isSuccessful()) {
                                 crearTemaDatabase(materia.getName(), materiaTema, onCompleteListenerTema);
@@ -84,7 +110,9 @@ public class DatabaseMateria {
     }
 
     public void getAllMaterias(OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
+
         activity.runOnUiThread(() -> {
+
             if (this.listenerMaterias != null) {
                 this.stopListenerMaterias();
             }
@@ -150,5 +178,11 @@ public class DatabaseMateria {
         void onLoadTema(MateriaTema materiaTema);
     }
 
+
+    private Map getImageDefaultMaterias(){
+        Map<String, String> materias = new HashMap<>();
+
+        return materias;
+    }
 
 }

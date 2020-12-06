@@ -4,17 +4,17 @@ public class Materia {
 
     private String id;
     private String name;
-    private String imagen;
     private String lastFecha;
+    private int nEntradas;
 
     public Materia() {
     }
 
-    public Materia(String id, String name, String imagen, String lastFecha) {
+    public Materia(String id, String name, String lastFecha, int nEntradas) {
         this.id = id;
         this.name = name;
-        this.imagen = imagen;
         this.lastFecha = lastFecha;
+        this.nEntradas = nEntradas;
     }
 
     public String getId() {
@@ -33,19 +33,19 @@ public class Materia {
         this.name = name;
     }
 
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public String getFecha() {
+    public String getLastFecha() {
         return lastFecha;
     }
 
-    public void setFecha(String fecha) {
-        this.lastFecha = fecha;
+    public void setLastFecha(String lastFecha) {
+        this.lastFecha = lastFecha;
+    }
+
+    public int getnEntradas() {
+        return nEntradas;
+    }
+
+    public void setnEntradas(int nEntradas) {
+        this.nEntradas = nEntradas;
     }
 }
