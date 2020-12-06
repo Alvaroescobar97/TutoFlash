@@ -1,6 +1,8 @@
 package co.ajeg.tutoflash.model.chat;
 
-public class ChatPerson {
+import java.io.Serializable;
+
+public class ChatPerson implements Serializable {
 
     private String id;
 

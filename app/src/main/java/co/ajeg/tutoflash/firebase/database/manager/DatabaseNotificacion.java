@@ -65,7 +65,7 @@ public class DatabaseNotificacion {
         return collectionReference;
     }
 
-    private static CollectionReference getRefCollectionAllNotificaciones(String userId){
+    public static CollectionReference getRefCollectionAllNotificaciones(String userId){
         CollectionReference collectionReference = FirebaseFirestore
                 .getInstance()
                 .collection(DBROUTES.USERS)

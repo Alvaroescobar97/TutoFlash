@@ -50,25 +50,14 @@ tools:context=".fragments.materias.MateriasItemOfrecerFragment">
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/rv_materias_ofrecer_fechas"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="7dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="agregar"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextDate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextDate"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/et_materias_ofrecer_fecha" />
 
         <TextView
             android:id="@+id/textView2"
@@ -82,31 +71,46 @@ tools:context=".fragments.materias.MateriasItemOfrecerFragment">
             app:layout_constraintTop_toBottomOf="@+id/til_materias_ofrecer_precio" />
 
         <EditText
-            android:id="@+id/editTextDate"
+            android:id="@+id/et_materias_ofrecer_fecha"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:editable="false"
             android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:inputType="date"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/btn_materias_ofrecer_add_fecha"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <Button
+            android:id="@+id/btn_materias_ofrecer_add_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="agregar"
+            app:layout_constraintBottom_toBottomOf="@+id/et_materias_ofrecer_fecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_materias_ofrecer_fecha"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="408dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
         <Button
-            android:id="@+id/btn_materias_ofrecer_solicitar"
+            android:id="@+id/btn_materias_ofrecer_ofrecer"
             android:layout_width="0dp"
             android:layout_height="55dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/blue"
             android:text="Ofrecer ayuda"
@@ -114,15 +118,15 @@ tools:context=".fragments.materias.MateriasItemOfrecerFragment">
             app:layout_constraintBottom_toTopOf="@+id/btn_materias_solicitar_cancelar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_materias_ofrecer_cancelar"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="55dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="7dp"
             android:color="@color/white"
             android:fontFamily="@font/mulish_semibold"
             android:text="Cancelar"
@@ -131,7 +135,7 @@ tools:context=".fragments.materias.MateriasItemOfrecerFragment">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_materias_ofrecer_solicitar"
+            app:layout_constraintTop_toBottomOf="@+id/btn_materias_ofrecer_ofrecer"
             app:rippleColor="#FFFFFF"
             app:strokeColor="@color/blue"
             app:strokeWidth="2dp" />

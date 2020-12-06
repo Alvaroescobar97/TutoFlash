@@ -12,6 +12,10 @@ public interface DBROUTES {
 
     String MATERIAS = "materias";
     String MATERIAS_SOLUCITUDES = "solicitudes";
+    String MATERIAS_OFRECIMIENTOS = "ofrecimientos";
+
+    String NOTIFICACION_TYPE_SOLICITUD_TUTOR = "solicitud_tutor";
+    String NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR = "solicitud_tutor_dar";
 
 
 }

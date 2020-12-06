@@ -21,6 +21,10 @@ public class AdapterList<T> {
         this.recyclerView.setAdapter(this.adaptador);
     }
 
+    public ArrayList<T> getListActual(){
+        return this.adaptador.lista;
+    }
+
     public void onAddItem(T item){
         int position = this.adaptador.lista.size();
         this.adaptador.lista.add(position, item);
@@ -38,11 +42,17 @@ public class AdapterList<T> {
             this.adaptador.lista.remove(position);
             this.adaptador.notifyItemRemoved(position);
         }
+        if(this.recyclerView != null){
+            this.recyclerView.setAdapter(this.adaptador);
+        }
     }
 
     public void onRemoveItem(int position) {
         this.adaptador.lista.remove(position);
         this.adaptador.notifyItemRemoved(position);
+        if(this.recyclerView != null){
+            this.recyclerView.setAdapter(this.adaptador);
+        }
     }
 
     public void onUpdateData(List<T> items) {
@@ -109,8 +119,6 @@ public class AdapterList<T> {
         public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
             this.result.onChangeView(this.lista.get(position), holder.view, position);
         }
-
-
 
         @Override
         public int getItemCount() {

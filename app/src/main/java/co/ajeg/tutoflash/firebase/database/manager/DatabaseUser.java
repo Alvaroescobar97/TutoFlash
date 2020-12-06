@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -54,6 +55,11 @@ public class DatabaseUser {
                         onCompleeteListenerUser.onLoadUser(null);
                     }
                 });
+    }
+
+    public static DocumentReference getRefUser(String userId){
+        return FirebaseFirestore.getInstance().collection(DBROUTES.USERS)
+                .document(userId);
     }
 
     public interface OnCompleteListenerUser{

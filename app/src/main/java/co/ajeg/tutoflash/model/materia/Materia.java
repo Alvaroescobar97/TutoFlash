@@ -1,6 +1,8 @@
 package co.ajeg.tutoflash.model.materia;
 
-public class Materia {
+import java.io.Serializable;
+
+public class Materia implements Serializable {
 
     private String id;
     private String name;

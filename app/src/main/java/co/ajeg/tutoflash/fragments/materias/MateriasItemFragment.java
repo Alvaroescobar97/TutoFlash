@@ -86,7 +86,7 @@ public class MateriasItemFragment extends Fragment {
             @Override
             public void onChangeView(MateriaTema tema, View view, int position) {
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-                Date date = new Date(tema.getFecha());
+                Date date = new Date(tema.getDate());
                 String strDate = dateFormat.format(date).toString();
                 this.tv_item_home_tema_name.setText(tema.getTitle());
                 this.tv_item_home_tema_rol.setText(tema.getDescripcion());
@@ -96,7 +96,7 @@ public class MateriasItemFragment extends Fragment {
                     if(autor != null){
                         view.setOnClickListener(v->{
                             mainActivity.materiasItemOfrecerFragment.setAutorId(autor);
-                            mainActivity.materiasItemOfrecerFragment.setCurrentTema(tema);
+                            mainActivity.materiasItemOfrecerFragment.setCurrentTema(tema, materia.getName());
                             FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
                         });
 

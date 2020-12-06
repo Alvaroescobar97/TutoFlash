@@ -18,9 +18,12 @@ import java.util.UUID;
 
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
+import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
+import co.ajeg.tutoflash.model.materia.MateriaTutor;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 public class DatabaseMateria {
 
@@ -28,9 +31,11 @@ public class DatabaseMateria {
     private static DatabaseMateria thisClass;
     private ListenerRegistration listenerSolicitudes;
     private ListenerRegistration listenerMaterias;
+    private DatabaseNotificacion databaseNotificacion;
 
     private DatabaseMateria(FragmentActivity activity) {
         this.activity = activity;
+        this.databaseNotificacion = DatabaseNotificacion.getInstance(activity);
     }
 
     static public DatabaseMateria getInstance(FragmentActivity activity) {
@@ -64,8 +69,7 @@ public class DatabaseMateria {
                     if (documentReference.exists()) {
                         Materia materia = documentReference.toObject(Materia.class);
 
-
-                        materia.setLastFecha((new Date()).getTime());
+                        materia.setLastFecha((int) (new Date()).getTime());
                         materia.setnEntradas(materia.getnEntradas() + 1);
 
                         getRefCollectionAllMaterias().document(materia.getName()).set(materia).addOnCompleteListener((task) -> {
@@ -97,12 +101,89 @@ public class DatabaseMateria {
         });
     }
 
+    public void createMateriaTutor(String materiaName, MateriaTutor materiaTutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor){
+        activity.runOnUiThread(()->{
+            getRefCollectionAllSolicitudes(materiaName)
+                    .document(materiaTutor.getPublicacionId())
+                    .collection(DBROUTES.MATERIAS_OFRECIMIENTOS)
+                    .document(materiaTutor.getId())
+                    .set(materiaTutor).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            DocumentReference notificacionAutorDatabase =  this.databaseNotificacion
+                                    .getRefCollectionAllNotificaciones(materiaTutor.getAutorId())
+                                    .document(materiaTutor.getPublicacionId());
+
+                            notificacionAutorDatabase.get().addOnCompleteListener(taskAutor -> {
+                                if(taskAutor.isSuccessful()){
+                                    DocumentSnapshot documentSnapshot = taskAutor.getResult();
+                                    if(documentSnapshot.exists()){
+                                        Notificacion notificacionAutor = documentSnapshot.toObject(Notificacion.class);
+                                        notificacionAutor.setDescripcion("Alguien quiere ser tu tutor");
+                                        notificacionAutorDatabase.set(notificacionAutor).addOnCompleteListener(taskAutorUpdate -> {
+                                            if(taskAutorUpdate.isSuccessful()){
+
+                                                String id = materiaTutor.getPublicacionId();
+                                                String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR;
+                                                String refId = materiaTutor.getId();
+                                                String title = materiaTutor.getDescripcion();
+                                                String descripcion = "Te has ofrecido a ayudar";
+                                                long fecha = new Date().getTime();
+
+                                                //String id, String type, String refId, String title, String descripcion, String fecha
+                                                Notificacion notificacion = new Notificacion(id, type, refId, title, descripcion, fecha);
+                                                this.databaseNotificacion.createNotificacion(materiaTutor.getTutorId(), notificacion, (notificacionDatabase)->{
+                                                    if(notificacionDatabase != null){
+                                                        onCompleteListenerMateriaTutor.onLoadMateriaTutor(materiaTutor);
+
+                                                    }else{
+                                                        onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                                    }
+                                                });
+                                            }else{
+                                                onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                            }
+                                        });
+                                    }else {
+                                        onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                    }
+                                }else{
+                                    onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                }
+
+                            });
+
+
+                        }else{
+                            onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                        }
+            });
+
+        });
+    }
+
     private void crearTemaDatabase(String temaString, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
         getRefCollectionAllSolicitudes(temaString)
                 .document(materiaTema.getId())
                 .set(materiaTema).addOnCompleteListener((task) -> {
             if (task != null) {
-                onCompleteListenerTema.onLoadTema(materiaTema);
+
+                String id = materiaTema.getId();
+                String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR;
+                String refId = materiaTema.getId();
+                String title = materiaTema.getDescripcion();
+                String descripcion = "Tutor pendiente...";
+                long fecha = new Date().getTime();
+
+                //String id, String type, String refId, String title, String descripcion, String fecha
+                Notificacion notificacion = new Notificacion(id, type, refId, title, descripcion, fecha);
+                this.databaseNotificacion.createNotificacion(materiaTema.getAutorId(), notificacion, (notificacionDatabase)->{
+                    if(notificacionDatabase != null){
+                        onCompleteListenerTema.onLoadTema(materiaTema);
+                    }else{
+                        onCompleteListenerTema.onLoadTema(null);
+                    }
+                });
+
             } else {
                 onCompleteListenerTema.onLoadTema(null);
             }
@@ -159,12 +240,17 @@ public class DatabaseMateria {
         }
     }
 
+    private static CollectionReference getRefCollectionUserTutores(String userId) {
+        return getRefCollectionAllMaterias()
+                .document(userId)
+                .collection(DBROUTES.MATERIAS_SOLUCITUDES);
+    }
+
     private static CollectionReference getRefCollectionAllSolicitudes(String materiaId) {
         return getRefCollectionAllMaterias()
                 .document(materiaId)
                 .collection(DBROUTES.MATERIAS_SOLUCITUDES);
     }
-
 
     private static CollectionReference getRefCollectionAllMaterias() {
         CollectionReference collectionReference = FirebaseFirestore
@@ -185,11 +271,10 @@ public class DatabaseMateria {
         void onLoadTema(MateriaTema materiaTema);
     }
 
-
-    private Map getImageDefaultMaterias(){
-        Map<String, String> materias = new HashMap<>();
-
-        return materias;
+    public interface OnCompleteListenerMateriaTutor{
+        void onLoadMateriaTutor(MateriaTutor materiaTutor);
     }
+
+
 
 }

@@ -88,9 +88,6 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
     public void onLoadAllNotificaciones(List<Notificacion> notificacions) {
         this.notificacions = notificacions;
 
-        this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
-        this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
-        this.notificacions.add(new Notificacion("", "tipo", "Titulo", "informacion", "descripcion", ""));
 
         if (this.notificacions != null && this.adapterList != null && this.rv_notificaciones_lista != null) {
             //String id, String type, String title, String informacion, String descripcion, String imgUrl

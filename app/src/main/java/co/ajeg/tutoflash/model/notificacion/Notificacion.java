@@ -1,22 +1,25 @@
 package co.ajeg.tutoflash.model.notificacion;
 
-public class Notificacion {
+import java.io.Serializable;
+
+public class Notificacion implements Serializable {
 
     private String id;
     private String type;
+    private String refId;
     private String title;
-    private String informacion;
     private String descripcion;
-    private String imgUrl;
+    private long fecha;
 
+    public Notificacion(){}
 
-    public Notificacion(String id, String type, String title, String informacion, String descripcion, String imgUrl) {
+    public Notificacion(String id, String type, String refId, String title, String descripcion, long fecha) {
         this.id = id;
         this.type = type;
+        this.refId = refId;
         this.title = title;
-        this.informacion = informacion;
         this.descripcion = descripcion;
-        this.imgUrl = imgUrl;
+        this.fecha = fecha;
     }
 
     public String getId() {
@@ -35,20 +38,20 @@ public class Notificacion {
         this.type = type;
     }
 
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getInformacion() {
-        return informacion;
-    }
-
-    public void setInformacion(String informacion) {
-        this.informacion = informacion;
     }
 
     public String getDescripcion() {
@@ -59,11 +62,11 @@ public class Notificacion {
         this.descripcion = descripcion;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public long getFecha() {
+        return fecha;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setFecha(long fecha) {
+        this.fecha = fecha;
     }
 }

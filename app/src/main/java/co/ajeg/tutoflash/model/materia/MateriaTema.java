@@ -1,6 +1,8 @@
 package co.ajeg.tutoflash.model.materia;
 
-public class MateriaTema {
+import java.io.Serializable;
+
+public class MateriaTema implements Serializable {
 
     private String id;
     private String autorId;
@@ -8,18 +10,18 @@ public class MateriaTema {
     private String descripcion;
     private String informacion;
     private String tiempo;
-    private long fecha;
+    private long date;
 
     public MateriaTema(){}
 
-    public MateriaTema(String id, String autorId, String title, String descripcion, String informacion, String tiempo, long fecha) {
+    public MateriaTema(String id, String autorId, String title, String descripcion, String informacion, String tiempo, long date) {
         this.id = id;
         this.autorId = autorId;
         this.title = title;
         this.descripcion = descripcion;
         this.informacion = informacion;
         this.tiempo = tiempo;
-        this.fecha = fecha;
+        this.date = date;
     }
 
     public String getId() {
@@ -70,11 +72,11 @@ public class MateriaTema {
         this.tiempo = tiempo;
     }
 
-    public long getFecha() {
-        return fecha;
+    public long getDate() {
+        return date;
     }
 
-    public void setFecha(long fecha) {
-        this.fecha = fecha;
+    public void setDate(long date) {
+        this.date = date;
     }
 }
