@@ -9,6 +9,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -239,6 +241,32 @@ public class DatabaseMateria {
         });
     }
 
+    public void getSolicitudMateriaTema(String materiaId, String temaId, OnCompleteListenerTema onCompleteListenerTema, OnCompleteListenerMateriaTutores onCompleteListenerMateriaTutores){
+        activity.runOnUiThread(()->{
+            DocumentReference documentReferenceTema =  getRefCollectionAllSolicitudes(materiaId).document(temaId);
+            documentReferenceTema.get().addOnCompleteListener((task)->{
+                if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if(documentSnapshot.exists()){
+                        onCompleteListenerTema.onLoadTema(documentSnapshot.toObject(MateriaTema.class));
+                    }else{
+                        onCompleteListenerTema.onLoadTema(null);
+                    }
+                }else{
+                    onCompleteListenerTema.onLoadTema(null);
+                }
+            });
+            documentReferenceTema.collection(DBROUTES.MATERIAS_OFRECIMIENTOS).get().addOnCompleteListener((task)->{
+                if(task.isSuccessful()){
+                    QuerySnapshot querySnapshot = task.getResult();
+                        onCompleteListenerMateriaTutores.onLoadMateriaTutor(querySnapshot.toObjects(MateriaTutor.class));
+                }else{
+                    onCompleteListenerMateriaTutores.onLoadMateriaTutor(null);
+                }
+            });
+        });
+    }
+
     public void stopListenerSolicitudes() {
         if (listenerSolicitudes != null) {
             listenerSolicitudes.remove();
@@ -286,6 +314,10 @@ public class DatabaseMateria {
 
     public interface OnCompleteListenerMateriaTutor{
         void onLoadMateriaTutor(MateriaTutor materiaTutor);
+    }
+
+    public interface OnCompleteListenerMateriaTutores{
+        void onLoadMateriaTutor(List<MateriaTutor> materiaTutores);
     }
 
 

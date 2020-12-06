@@ -14,12 +14,19 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
@@ -33,7 +40,7 @@ public class NotificacionTemaCreateFragment extends Fragment {
     private MainActivity mainActivity;
     private ImageView iv_notificacion_tema_create_image;
     private TextView tv_notificacion_tema_create_tema;
-    private  TextView tv_notificacion_tema_create_usuario;
+    private TextView tv_notificacion_tema_create_usuario;
     private TextView tv_notificacion_tema_create_descripcion;
     private TextView tv_notificacion_tema_create_tiempo;
     private Button btn_notificacion_tema_create_eliminar;
@@ -42,10 +49,13 @@ public class NotificacionTemaCreateFragment extends Fragment {
     private ArrayList<MateriaTutor> materiaTutorsList;
     private Notificacion notificacion;
 
+    private DatabaseMateria databaseMateria;
+
     public NotificacionTemaCreateFragment(MainActivity mainActivity) {
         // Required empty public constructor
         this.mainActivity = mainActivity;
         this.materiaTutorsList = new ArrayList<>();
+        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
     }
 
     public static NotificacionTemaCreateFragment newInstance(MainActivity mainActivity) {
@@ -90,17 +100,86 @@ public class NotificacionTemaCreateFragment extends Fragment {
             }
 
             @Override
-            public void onChangeView(MateriaTutor elemnto, View view, int position) {
+            public void onChangeView(MateriaTutor tutor, View view, int position) {
+
+                DatabaseUser.getRefUserId(tutor.getTutorId(), (userTutor)->{
+                    if(userTutor != null){
+                        DatabaseUser.getImageUrlProfile(mainActivity, userTutor.getImage(), (urlImage)->{
+                            Glide.with(this.iv_item_materia_tutor_image)
+                                    .load(urlImage)
+                                    .apply(RequestOptions.circleCropTransform())
+                                    .into(this.iv_item_materia_tutor_image);
+                        });
+                        this.tv_item_materia_tutor_name.setText(userTutor.getName());
+                        /*
+                        this.tv_item_materia_tutor_calificacion;
+                        this.rb_item_materia_tutor_calificacion;
+                         */
+                    }
+                });
+
+
+                this.tv_item_materia_tutor_descripcion.setText(tutor.getDescripcion());
+                this.tv_item_materia_tutor_precio.setText("$ " + tutor.getPrecio());
 
             }
 
 
         });
 
+        if (this.notificacion != null) {
+            String nameMateria = this.notificacion.getDirDatabase().get(1);
+            this.databaseMateria.getSolicitudMateriaTema(nameMateria, notificacion.getRefId(),
+                    (tema) -> {
+                        if (tema != null) {
+                            User user = Autenticacion.getUser();
+                            if(user != null && tema.getAutorId().equals(user.getId())){
+                                DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
+                                    Glide.with(this.iv_notificacion_tema_create_image)
+                                            .load(urlImage)
+                                            .apply(RequestOptions.circleCropTransform())
+                                            .into(this.iv_notificacion_tema_create_image);
+                                });
+                                this.tv_notificacion_tema_create_usuario.setText(user.getName());
+                            }else {
+                                DatabaseUser.getRefUserId(tema.getId(), (usuarioAutor)->{
+                                    DatabaseUser.getImageUrlProfile(mainActivity, usuarioAutor.getImage(), (urlImage)->{
+                                        Glide.with(this.iv_notificacion_tema_create_image)
+                                                .load(urlImage)
+                                                .apply(RequestOptions.circleCropTransform())
+                                                .into(this.iv_notificacion_tema_create_image);
+                                    });
+                                    this.tv_notificacion_tema_create_usuario.setText(usuarioAutor.getName());
+                                });
+                            }
+
+                            this.tv_notificacion_tema_create_tema.setText(tema.getTitle());
+
+                            this.tv_notificacion_tema_create_descripcion.setText(tema.getDescripcion());
+                            this.tv_notificacion_tema_create_tiempo.setText(tema.getTiempo());
+
+                            this.tv_notificacion_tema_create_tema.setText(tema.getTitle());
+
+                            this.btn_notificacion_tema_create_eliminar.setOnClickListener(this::onDeletePublicacionTema);
+
+                        }
+                    }
+
+                    , (tutores) -> {
+                        this.adapterList.onUpdateData(tutores);
+
+                    });
+        }
+
+
         return view;
     }
 
-    public void setCurrentNotificacion(Notificacion notificacion){
+    private void onDeletePublicacionTema(View v){
+
+    }
+
+    public void setCurrentNotificacion(Notificacion notificacion) {
         this.notificacion = notificacion;
     }
 }
