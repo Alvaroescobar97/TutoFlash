@@ -40,42 +40,28 @@ import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment implements DatabaseMateria.OnCompleteListenerAllMaterias {
-
-    MainActivity mainActivity;
-
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-
-    public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        // args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     private EditText et_home_busqueda;
     private DatabaseMateria databaseMateria;
     private List<Materia> materiaList;
     private AdapterList<Materia> adapterList;
     private RecyclerView rv_home_materias;
+    private MainActivity mainActivity;
+
+    public HomeFragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+        this.materiaList = new ArrayList<>();
+        this.databaseMateria = DatabaseMateria.getInstance(this.mainActivity);
+        this.databaseMateria.getAllMaterias(this);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        this.mainActivity = FragmentUtil.getActivity();
-        databaseMateria = DatabaseMateria.getInstance(this.getActivity());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -97,9 +83,6 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
         this.rv_home_materias = view.findViewById(R.id.rv_home_materias);
         this.rv_home_materias.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        if(this.materiaList == null){
-            this.materiaList = new ArrayList<>();
-        }
 
         adapterList = new AdapterList(this.rv_home_materias, this.materiaList, R.layout.list_item_home_materia, new AdapterManagerList<Materia>() {
 
@@ -148,7 +131,7 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
         btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
 
-        this.databaseMateria.getAllMaterias(this);
+
 
         return view;
     }

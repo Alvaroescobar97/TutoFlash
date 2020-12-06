@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.activities.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,17 +18,10 @@ import co.ajeg.tutoflash.R;
  */
 public class MateriasItemOfrecerFragment extends Fragment {
 
+    private MainActivity mainActivity;
 
-    public MateriasItemOfrecerFragment() {
-        // Required empty public constructor
-    }
-
-    public static MateriasItemOfrecerFragment newInstance() {
-        MateriasItemOfrecerFragment fragment = new MateriasItemOfrecerFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
+    public MateriasItemOfrecerFragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
 

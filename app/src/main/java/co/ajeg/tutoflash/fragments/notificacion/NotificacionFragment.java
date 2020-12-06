@@ -80,7 +80,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
             }
 
         });
-        
+
         return view;
     }
 

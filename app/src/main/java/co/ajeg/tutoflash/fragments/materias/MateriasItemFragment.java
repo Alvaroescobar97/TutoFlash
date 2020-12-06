@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
@@ -22,23 +23,20 @@ import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MateriasItemFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+
 public class MateriasItemFragment extends Fragment {
 
-    public MateriasItemFragment() {
-        // Required empty public constructor
+    private MainActivity mainActivity;
+    private List<MateriaTema> materiasTemas;
+    private AdapterList<MateriaTema> adapterList;
+    private RecyclerView rv_home_materias_item_lista;
+
+    public MateriasItemFragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+        materiasTemas = new ArrayList<>();
     }
 
-    public static MateriasItemFragment newInstance() {
-        MateriasItemFragment fragment = new MateriasItemFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,12 +44,11 @@ public class MateriasItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_materias_item, container, false);
 
-        RecyclerView rv_home_materias_item_lista = view.findViewById(R.id.rv_home_materias_item_lista);
-        rv_home_materias_item_lista.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        this.rv_home_materias_item_lista = view.findViewById(R.id.rv_home_materias_item_lista);
+        this.rv_home_materias_item_lista.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        List<MateriaTema> materiasTemas = new ArrayList<>();
 
-        AdapterList<MateriaTema> adapterList = new AdapterList(rv_home_materias_item_lista, materiasTemas, R.layout.list_item_home_tema, new AdapterManagerList<MateriaTema>() {
+        this.adapterList = new AdapterList(rv_home_materias_item_lista, this.materiasTemas, R.layout.list_item_home_tema, new AdapterManagerList<MateriaTema>() {
 
             private CircleImageView civ_item_home_tema_image;
             private TextView tv_item_home_tema_name;

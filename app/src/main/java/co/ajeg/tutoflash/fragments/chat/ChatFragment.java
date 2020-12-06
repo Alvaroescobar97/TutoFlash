@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -23,50 +24,48 @@ import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChatFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ChatFragment extends Fragment {
 
-    MainActivity mainActivity;
-    DatabaseChat databaseChat;
+    private MainActivity mainActivity;
+    private DatabaseChat databaseChat;
+    private List<ChatPerson> chatPersonList;
+    private TextView tv_chat_no_chats;
+    private AdapterList<ChatPerson> adapterList;
 
-    public ChatFragment() {
-        // Required empty public constructor
-    }
+    public ChatFragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+        this.databaseChat = DatabaseChat.getInstance(this.mainActivity);
+        this.chatPersonList = new ArrayList<>();
 
-
-    public static ChatFragment newInstance() {
-
-        ChatFragment fragment = new ChatFragment();
-        Bundle args = new Bundle();
-
-       // args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        this.databaseChat.getAllChatsUser((chatPersonList)->{
+            this.chatPersonList = chatPersonList;
+            this.updateListInformation();
+        });
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.mainActivity = FragmentUtil.getActivity();
-        this.databaseChat = DatabaseChat.getInstance(this.getActivity());
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        mainActivity = FragmentUtil.getActivity();
-        mainActivity.headerFragment.changeTitleHeader("Chats");
+        this.mainActivity.headerFragment.changeTitleHeader("Chats");
 
         RecyclerView rv_chat_personas = view.findViewById(R.id.rv_chat_personas);
         rv_chat_personas.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        TextView tv_chat_no_chats= view.findViewById(R.id.tv_chat_no_chats);
+        this.tv_chat_no_chats = view.findViewById(R.id.tv_chat_no_chats);
 
-        AdapterList<ChatPerson> adapterList = new AdapterList(rv_chat_personas, new ArrayList(), R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
+        if(this.chatPersonList.size() == 0){
+            this.tv_chat_no_chats.setVisibility(View.VISIBLE);
+        }else{
+            this.tv_chat_no_chats.setVisibility(View.GONE);
+        }
+
+        this.adapterList = new AdapterList(rv_chat_personas, this.chatPersonList, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
 
             private ImageView civ_item_chat_persona_image;
             private TextView tv_item_chat_persona_name;
@@ -96,35 +95,18 @@ public class ChatFragment extends Fragment {
 
         });
 
-
-
-        this.databaseChat.getAllChatsUser((chatPersonList)->{
-            /*
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-            chatPersonList.add(new ChatPerson("a", "a", "b", "ayer"));
-
-             */
-
-            if(chatPersonList.size() == 0){
-                tv_chat_no_chats.setVisibility(View.VISIBLE);
-            }else{
-                tv_chat_no_chats.setVisibility(View.GONE);
-            }
-
-            adapterList.onUpdateData(chatPersonList);
-        });
-
-
-
-
-
         return view;
+    }
+
+    private void updateListInformation(){
+        if(this.tv_chat_no_chats != null && this.adapterList != null){
+            if(this.chatPersonList.size() == 0){
+                this.tv_chat_no_chats.setVisibility(View.VISIBLE);
+            }else{
+                this.tv_chat_no_chats.setVisibility(View.GONE);
+            }
+            this.adapterList.onUpdateData(chatPersonList);
+        }
     }
 
 }
