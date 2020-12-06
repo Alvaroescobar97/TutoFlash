@@ -1,22 +1,25 @@
 package co.ajeg.tutoflash.model.notificacion;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Notificacion implements Serializable {
 
     private String id;
     private String type;
     private String refId;
+    private String[] dirDatabase;
     private String title;
     private String descripcion;
     private long fecha;
 
     public Notificacion(){}
 
-    public Notificacion(String id, String type, String refId, String title, String descripcion, long fecha) {
+    public Notificacion(String id, String type, String refId, String[] dirDatabase, String title, String descripcion, long fecha) {
         this.id = id;
         this.type = type;
         this.refId = refId;
+        this.dirDatabase = dirDatabase;
         this.title = title;
         this.descripcion = descripcion;
         this.fecha = fecha;
@@ -44,6 +47,14 @@ public class Notificacion implements Serializable {
 
     public void setRefId(String refId) {
         this.refId = refId;
+    }
+
+    public String[] getDirDatabase() {
+        return dirDatabase;
+    }
+
+    public void setDirDatabase(String[] dirDatabase) {
+        this.dirDatabase = dirDatabase;
     }
 
     public String getTitle() {

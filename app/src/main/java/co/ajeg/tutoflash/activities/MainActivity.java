@@ -132,8 +132,10 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragmentResult = null;
         if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
             fragmentResult = this.notificacionTemaCreateFragment;
+            this.notificacionTemaCreateFragment.setCurrentNotificacion(notificacion);
         }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
             fragmentResult = this.notificacionTemaColaborarFragment;
+            this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
         }
         return fragmentResult;
     }

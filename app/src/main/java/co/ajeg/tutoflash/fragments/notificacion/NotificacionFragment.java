@@ -105,10 +105,9 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
                 }
 
                 view.setOnClickListener((v)->{
-                    if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
-                        FragmentUtil.replaceFragmentInMain(mainActivity.notificacionTemaCreateFragment);
-                    }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
-                        FragmentUtil.replaceFragmentInMain(mainActivity.notificacionTemaColaborarFragment);
+                    Fragment fragmentResult = mainActivity.getNotificacionType(notificacion);
+                    if(fragmentResult != null){
+                        FragmentUtil.replaceFragmentInMain(fragmentResult);
                     }
                 });
 

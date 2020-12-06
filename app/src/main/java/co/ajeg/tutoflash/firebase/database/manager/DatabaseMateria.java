@@ -125,12 +125,13 @@ public class DatabaseMateria {
                                                 String id = materiaTutor.getPublicacionId();
                                                 String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR;
                                                 String refId = materiaTutor.getId();
+                                                String[] dirDatabase = new String[]{DBROUTES.MATERIAS, materiaName, DBROUTES.MATERIAS_SOLUCITUDES, materiaTutor.getAutorId()};
                                                 String title = materiaTutor.getDescripcion();
                                                 String descripcion = "Te has ofrecido a ayudar";
                                                 long fecha = new Date().getTime();
 
-                                                //String id, String type, String refId, String title, String descripcion, String fecha
-                                                Notificacion notificacion = new Notificacion(id, type, refId, title, descripcion, fecha);
+                                                //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
+                                                Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
                                                 this.databaseNotificacion.createNotificacion(materiaTutor.getTutorId(), notificacion, (notificacionDatabase)->{
                                                     if(notificacionDatabase != null){
                                                         onCompleteListenerMateriaTutor.onLoadMateriaTutor(materiaTutor);
@@ -161,8 +162,8 @@ public class DatabaseMateria {
         });
     }
 
-    private void crearTemaDatabase(String temaString, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
-        getRefCollectionAllSolicitudes(temaString)
+    private void crearTemaDatabase(String nameMateriaString, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
+        getRefCollectionAllSolicitudes(nameMateriaString)
                 .document(materiaTema.getId())
                 .set(materiaTema).addOnCompleteListener((task) -> {
             if (task != null) {
@@ -170,12 +171,13 @@ public class DatabaseMateria {
                 String id = materiaTema.getId();
                 String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR;
                 String refId = materiaTema.getId();
+                String[] dirDatabase = new String[]{DBROUTES.MATERIAS, nameMateriaString, DBROUTES.MATERIAS_SOLUCITUDES, materiaTema.getId()};
                 String title = materiaTema.getDescripcion();
                 String descripcion = "Tutor pendiente...";
                 long fecha = new Date().getTime();
 
-                //String id, String type, String refId, String title, String descripcion, String fecha
-                Notificacion notificacion = new Notificacion(id, type, refId, title, descripcion, fecha);
+                //String id, String type, String refId, String[] dirDatabase, String title, String descripcion, long fecha
+                Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
                 this.databaseNotificacion.createNotificacion(materiaTema.getAutorId(), notificacion, (notificacionDatabase)->{
                     if(notificacionDatabase != null){
                         onCompleteListenerTema.onLoadTema(materiaTema);

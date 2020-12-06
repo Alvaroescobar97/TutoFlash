@@ -21,6 +21,7 @@ import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +40,7 @@ public class NotificacionTemaCreateFragment extends Fragment {
     private RecyclerView rv_notificacion_tema_create_tutores;
     private AdapterList<MateriaTutor> adapterList;
     private ArrayList<MateriaTutor> materiaTutorsList;
+    private Notificacion notificacion;
 
     public NotificacionTemaCreateFragment(MainActivity mainActivity) {
         // Required empty public constructor
@@ -96,5 +98,9 @@ public class NotificacionTemaCreateFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void setCurrentNotificacion(Notificacion notificacion){
+        this.notificacion = notificacion;
     }
 }

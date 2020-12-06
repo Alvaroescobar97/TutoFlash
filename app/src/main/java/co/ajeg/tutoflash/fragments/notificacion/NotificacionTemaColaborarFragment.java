@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,10 +30,13 @@ public class NotificacionTemaColaborarFragment extends Fragment {
     private TextView tv_notificacion_tema_colaborar_descripcion;
     private TextView tv_notificacion_tema_colaborar_tiempo;
     private Button btn_notificacion_tema_colaborar_desertar;
+    private Notificacion notificacion;
+    private DatabaseMateria databaseMateria;
 
     public NotificacionTemaColaborarFragment(MainActivity mainActivity) {
         // Required empty public constructor
         this.mainActivity = mainActivity;
+        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
     }
 
     public static NotificacionTemaColaborarFragment newInstance(MainActivity mainActivity) {
@@ -56,6 +61,12 @@ public class NotificacionTemaColaborarFragment extends Fragment {
         this.btn_notificacion_tema_colaborar_desertar = view.findViewById(R.id.btn_notificacion_tema_colaborar_desertar);
 
 
+
+
         return view;
+    }
+
+    public void setCurrentNotificacion(Notificacion notificacion){
+        this.notificacion = notificacion;
     }
 }
