@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
 
@@ -29,6 +30,8 @@ import co.ajeg.tutoflash.activities.RegistroActivity;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.OnCompleteListenerDatabase;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
+import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
 import co.ajeg.tutoflash.model.User;
 
 public class Autenticacion {
@@ -47,6 +50,35 @@ public class Autenticacion {
 
     public Autenticacion(AppCompatActivity appCompatActivity, OnCompleteListenerUser onCompleteListenerUser) {
         this.inicializar(appCompatActivity, onCompleteListenerUser);
+    }
+
+    private void updateUserInformation(User user, String path, OnCompleteListenerUser onCompleteListenerUser) {
+        this.appCompatActivity.runOnUiThread(() -> {
+            if (path != null) {
+                StorageFirebase.uploadFile(new String[]{DBROUTES.USERS_IMAGES, user.getId()}, path, (urlResult) -> {
+                    this.appCompatActivity.runOnUiThread(() -> {
+                        if (urlResult != null) {
+                            user.setImage(urlResult);
+                            FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(user.getId()).set(user).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    onCompleteListenerUser.onLoad(user);
+                                } else {
+                                    onCompleteListenerUser.onLoad(null);
+                                }
+                            });
+                        }
+                    });
+                });
+            }else{
+                FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(user.getId()).set(user).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        onCompleteListenerUser.onLoad(user);
+                    } else {
+                        onCompleteListenerUser.onLoad(null);
+                    }
+                });
+            }
+        });
     }
 
     private void inicializar(AppCompatActivity appCompatActivity, OnCompleteListenerUser onCompleteListenerUser) {
