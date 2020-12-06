@@ -133,7 +133,9 @@ public class DatabaseMateria {
                                                 dirDatabase.add(DBROUTES.MATERIAS);
                                                 dirDatabase.add(materiaName);
                                                 dirDatabase.add(DBROUTES.MATERIAS_SOLUCITUDES);
-                                                dirDatabase.add(materiaTutor.getAutorId());
+                                                dirDatabase.add(materiaTutor.getPublicacionId());
+                                                dirDatabase.add(DBROUTES.MATERIAS_OFRECIMIENTOS);
+                                                dirDatabase.add(materiaTutor.getTutorId());
 
                                                 String title = materiaTutor.getDescripcion();
                                                 String descripcion = "Te has ofrecido a ayudar";
@@ -244,26 +246,31 @@ public class DatabaseMateria {
     public void getSolicitudMateriaTema(String materiaId, String temaId, OnCompleteListenerTema onCompleteListenerTema, OnCompleteListenerMateriaTutores onCompleteListenerMateriaTutores){
         activity.runOnUiThread(()->{
             DocumentReference documentReferenceTema =  getRefCollectionAllSolicitudes(materiaId).document(temaId);
-            documentReferenceTema.get().addOnCompleteListener((task)->{
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if(documentSnapshot.exists()){
-                        onCompleteListenerTema.onLoadTema(documentSnapshot.toObject(MateriaTema.class));
+            if(onCompleteListenerTema != null){
+                documentReferenceTema.get().addOnCompleteListener((task)->{
+                    if(task.isSuccessful()){
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if(documentSnapshot.exists()){
+                            onCompleteListenerTema.onLoadTema(documentSnapshot.toObject(MateriaTema.class));
+                        }else{
+                            onCompleteListenerTema.onLoadTema(null);
+                        }
                     }else{
                         onCompleteListenerTema.onLoadTema(null);
                     }
-                }else{
-                    onCompleteListenerTema.onLoadTema(null);
-                }
-            });
-            documentReferenceTema.collection(DBROUTES.MATERIAS_OFRECIMIENTOS).get().addOnCompleteListener((task)->{
-                if(task.isSuccessful()){
-                    QuerySnapshot querySnapshot = task.getResult();
+                });
+            }
+            if(onCompleteListenerMateriaTutores != null){
+                documentReferenceTema.collection(DBROUTES.MATERIAS_OFRECIMIENTOS).get().addOnCompleteListener((task)->{
+                    if(task.isSuccessful()){
+                        QuerySnapshot querySnapshot = task.getResult();
                         onCompleteListenerMateriaTutores.onLoadMateriaTutor(querySnapshot.toObjects(MateriaTutor.class));
-                }else{
-                    onCompleteListenerMateriaTutores.onLoadMateriaTutor(null);
-                }
-            });
+                    }else{
+                        onCompleteListenerMateriaTutores.onLoadMateriaTutor(null);
+                    }
+                });
+            }
+
         });
     }
 

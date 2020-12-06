@@ -11,9 +11,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 /**
@@ -61,12 +67,50 @@ public class NotificacionTemaColaborarFragment extends Fragment {
         this.btn_notificacion_tema_colaborar_desertar = view.findViewById(R.id.btn_notificacion_tema_colaborar_desertar);
 
 
-        if(this.notificacion != null){
-            
+        if (this.notificacion != null) {
+            String nameMateria = this.notificacion.getDirDatabase().get(1);
+            this.databaseMateria.getSolicitudMateriaTema(nameMateria, notificacion.getId(),
+                    (tema) -> {
+                        if (tema != null) {
+                            User user = Autenticacion.getUser();
+                            if(user != null && tema.getAutorId().equals(user.getId())){
+                                DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
+                                    Glide.with(this.iv_notificacion_tema_colaborar_image)
+                                            .load(urlImage)
+                                            .apply(RequestOptions.circleCropTransform())
+                                            .into(this.iv_notificacion_tema_colaborar_image);
+                                });
+                                this.tv_notificacion_tema_colaborar_usuario.setText(user.getName());
+                            }else {
+                                DatabaseUser.getRefUserId(tema.getAutorId(), (usuarioAutor)->{
+                                    DatabaseUser.getImageUrlProfile(mainActivity, usuarioAutor.getImage(), (urlImage)->{
+                                        Glide.with(this.iv_notificacion_tema_colaborar_image)
+                                                .load(urlImage)
+                                                .apply(RequestOptions.circleCropTransform())
+                                                .into(this.iv_notificacion_tema_colaborar_image);
+                                    });
+                                    this.tv_notificacion_tema_colaborar_usuario.setText(usuarioAutor.getName());
+                                });
+                            }
+
+                            this.tv_notificacion_tema_colaborar_tema.setText(tema.getTitle());
+
+                            this.tv_notificacion_tema_colaborar_descripcion.setText(tema.getDescripcion());
+                            this.tv_notificacion_tema_colaborar_tiempo.setText(tema.getTiempo());
+
+                            this.btn_notificacion_tema_colaborar_desertar.setOnClickListener(this::onDesertarDelTema);
+
+                        }
+                    }
+
+                    , null);
         }
 
-
         return view;
+    }
+
+    public void onDesertarDelTema(View v){
+
     }
 
     public void setCurrentNotificacion(Notificacion notificacion){
