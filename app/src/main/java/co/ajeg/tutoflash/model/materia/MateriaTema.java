@@ -8,11 +8,11 @@ public class MateriaTema {
     private String descripcion;
     private String informacion;
     private String tiempo;
-    private String fecha;
+    private long fecha;
 
     public MateriaTema(){}
 
-    public MateriaTema(String id, String autorId, String title, String descripcion, String informacion, String tiempo, String fecha) {
+    public MateriaTema(String id, String autorId, String title, String descripcion, String informacion, String tiempo, long fecha) {
         this.id = id;
         this.autorId = autorId;
         this.title = title;
@@ -70,11 +70,11 @@ public class MateriaTema {
         this.tiempo = tiempo;
     }
 
-    public String getFecha() {
+    public long getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(long fecha) {
         this.fecha = fecha;
     }
 }

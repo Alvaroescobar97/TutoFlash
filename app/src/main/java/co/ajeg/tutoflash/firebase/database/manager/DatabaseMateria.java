@@ -65,7 +65,7 @@ public class DatabaseMateria {
                         Materia materia = documentReference.toObject(Materia.class);
 
 
-                        materia.setLastFecha((new Date()).toString());
+                        materia.setLastFecha((new Date()).getTime());
                         materia.setnEntradas(materia.getnEntradas() + 1);
 
                         getRefCollectionAllMaterias().document(materia.getName()).set(materia).addOnCompleteListener((task) -> {
@@ -78,7 +78,7 @@ public class DatabaseMateria {
 
                     } else {
                         String uid = UUID.randomUUID().toString();
-                        String date = (new Date()).toString();
+                        long date = (new Date()).getTime();
                         //String id, String name, String imagen, String lastFecha
                         Materia materia = new Materia(uid, temaString, date, 1);
                         getRefCollectionAllMaterias().document(temaString).set(materia).addOnCompleteListener((task) -> {
@@ -123,6 +123,13 @@ public class DatabaseMateria {
             });
 
         });
+    }
+
+    public void getNameUserId(String idUser, DatabaseUser.OnCompleteListenerUser onCompleteListenerUser){
+        activity.runOnUiThread(() -> {
+            DatabaseUser.getRefUserId(idUser, onCompleteListenerUser);
+        });
+
     }
 
     public void getAllSolicitudes(String materiaId, OnCompleteListenerAllSoliticudes onCompleteListenerAllSoliticudes) {

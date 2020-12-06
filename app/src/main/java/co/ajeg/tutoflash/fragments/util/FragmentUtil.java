@@ -73,7 +73,7 @@ public class FragmentUtil {
             }
 
             if(onChangeFragmentNavActivity != null){
-                onChangeFragmentNavActivity.onChangeFragmentNav(fragmentsNav);
+               // onChangeFragmentNavActivity.onChangeFragmentNav(fragmentsNav);
             }
         }
         replaceFragment(R.id.fragment_container, fragment);

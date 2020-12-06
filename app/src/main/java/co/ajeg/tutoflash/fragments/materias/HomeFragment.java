@@ -110,7 +110,8 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 tv_item_home_materia_fecha.setText(nEntradas + " entradas");
 
                 view.setOnClickListener((v)->{
-                    
+                    mainActivity.materiasItemFragment.setCurrentMateria(materia);
+                    FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemFragment);
                 });
 
             }
@@ -142,7 +143,6 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                     this.getImageViewProfile(urlImage, iv_home_header_imagen );
                 }
             }
-
             tv_home_header_username.setText(user.getName());
         }
 
@@ -175,9 +175,14 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
     public void onFindMateria(){
         if(this.et_home_busqueda != null){
             String materiaString = et_home_busqueda.getText().toString();
-            this.databaseMateria.findMateriasForName(materiaString, (materiaList)->{
-                this.adapterList.onUpdateData(materiaList);
-            });
+            if(materiaString.equals("")){
+                this.adapterList.onUpdateData(this.materiaList);
+            }else{
+                this.databaseMateria.findMateriasForName(materiaString, (materiaList)->{
+                    this.adapterList.onUpdateData(materiaList);
+                });
+            }
+
         }
     }
 

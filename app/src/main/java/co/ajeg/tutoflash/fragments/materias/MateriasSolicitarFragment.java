@@ -139,7 +139,7 @@ public class MateriasSolicitarFragment extends Fragment {
         ) {
             String uid = UUID.randomUUID().toString();
             String userId = Autenticacion.getUser().getId();
-            String date = (new Date()).toString();
+            long date = (new Date()).getTime();
 
             //String id, String autorId, String title, String descripcion, String informacion, String tiempo, String fecha
             MateriaTema materiaTema = new MateriaTema(uid, userId, tema, descripcion, informacion, tiempo, date);

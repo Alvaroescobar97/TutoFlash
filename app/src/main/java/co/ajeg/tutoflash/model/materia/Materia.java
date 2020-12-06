@@ -4,13 +4,13 @@ public class Materia {
 
     private String id;
     private String name;
-    private String lastFecha;
+    private long lastFecha;
     private int nEntradas;
 
     public Materia() {
     }
 
-    public Materia(String id, String name, String lastFecha, int nEntradas) {
+    public Materia(String id, String name, long lastFecha, int nEntradas) {
         this.id = id;
         this.name = name;
         this.lastFecha = lastFecha;
@@ -33,11 +33,11 @@ public class Materia {
         this.name = name;
     }
 
-    public String getLastFecha() {
+    public long getLastFecha() {
         return lastFecha;
     }
 
-    public void setLastFecha(String lastFecha) {
+    public void setLastFecha(long lastFecha) {
         this.lastFecha = lastFecha;
     }
 
