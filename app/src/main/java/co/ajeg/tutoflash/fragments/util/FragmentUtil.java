@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
+import java.util.concurrent.RecursiveTask;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -35,6 +36,9 @@ public class FragmentUtil {
         this.fragmentsNav = new ArrayList<>();
     }
 
+    public static ArrayList<Fragment> getFragmentsNav(){
+        return fragmentsNav;
+    }
     public static void setOnChangeBackActivity(OnChangeFragmentNav onChange){
         onChangeFragmentNavActivity = onChange;
     }

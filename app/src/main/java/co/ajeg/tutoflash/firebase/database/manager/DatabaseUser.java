@@ -2,6 +2,7 @@ package co.ajeg.tutoflash.firebase.database.manager;
 
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -15,6 +16,29 @@ import co.ajeg.tutoflash.model.User;
 
 public class DatabaseUser {
 
+
+    public static void getImageUrlProfile(AppCompatActivity activity, String urlImage, OnCompleteImageProfile onCompleteImageProfile){
+
+        activity.runOnUiThread(()->{
+            if(urlImage.equals("") == false){
+
+                if (urlImage.contains(DBROUTES.USERS_IMAGES)){
+
+                    StorageFirebase.gerUrlFile(activity, new String[]{urlImage}, (url)->{
+                        onCompleteImageProfile.onLoadUrlImageProfile(url);
+                    });
+
+                }else{
+                    String urlImageResult = urlImage;
+                    onCompleteImageProfile.onLoadUrlImageProfile(urlImageResult);
+
+                }
+
+            }else{
+                onCompleteImageProfile.onLoadUrlImageProfile(null);
+            }
+        });
+    }
 
     public static void getImageUrlProfile(Fragment fragment, String urlImage, OnCompleteImageProfile onCompleteImageProfile){
 

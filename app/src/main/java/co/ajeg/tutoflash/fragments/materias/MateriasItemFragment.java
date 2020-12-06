@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,13 +26,16 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseNotificacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
-
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 
 public class MateriasItemFragment extends Fragment {
@@ -95,9 +99,23 @@ public class MateriasItemFragment extends Fragment {
                 databaseMateria.getNameUserId(tema.getAutorId(), (autor)->{
                     if(autor != null){
                         view.setOnClickListener(v->{
-                            mainActivity.materiasItemOfrecerFragment.setAutorId(autor);
-                            mainActivity.materiasItemOfrecerFragment.setCurrentTema(tema, materia.getName());
-                            FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
+                            if(tema.getAutorId().equals(Autenticacion.getUser().getId())){
+
+                                DatabaseNotificacion.getMyNotificacion(mainActivity, tema.getId(), (notificacion)->{
+                                    if(notificacion != null){
+                                        Fragment fragmentResult = mainActivity.getNotificacionType(notificacion);
+                                        if(fragmentResult != null){
+                                            FragmentUtil.replaceFragmentInMain(fragmentResult);
+                                        }
+                                    }
+                                });
+
+                            }else{
+                                mainActivity.materiasItemOfrecerFragment.setAutorId(autor);
+                                mainActivity.materiasItemOfrecerFragment.setCurrentTema(tema, materia.getName());
+                                FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
+                            }
+
                         });
 
                         this.tv_item_home_tema_username.setText(autor.getName());
@@ -130,9 +148,12 @@ public class MateriasItemFragment extends Fragment {
             });
         }
 
+        int nFragments = FragmentUtil.getFragmentsNav().size();
         FragmentUtil.setOnChangeBackActivity((fragments)->{
-            this.databaseMateria.stopListenerMaterias();
-            this.materia = null;
+            if(fragments.size() < nFragments){
+                this.databaseMateria.stopListenerMaterias();
+                this.materia = null;
+            }
         });
 
 

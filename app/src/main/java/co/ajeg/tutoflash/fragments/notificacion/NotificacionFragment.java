@@ -12,14 +12,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseNotificacion;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
@@ -76,6 +85,32 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
 
             @Override
             public void onChangeView(Notificacion notificacion, View view, int position) {
+
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+                Date date = new Date(notificacion.getFecha());
+                String strDate = dateFormat.format(date).toString();
+
+                this.tv_item_notificaciones_notificacion_name.setText(notificacion.getTitle());
+                this.tv_item_notificaciones_notificacion_descripcion.setText(notificacion.getDescripcion());
+                this.tv_item_notificaciones_notificacion_fecha.setText(strDate);
+
+                if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
+                    String imageUserActual = Autenticacion.getUser().getImage();
+                    DatabaseUser.getImageUrlProfile(mainActivity, imageUserActual, (urlResul)->{
+                        Glide.with(civ_item_notificaciones_notificacion_image)
+                                .load(urlResul)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(civ_item_notificaciones_notificacion_image);
+                    });
+                }
+
+                view.setOnClickListener((v)->{
+                    if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
+                        FragmentUtil.replaceFragmentInMain(mainActivity.notificacionTemaCreateFragment);
+                    }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
+                        FragmentUtil.replaceFragmentInMain(mainActivity.notificacionTemaColaborarFragment);
+                    }
+                });
 
             }
 

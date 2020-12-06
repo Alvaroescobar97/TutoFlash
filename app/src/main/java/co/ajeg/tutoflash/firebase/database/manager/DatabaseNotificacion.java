@@ -2,9 +2,11 @@ package co.ajeg.tutoflash.firebase.database.manager;
 
 import android.app.Notification;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -55,6 +57,36 @@ public class DatabaseNotificacion {
             });
         });
     }
+
+
+
+    public static void getMyNotificacion(AppCompatActivity appCompatActivity, String idNotificaction, OnCompleteListenerNotificacion onCompleteListenerNotificacion){
+        User user = Autenticacion.getUser();
+        if(user != null){
+            getNotificacionUser(appCompatActivity, user.getId(), idNotificaction, onCompleteListenerNotificacion);
+        }else{
+            onCompleteListenerNotificacion.onLoadNotificacion(null);
+        }
+
+    }
+
+    public static void getNotificacionUser(AppCompatActivity appCompatActivity, String userId, String idNotificacion, OnCompleteListenerNotificacion onCompleteListenerNotificacion){
+        appCompatActivity.runOnUiThread(()->{
+            getRefCollectionAllNotificaciones(userId).document(idNotificacion).get().addOnCompleteListener((task)->{
+                if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot =  task.getResult();
+                    if(documentSnapshot.exists()){
+                        onCompleteListenerNotificacion.onLoadNotificacion(documentSnapshot.toObject(Notificacion.class));
+                    }else{
+                        onCompleteListenerNotificacion.onLoadNotificacion(null);
+                    }
+                }else{
+                    onCompleteListenerNotificacion.onLoadNotificacion(null);
+                }
+            });
+        });
+    }
+
 
     private static CollectionReference getRefMyCollectionAllNotificaciones() {
         User user = Autenticacion.getUser();

@@ -3,6 +3,7 @@ package co.ajeg.tutoflash.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 
 import android.content.Intent;
@@ -17,6 +18,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.fragments.CalendarioFragment;
 import co.ajeg.tutoflash.fragments.chat.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
@@ -27,8 +29,11 @@ import co.ajeg.tutoflash.fragments.materias.MateriasItemFragment;
 import co.ajeg.tutoflash.fragments.materias.MateriasItemOfrecerFragment;
 import co.ajeg.tutoflash.fragments.materias.MateriasSolicitarFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
+import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaColaborarFragment;
+import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaCreateFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     public MateriasSolicitarFragment materiasSolicitarFragment;
 
     public NotificacionFragment notificacionFragment;
+    public NotificacionTemaCreateFragment notificacionTemaCreateFragment;
+    public NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
+
     public CalendarioFragment calendarioFragment;
 
     public ChatFragment chatFragment;
@@ -69,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         materiasSolicitarFragment = new MateriasSolicitarFragment(this);
 
         notificacionFragment = new NotificacionFragment(this);
+        notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
+        notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
+
         calendarioFragment = CalendarioFragment.newInstance();
 
         chatFragment = new ChatFragment(this);
@@ -115,6 +126,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public Fragment getNotificacionType(Notificacion notificacion){
+        Fragment fragmentResult = null;
+        if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
+            fragmentResult = this.notificacionTemaCreateFragment;
+        }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
+            fragmentResult = this.notificacionTemaColaborarFragment;
+        }
+        return fragmentResult;
     }
 
     @Override

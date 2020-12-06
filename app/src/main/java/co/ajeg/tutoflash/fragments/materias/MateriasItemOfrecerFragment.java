@@ -105,6 +105,8 @@ public class MateriasItemOfrecerFragment extends Fragment {
             }
         });
 
+
+
         this.btn_materias_ofrecer_ofrecer.setOnClickListener(this::onClickOfrecerAyuda);
         this.btn_materias_ofrecer_cancelar.setOnClickListener(this::onClickCancelar);
 
