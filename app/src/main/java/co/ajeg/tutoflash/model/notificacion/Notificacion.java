@@ -8,14 +8,14 @@ public class Notificacion implements Serializable {
     private String id;
     private String type;
     private String refId;
-    private String[] dirDatabase;
+    private List<String> dirDatabase;
     private String title;
     private String descripcion;
     private long fecha;
 
     public Notificacion(){}
 
-    public Notificacion(String id, String type, String refId, String[] dirDatabase, String title, String descripcion, long fecha) {
+    public Notificacion(String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha) {
         this.id = id;
         this.type = type;
         this.refId = refId;
@@ -49,11 +49,11 @@ public class Notificacion implements Serializable {
         this.refId = refId;
     }
 
-    public String[] getDirDatabase() {
+    public List<String> getDirDatabase() {
         return dirDatabase;
     }
 
-    public void setDirDatabase(String[] dirDatabase) {
+    public void setDirDatabase(List<String> dirDatabase) {
         this.dirDatabase = dirDatabase;
     }
 

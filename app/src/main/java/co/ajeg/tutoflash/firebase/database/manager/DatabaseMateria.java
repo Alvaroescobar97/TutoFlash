@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -125,12 +126,18 @@ public class DatabaseMateria {
                                                 String id = materiaTutor.getPublicacionId();
                                                 String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR;
                                                 String refId = materiaTutor.getId();
-                                                String[] dirDatabase = new String[]{DBROUTES.MATERIAS, materiaName, DBROUTES.MATERIAS_SOLUCITUDES, materiaTutor.getAutorId()};
+
+                                                List<String> dirDatabase = new ArrayList<>();
+                                                dirDatabase.add(DBROUTES.MATERIAS);
+                                                dirDatabase.add(materiaName);
+                                                dirDatabase.add(DBROUTES.MATERIAS_SOLUCITUDES);
+                                                dirDatabase.add(materiaTutor.getAutorId());
+
                                                 String title = materiaTutor.getDescripcion();
                                                 String descripcion = "Te has ofrecido a ayudar";
                                                 long fecha = new Date().getTime();
 
-                                                //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
+                                                //String id, String type, String refId,  List<String>  dirDatabase, String title, String descripcion, long fecha
                                                 Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
                                                 this.databaseNotificacion.createNotificacion(materiaTutor.getTutorId(), notificacion, (notificacionDatabase)->{
                                                     if(notificacionDatabase != null){
@@ -171,12 +178,16 @@ public class DatabaseMateria {
                 String id = materiaTema.getId();
                 String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR;
                 String refId = materiaTema.getId();
-                String[] dirDatabase = new String[]{DBROUTES.MATERIAS, nameMateriaString, DBROUTES.MATERIAS_SOLUCITUDES, materiaTema.getId()};
+                List<String> dirDatabase = new ArrayList<>();
+                dirDatabase.add(DBROUTES.MATERIAS);
+                dirDatabase.add(nameMateriaString);
+                dirDatabase.add(DBROUTES.MATERIAS_SOLUCITUDES);
+                dirDatabase.add(materiaTema.getId());
                 String title = materiaTema.getDescripcion();
                 String descripcion = "Tutor pendiente...";
                 long fecha = new Date().getTime();
 
-                //String id, String type, String refId, String[] dirDatabase, String title, String descripcion, long fecha
+                //String id, String type, String refId, List<String>  dirDatabase, String title, String descripcion, long fecha
                 Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
                 this.databaseNotificacion.createNotificacion(materiaTema.getAutorId(), notificacion, (notificacionDatabase)->{
                     if(notificacionDatabase != null){
