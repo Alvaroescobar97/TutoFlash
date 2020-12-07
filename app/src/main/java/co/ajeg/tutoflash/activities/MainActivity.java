@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentUtil.replaceFragment(R.id.fragment_container_header, headerFragment);
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
 
+       // Autenticacion.logout();
 
 
        // NotificacionUtil.createNotification(this, "prueba", "Esto es una prueba de notificacion");

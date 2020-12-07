@@ -1,15 +1,17 @@
 package co.ajeg.tutoflash.fragments.chat;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,13 +30,10 @@ import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
-import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseChat;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
-import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.chat.ChatMensaje;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,11 +80,17 @@ public class ChatItemFragment extends Fragment {
 
             private TextView tv_item_chat_dialogo_mensaje;
             private TextView tv_item_chat_dialogo_fecha;
+            private ConstraintLayout cl_item_chat_dialogo_contenedor;
+            private ConstraintLayout cl_item_chat_dialogo_contenedor_left;
+            private ConstraintLayout cl_item_chat_dialogo_contenedor_right;
 
 
             @Override
             public void onCreateView(View v) {
 
+                this.cl_item_chat_dialogo_contenedor = v.findViewById(R.id.cl_item_chat_dialogo_contenedor);
+                this.cl_item_chat_dialogo_contenedor_left = v.findViewById(R.id.cl_item_chat_dialogo_contenedor_left);
+                this.cl_item_chat_dialogo_contenedor_right = v.findViewById(R.id.cl_item_chat_dialogo_contenedor_right);
                 this.tv_item_chat_dialogo_mensaje = v.findViewById(R.id.tv_item_chat_dialogo_mensaje);
                 this.tv_item_chat_dialogo_fecha = v.findViewById(R.id.tv_item_chat_dialogo_fecha);
 
@@ -96,6 +101,16 @@ public class ChatItemFragment extends Fragment {
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
                 Date date = new Date(mensaje.getDate());
                 String strDate = dateFormat.format(date).toString();
+
+                if(mensaje.getAutorId().equals(Autenticacion.getUser().getId())){
+                    this.cl_item_chat_dialogo_contenedor_right.setVisibility(View.GONE);
+                    this.cl_item_chat_dialogo_contenedor.setBackgroundColor(Color.BLUE);
+
+                    this.tv_item_chat_dialogo_mensaje.setTextColor(Color.WHITE);
+                    this.tv_item_chat_dialogo_fecha.setTextColor(Color.WHITE);
+                }else{
+                    this.cl_item_chat_dialogo_contenedor_left.setVisibility(View.GONE);
+                }
 
                 this.tv_item_chat_dialogo_mensaje.setText(mensaje.getMensaje());
                 this.tv_item_chat_dialogo_fecha.setText(strDate);

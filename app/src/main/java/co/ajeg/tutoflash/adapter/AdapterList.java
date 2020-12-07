@@ -111,7 +111,7 @@ public class AdapterList<T> {
         @Override
         public ViewHolderDatos onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(layoutId,null, false);
+                    .inflate(layoutId,parent, false);
             return new ViewHolderDatos(view);
         }
 
