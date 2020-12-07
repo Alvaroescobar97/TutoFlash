@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         calendarioFragment = CalendarioFragment.newInstance();
 
         chatFragment = new ChatFragment(this);
-        chatItemFragment = ChatItemFragment.newInstance();
+        chatItemFragment = ChatItemFragment.newInstance(this);
 
         perfilFragment = PerfilFragment.newInstance();
 

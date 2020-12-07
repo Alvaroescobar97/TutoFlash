@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,8 +49,14 @@ public class ChatItemFragment extends Fragment {
     DatabaseChat databaseChat;
     ChatPerson chatPerson;
 
-    public static ChatItemFragment newInstance() {
-        ChatItemFragment fragment = new ChatItemFragment();
+    public ChatItemFragment(MainActivity mainActivity){
+        this.mainActivity = mainActivity;
+        this.chatMensajes = new ArrayList<>();
+        this.databaseChat = DatabaseChat.getInstance(mainActivity);
+    }
+
+    public static ChatItemFragment newInstance(MainActivity mainActivity) {
+        ChatItemFragment fragment = new ChatItemFragment(mainActivity);
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -69,11 +77,6 @@ public class ChatItemFragment extends Fragment {
         RecyclerView rv_chat_item_dialogos = view.findViewById(R.id.rv_chat_item_dialogos);
         rv_chat_item_dialogos.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-
-        if (this.chatMensajes == null) {
-            this.chatMensajes = new ArrayList<>();
-        }
-
         adapterList = new AdapterList(rv_chat_item_dialogos, this.chatMensajes, R.layout.list_item_chat_dialogo, new AdapterManagerList<ChatMensaje>() {
 
             private TextView tv_item_chat_dialogo_mensaje;
@@ -90,7 +93,12 @@ public class ChatItemFragment extends Fragment {
 
             @Override
             public void onChangeView(ChatMensaje mensaje, View view, int position) {
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+                Date date = new Date(mensaje.getDate());
+                String strDate = dateFormat.format(date).toString();
 
+                this.tv_item_chat_dialogo_mensaje.setText(mensaje.getMensaje());
+                this.tv_item_chat_dialogo_fecha.setText(strDate);
             }
 
         });
@@ -106,7 +114,7 @@ public class ChatItemFragment extends Fragment {
                     String id = UUID.randomUUID().toString();
                     String autorId = Autenticacion.getUser().getId();
 
-                    String fecha = (new Date()).toString();
+                    long fecha = (new Date()).getTime();
 
                     ChatMensaje mensaje = new ChatMensaje(id, autorId, mensajeString, fecha);
 
@@ -126,18 +134,11 @@ public class ChatItemFragment extends Fragment {
 
 
     public void changeCurrentChat(ChatPerson chatPerson) {
-        this.databaseChat = DatabaseChat.getInstance(this.getActivity());
         this.chatPerson = chatPerson;
+
         this.databaseChat.getChatAllMensaje(chatPerson.getId(), chatMensajeList -> {
             this.chatMensajes = chatMensajeList;
-            /*
-            chatMensajeList.add(new ChatMensaje("s", "A", "Menssaje", "10 sep"));
-            chatMensajeList.add(new ChatMensaje("s", "A", "Menssaje", "10 sep"));
-            chatMensajeList.add(new ChatMensaje("s", "A", "Menssaje", "10 sep"));
-            chatMensajeList.add(new ChatMensaje("s", "A", "Menssaje", "10 sep"));
-            chatMensajeList.add(new ChatMensaje("s", "A", "Menssaje", "10 sep"));
-
-             */
+            Toast.makeText(mainActivity, "Nuevos mensajes " + chatMensajeList.size(), Toast.LENGTH_SHORT).show();
             if (adapterList != null) {
                 adapterList.onUpdateData(chatMensajeList);
             }

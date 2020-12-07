@@ -7,15 +7,15 @@ public class ChatMensaje implements Serializable {
     private String id;
     private String autorId;
     private String mensaje;
-    private String fecha;
+    private long date;
 
     public ChatMensaje(){}
 
-    public ChatMensaje(String id, String autorId, String mensaje, String fecha) {
+    public ChatMensaje(String id, String autorId, String mensaje, long date) {
         this.id = id;
         this.autorId = autorId;
         this.mensaje = mensaje;
-        this.fecha = fecha;
+        this.date = date;
     }
 
     public String getId() {
@@ -42,11 +42,11 @@ public class ChatMensaje implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public String getFecha() {
-        return fecha;
+    public long getDate() {
+        return date;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setDate(long date) {
+        this.date = date;
     }
 }

@@ -40,6 +40,7 @@ public class ChatFragment extends Fragment {
     private DatabaseChat databaseChat;
     private List<ChatPerson> chatPersonList;
     private TextView tv_chat_no_chats;
+    private RecyclerView rv_chat_personas;
     private AdapterList<ChatPerson> adapterList;
 
     public ChatFragment(MainActivity mainActivity) {
@@ -63,8 +64,8 @@ public class ChatFragment extends Fragment {
 
         this.mainActivity.headerFragment.changeTitleHeader("Chats");
 
-        RecyclerView rv_chat_personas = view.findViewById(R.id.rv_chat_personas);
-        rv_chat_personas.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        this.rv_chat_personas = view.findViewById(R.id.rv_chat_personas);
+        this.rv_chat_personas.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         this.tv_chat_no_chats = view.findViewById(R.id.tv_chat_no_chats);
 
@@ -74,7 +75,7 @@ public class ChatFragment extends Fragment {
             this.tv_chat_no_chats.setVisibility(View.GONE);
         }
 
-        this.adapterList = new AdapterList(rv_chat_personas, this.chatPersonList, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
+        this.adapterList = new AdapterList(this.rv_chat_personas, this.chatPersonList, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
 
             private ImageView civ_item_chat_persona_image;
             private TextView tv_item_chat_persona_name;
