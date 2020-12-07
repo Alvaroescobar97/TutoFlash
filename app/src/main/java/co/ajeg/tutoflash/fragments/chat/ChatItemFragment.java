@@ -126,9 +126,6 @@ public class ChatItemFragment extends Fragment {
 
                 }
 
-
-
-
                 if(mensaje.getAutorId().equals(Autenticacion.getUser().getId())){
                     this.cl_item_chat_dialogo_contenedor_right.setVisibility(View.GONE);
 

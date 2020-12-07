@@ -19,7 +19,9 @@ import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.materia.MateriaTema;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 /**
@@ -38,6 +40,7 @@ public class NotificacionTemaColaborarFragment extends Fragment {
     private Button btn_notificacion_tema_colaborar_desertar;
     private Notificacion notificacion;
     private DatabaseMateria databaseMateria;
+    private MateriaTema materiaTema;
 
     public NotificacionTemaColaborarFragment(MainActivity mainActivity) {
         // Required empty public constructor
@@ -72,6 +75,7 @@ public class NotificacionTemaColaborarFragment extends Fragment {
             this.databaseMateria.getSolicitudMateriaTema(nameMateria, notificacion.getId(),
                     (tema) -> {
                         if (tema != null) {
+                            this.materiaTema = tema;
                             User user = Autenticacion.getUser();
                             if(user != null && tema.getAutorId().equals(user.getId())){
                                 DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
@@ -114,6 +118,15 @@ public class NotificacionTemaColaborarFragment extends Fragment {
     }
 
     public void onDesertarDelTema(View v){
+        User user =Autenticacion.getUser();
+        if(this.materiaTema != null && this.notificacion != null && user != null){
+            String nameMateria = this.notificacion.getDirDatabase().get(1);
+            this.databaseMateria.deteletMateriaTutor(nameMateria, this.materiaTema, user.getId(), (materiaTemaResult)->{
+                if(materiaTemaResult != null){
+                    FragmentUtil.goToBackFragment();
+                }
+            });
+        }
 
     }
 

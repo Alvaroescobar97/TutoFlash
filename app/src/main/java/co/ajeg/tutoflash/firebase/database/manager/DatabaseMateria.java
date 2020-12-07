@@ -236,6 +236,28 @@ public class DatabaseMateria {
         });
     }
 
+    public void deteletMateriaTutor(String nameMateria, MateriaTema materiaTema, String tutorId, OnCompleteListenerTema onCompleteListenerTema){
+        activity.runOnUiThread(()->{
+
+            getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).collection(DBROUTES.MATERIAS_OFRECIMIENTOS)
+                    .document(tutorId).delete().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+
+                            DatabaseNotificacion.getRefCollectionAllNotificaciones(tutorId).document(materiaTema.getId()).delete()
+                                    .addOnCompleteListener((deleteNotificacion)->{
+                                        if(deleteNotificacion.isSuccessful()){
+                                            onCompleteListenerTema.onLoadTema(materiaTema);
+                                        }else{
+                                            onCompleteListenerTema.onLoadTema(null);
+                                        }
+                                    });
+                        }else{
+                            onCompleteListenerTema.onLoadTema(null);
+                        }
+            });
+        });
+    }
+
     private void crearTemaDatabase(String nameMateriaString, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
         getRefCollectionAllSolicitudes(nameMateriaString)
                 .document(materiaTema.getId())
