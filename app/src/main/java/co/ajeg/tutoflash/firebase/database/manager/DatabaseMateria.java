@@ -37,6 +37,9 @@ public class DatabaseMateria {
     private ListenerRegistration listenerMaterias;
     private DatabaseNotificacion databaseNotificacion;
 
+    private List<Materia> materiaList;
+    private OnCompleteListenerAllMaterias onCompleteListenerAllMaterias;
+
     private DatabaseMateria(FragmentActivity activity) {
         this.activity = activity;
         this.databaseNotificacion = DatabaseNotificacion.getInstance(activity);
@@ -270,16 +273,21 @@ public class DatabaseMateria {
     public void getAllMaterias(OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
 
         activity.runOnUiThread(() -> {
+            this.onCompleteListenerAllMaterias = onCompleteListenerAllMaterias;
 
-            if (this.listenerMaterias != null) {
-                this.stopListenerMaterias();
+            if(this.listenerMaterias == null){
+                this.listenerMaterias = getRefCollectionAllMaterias().addSnapshotListener((value, error) -> {
+                    List<Materia> materias = value.toObjects(Materia.class);
+                    this.materiaList = materias;
+                    if(this.onCompleteListenerAllMaterias !=null){
+                        this.onCompleteListenerAllMaterias.onLoadAllMaterias(materias);
+                    }
+                });
+            }else{
+                if(this.materiaList != null){
+                    this.onCompleteListenerAllMaterias.onLoadAllMaterias(this.materiaList);
+                }
             }
-
-            this.listenerMaterias = getRefCollectionAllMaterias().addSnapshotListener((value, error) -> {
-                List<Materia> materias = value.toObjects(Materia.class);
-                onCompleteListenerAllMaterias.onLoadAllMaterias(materias);
-            });
-
         });
     }
 

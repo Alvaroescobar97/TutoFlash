@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class MateriasItemFragment extends Fragment {
     private List<MateriaTema> materiasTemas;
     private AdapterList<MateriaTema> adapterList;
     private RecyclerView rv_home_materias_item_lista;
+    private Button btn_home_materias_item_agregar;
     private DatabaseMateria databaseMateria;
     private Materia materia;
 
@@ -63,8 +65,11 @@ public class MateriasItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_materias_item, container, false);
 
+        this.btn_home_materias_item_agregar = view.findViewById(R.id.btn_home_materias_item_agregar);
         this.rv_home_materias_item_lista = view.findViewById(R.id.rv_home_materias_item_lista);
         this.rv_home_materias_item_lista.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        this.btn_home_materias_item_agregar.setOnClickListener(this::onClickAgregarTema);
 
 
         Fragment thisFragment = this;
@@ -160,5 +165,12 @@ public class MateriasItemFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void onClickAgregarTema(View v){
+        if(this.materia != null){
+            mainActivity.materiasSolicitarFragment.setCurrentMateria(this.materia);
+            FragmentUtil.replaceFragmentInMain(mainActivity.materiasSolicitarFragment);
+        }
     }
 }

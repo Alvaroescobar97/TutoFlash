@@ -25,6 +25,7 @@ import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
 
 
@@ -38,6 +39,8 @@ public class MateriasSolicitarFragment extends Fragment {
     private TextInputLayout til_materias_solicitar_descripcion;
     private TextInputLayout til_materias_solicitar_informacion;
     private TextInputLayout til_materias_solicitar_tiempo;
+
+    private Materia currentMateria;
 
     private Map<String, String> categoriasNameListAll;
     String[] categoriasNameList = {"Matematicas", "Fisica", "Literatura", "Ingles", "Programación", "Sistemas"};
@@ -56,18 +59,6 @@ public class MateriasSolicitarFragment extends Fragment {
             categoriasNameListAll.put(nameCategoria, nameCategoria);
         }
 
-        databaseMateria.getAllMaterias((materiaList) -> {
-            if (materiaList != null) {
-                for (int i = 0; i < materiaList.size(); i++) {
-                    String nameCategoria = materiaList.get(i).getName();
-                    categoriasNameListAll.put(nameCategoria, nameCategoria);
-                }
-                this.getNameMaterias();
-            } else {
-                this.getNameMaterias();
-            }
-        });
-
     }
 
 
@@ -79,42 +70,61 @@ public class MateriasSolicitarFragment extends Fragment {
 
         this.mainActivity.headerFragment.changeTitleHeader("Solicitar tutor");
 
-        til_materias_solicitar_tema = view.findViewById(R.id.til_materias_solicitar_tema);
-        til_materias_solicitar_descripcion = view.findViewById(R.id.til_materias_solicitar_descripcion);
-        til_materias_solicitar_informacion = view.findViewById(R.id.til_materias_solicitar_informacion);
-        til_materias_solicitar_tiempo = view.findViewById(R.id.til_materias_solicitar_tiempo);
+
+        this.til_materias_solicitar_tema = view.findViewById(R.id.til_materias_solicitar_tema);
+        this.til_materias_solicitar_descripcion = view.findViewById(R.id.til_materias_solicitar_descripcion);
+        this.til_materias_solicitar_informacion = view.findViewById(R.id.til_materias_solicitar_informacion);
+        this.til_materias_solicitar_tiempo = view.findViewById(R.id.til_materias_solicitar_tiempo);
+
 
         Button btn_materias_ofrecer_solicitar = view.findViewById(R.id.btn_materias_solicitar_solicitar);
         Button btn_materias_ofrecer_cancelar = view.findViewById(R.id.btn_materias_solicitar_cancelar);
 
         //initiate an auto complete text view
-        act_materias_solicitar_list_opciones = view.findViewById(R.id.act_materias_solicitar_list_opciones);
+        this.act_materias_solicitar_list_opciones = view.findViewById(R.id.act_materias_solicitar_list_opciones);
 
-        this.getNameMaterias();
+        btn_materias_ofrecer_solicitar.setOnClickListener(this::onClickSolicitar);
+        btn_materias_ofrecer_cancelar.setOnClickListener(this::onClickCancelar);
 
         FragmentUtil.setOnChangeBackActivity((fragments) -> {
             this.resetView();
         });
 
+        databaseMateria.getAllMaterias((materiaList) -> {
+            if (materiaList != null) {
+                for (int i = 0; i < materiaList.size(); i++) {
+                    String nameCategoria = materiaList.get(i).getName();
+                    categoriasNameListAll.put(nameCategoria, nameCategoria);
+                }
+                this.getNameMaterias();
+            } else {
+               this.getNameMaterias();
+            }
+        });
 
-        btn_materias_ofrecer_solicitar.setOnClickListener(this::onClickSolicitar);
-        btn_materias_ofrecer_cancelar.setOnClickListener(this::onClickCancelar);
+        if(this.currentMateria != null){
+            this.act_materias_solicitar_list_opciones.postDelayed(()->{
+                    this.act_materias_solicitar_list_opciones.setText(FragmentUtil.stringFirtsUpperCase(this.currentMateria.getName()));
+
+            },100);
+
+        }
+
 
         return view;
     }
 
 
     public void getNameMaterias() {
-        listNamesMaterias.clear();
+        this.listNamesMaterias.clear();
         for (Map.Entry<String, String> entry : categoriasNameListAll.entrySet()) {
-            listNamesMaterias.add(entry.getValue());
+            this.listNamesMaterias.add(entry.getValue());
         }
-        if (act_materias_solicitar_list_opciones != null) {
+        if (this.act_materias_solicitar_list_opciones != null) {
             ArrayAdapter adapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, listNamesMaterias);
 
-            act_materias_solicitar_list_opciones.setAdapter(adapter);
             act_materias_solicitar_list_opciones.setThreshold(1);//start searching from 1 character
-            act_materias_solicitar_list_opciones.setAdapter(adapter);   //set the adapter for displaying country name list;
+            act_materias_solicitar_list_opciones.setAdapter(adapter);
         }
     }
 
@@ -164,5 +174,10 @@ public class MateriasSolicitarFragment extends Fragment {
         this.til_materias_solicitar_informacion.getEditText().setText("");
         this.til_materias_solicitar_tiempo.getEditText().setText("");
         this.act_materias_solicitar_list_opciones.setText("");
+        this.currentMateria = null;
+    }
+
+    public void setCurrentMateria(Materia materia){
+        this.currentMateria = materia;
     }
 }

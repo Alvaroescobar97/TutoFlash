@@ -141,6 +141,14 @@ public class FragmentUtil {
         return false;
     }
 
+    public static String stringFirtsUpperCase(String str) {
+        if (str.isEmpty()) {
+            return str;
+        } else {
+            return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+        }
+    }
+
     public interface OnGetActivityFrament{
         void onLoad(MainActivity mainActivity);
     }

@@ -29,6 +29,7 @@ import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
@@ -44,7 +45,6 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
     private AdapterList<Materia> adapterList;
     private RecyclerView rv_home_materias;
     private MainActivity mainActivity;
-    private boolean realTimeIsActiva = false;
 
     public HomeFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -127,32 +127,18 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
         TextView tv_home_header_username = view.findViewById(R.id.tv_home_header_username);
 
         User user = Autenticacion.user;
-
         if(user != null ){
-            if(user.getImage().equals("") == false){
-
-                if (user.getImage().contains(DBROUTES.USERS_IMAGES)){
-
-                    StorageFirebase.gerUrlFile(this.getActivity(), new String[]{user.getImage()}, (url)->{
-                        Toast.makeText(this.getActivity(), "" + url, Toast.LENGTH_SHORT).show();
-                        this.getImageViewProfile(url, iv_home_header_imagen );
-                    });
-
-                }else{
-                    String urlImage = user.getImage();
+            DatabaseUser.getImageUrlProfile(mainActivity,user.getImage(), (urlImage)->{
+                if(urlImage != null){
                     this.getImageViewProfile(urlImage, iv_home_header_imagen );
                 }
-            }
+            });
             tv_home_header_username.setText(user.getName());
         }
 
         btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
 
-        if(this.realTimeIsActiva == false){
-            this.realTimeIsActiva = true;
-            databaseMateria.getAllMaterias(this);
-        }
-
+        databaseMateria.getAllMaterias(this);
 
         return view;
     }
@@ -169,7 +155,6 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
         FragmentUtil.getActivity(activity->{
             FragmentUtil.replaceFragmentInMain(activity.materiasSolicitarFragment);
         });
-
     }
 
     public void onFindMateria(){
