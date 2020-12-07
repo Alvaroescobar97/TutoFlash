@@ -23,6 +23,7 @@ import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.Materia;
 import co.ajeg.tutoflash.model.materia.MateriaTema;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
@@ -61,6 +62,65 @@ public class DatabaseMateria {
                 }
             });
         });
+    }
+
+    public void seleccionarTutor(MateriaTutor tutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor){
+        activity.runOnUiThread(()->{
+            //String id, String sujectAId, String sujectBId, String dateLast
+
+            User user = Autenticacion.getUser();
+            DocumentReference userDocumentRef = DatabaseUser.getMyRefUser();
+            if(user != null && userDocumentRef != null){
+                userDocumentRef.collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).get().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if(documentSnapshot.exists()){
+                            onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
+                        }else{
+                            String uid = UUID.randomUUID().toString();
+                            String sujectAId = user.getId();
+                            String sujectBId = tutor.getTutorId();
+                            long dateInit = new Date().getTime();
+                            long dateLast = new Date().getTime();
+
+
+                            //String id, String sujectAId, String sujectBId, long dateInit, long dateLast
+                            ChatPerson chatPerson = new ChatPerson(uid, sujectAId, sujectBId, dateInit, dateLast);
+                            DatabaseChat.getCollectionsChats().document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((tareaChat)->{
+                                if(tareaChat.isSuccessful()){
+
+                                    DatabaseUser.getRefUser(tutor.getTutorId()).collection(DBROUTES.USERS_CHATS).document(user.getId()).set(chatPerson).addOnCompleteListener((chatFor)->{
+                                        if(chatFor.isSuccessful()){
+                                            DatabaseUser.getRefUser(user.getId()).collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).set(chatPerson).addOnCompleteListener((chatFrom)->{
+                                                if(chatFrom.isSuccessful()){
+                                                    onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
+                                                }else{
+                                                    onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                                }
+                                            });
+                                        }else{
+                                            onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                        }
+                                    });
+
+                                }else{
+                                    onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                                }
+
+                            });
+
+                        }
+                    }else{
+                        onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                    }
+                });
+            }else{
+                onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+            }
+        });
+
+      //  FirebaseFirestore.getInstance().collection(DBROUTES.CHATS).
+
     }
 
     public void createTema(String materiaName, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {

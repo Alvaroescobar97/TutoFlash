@@ -17,80 +17,86 @@ import co.ajeg.tutoflash.model.User;
 public class DatabaseUser {
 
 
-    public static void getImageUrlProfile(AppCompatActivity activity, String urlImage, OnCompleteImageProfile onCompleteImageProfile){
+    public static void getImageUrlProfile(AppCompatActivity activity, String urlImage, OnCompleteImageProfile onCompleteImageProfile) {
 
-        activity.runOnUiThread(()->{
-            if(urlImage.equals("") == false){
+        activity.runOnUiThread(() -> {
+            if (urlImage.equals("") == false) {
 
-                if (urlImage.contains(DBROUTES.USERS_IMAGES)){
+                if (urlImage.contains(DBROUTES.USERS_IMAGES)) {
 
-                    StorageFirebase.gerUrlFile(activity, new String[]{urlImage}, (url)->{
+                    StorageFirebase.gerUrlFile(activity, new String[]{urlImage}, (url) -> {
                         onCompleteImageProfile.onLoadUrlImageProfile(url);
                     });
 
-                }else{
+                } else {
                     String urlImageResult = urlImage;
                     onCompleteImageProfile.onLoadUrlImageProfile(urlImageResult);
 
                 }
 
-            }else{
+            } else {
                 onCompleteImageProfile.onLoadUrlImageProfile(null);
             }
         });
     }
 
-    public static void getImageUrlProfile(Fragment fragment, String urlImage, OnCompleteImageProfile onCompleteImageProfile){
+    public static void getImageUrlProfile(Fragment fragment, String urlImage, OnCompleteImageProfile onCompleteImageProfile) {
+        fragment.getActivity().runOnUiThread(() -> {
+            if (urlImage.equals("") == false) {
+                if (urlImage.contains(DBROUTES.USERS_IMAGES)) {
 
-        fragment.getActivity().runOnUiThread(()->{
-            if(urlImage.equals("") == false){
-
-                if (urlImage.contains(DBROUTES.USERS_IMAGES)){
-
-                    StorageFirebase.gerUrlFile(fragment.getActivity(), new String[]{urlImage}, (url)->{
+                    StorageFirebase.gerUrlFile(fragment.getActivity(), new String[]{urlImage}, (url) -> {
                         onCompleteImageProfile.onLoadUrlImageProfile(url);
                     });
 
-                }else{
+                } else {
                     String urlImageResult = urlImage;
                     onCompleteImageProfile.onLoadUrlImageProfile(urlImageResult);
-
                 }
 
-            }else{
+            } else {
                 onCompleteImageProfile.onLoadUrlImageProfile(null);
             }
         });
     }
 
-    public static void getRefUserId(String id,OnCompleteListenerUser onCompleeteListenerUser){
+    public static void getRefUserId(String id, OnCompleteListenerUser onCompleeteListenerUser) {
         FirebaseFirestore.getInstance().collection(DBROUTES.USERS)
                 .document(id).get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if(documentSnapshot.exists()){
-                            onCompleeteListenerUser.onLoadUser(documentSnapshot.toObject(User.class));
-                        }
-                        else {
-                            onCompleeteListenerUser.onLoadUser(null);
-                        }
+            if (task.isSuccessful()) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if (documentSnapshot.exists()) {
+                    onCompleeteListenerUser.onLoadUser(documentSnapshot.toObject(User.class));
+                } else {
+                    onCompleeteListenerUser.onLoadUser(null);
+                }
 
-                    }else {
-                        onCompleeteListenerUser.onLoadUser(null);
-                    }
-                });
+            } else {
+                onCompleeteListenerUser.onLoadUser(null);
+            }
+        });
     }
 
-    public static DocumentReference getRefUser(String userId){
+    public static DocumentReference getRefUser(String userId) {
         return FirebaseFirestore.getInstance().collection(DBROUTES.USERS)
                 .document(userId);
     }
 
-    public interface OnCompleteListenerUser{
+    public static DocumentReference getMyRefUser() {
+        DocumentReference documentReference = null;
+        User user =  Autenticacion.getUser();
+        if(user != null){
+            documentReference = FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(Autenticacion.getUser().getId());
+        }
+        return documentReference;
+    }
+
+
+    public interface OnCompleteListenerUser {
         void onLoadUser(User usuario);
     }
 
-    public interface OnCompleteImageProfile{
+    public interface OnCompleteImageProfile {
         void onLoadUrlImageProfile(String urlImage);
     }
 

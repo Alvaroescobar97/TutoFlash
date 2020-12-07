@@ -23,6 +23,7 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
@@ -50,11 +51,13 @@ public class NotificacionTemaTutorFragment extends Fragment {
     private MateriaTutor materiaTutor;
     private AdapterList<String> adapterList;
     private List<String> horarios = new ArrayList();
+    private DatabaseMateria databaseMateria;
 
     public NotificacionTemaTutorFragment(MainActivity mainActivity) {
         // Required empty public constructor
         this.mainActivity = mainActivity;
         this.horarios = new ArrayList<>();
+        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
     }
 
 
@@ -125,6 +128,15 @@ public class NotificacionTemaTutorFragment extends Fragment {
     }
 
     public void onClickSelecionarTutor(View v){
+
+        this.databaseMateria.seleccionarTutor(this.materiaTutor, (tutor)->{
+            if(tutor != null){
+                FragmentUtil.resetFragmentNav();
+                FragmentUtil.replaceFragment(R.id.fragment_container, mainActivity.chatFragment);
+            }else{
+
+            }
+        });
 
     }
 

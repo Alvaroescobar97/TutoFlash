@@ -112,13 +112,22 @@ public class DatabaseChat {
     private static DocumentReference getReferenceChat(String uidChat){
         User user = Autenticacion.getUser();
         DocumentReference documentReference = null;
-            documentReference = FirebaseFirestore
-                    .getInstance()
-                    .collection(DBROUTES.CHATS)
-                    .document(uidChat);
+        documentReference = FirebaseFirestore
+                .getInstance()
+                .collection(DBROUTES.CHATS)
+                .document(uidChat);
 
         return documentReference;
     }
+
+    public static CollectionReference getCollectionsChats(){
+        CollectionReference documentReference = FirebaseFirestore
+                .getInstance()
+                .collection(DBROUTES.CHATS);
+
+        return documentReference;
+    }
+
 
     private static CollectionReference getReferenceCollectionUserChats(){
         User user = Autenticacion.getUser();
