@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="1dp"
-    android:background="#FFFFFF"
     android:padding="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_item_chat_dialogo_contenedor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/circle_chat"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cl_item_chat_dialogo_contenedor_right"
         app:layout_constraintStart_toEndOf="@+id/cl_item_chat_dialogo_contenedor_left"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,6 +22,8 @@
             android:id="@+id/tv_item_chat_dialogo_fecha"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text="Fecha"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +33,9 @@
         <TextView
             android:id="@+id/tv_item_chat_dialogo_mensaje"
             android:layout_width="0dp"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:paddingLeft="10dp"
             android:text="Mensaje"
             app:layout_constraintEnd_toEndOf="parent"

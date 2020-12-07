@@ -135,10 +135,7 @@ public class MateriasItemFragment extends Fragment {
                             FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
                         });
                     }
-
                 });
-
-
             }
 
             private void getImageViewProfile(String urlImage, ImageView imageView) {

@@ -48,10 +48,7 @@ public class ChatFragment extends Fragment {
         this.databaseChat = DatabaseChat.getInstance(this.mainActivity);
         this.chatPersonList = new ArrayList<>();
 
-        this.databaseChat.getAllChatsUser((chatPersonList)->{
-            this.chatPersonList = chatPersonList;
-            this.updateListInformation();
-        });
+
     }
 
 
@@ -114,10 +111,8 @@ public class ChatFragment extends Fragment {
                     if(currentId !=null){
                         DatabaseUser.getRefUserId(mainActivity, currentId, (userResult)->{
 
-
                             this.tv_item_chat_persona_name.setText(userResult.getName());
                             this.tv_item_chat_persona_rol.setText(userResult.getCarrera());
-
 
                             DatabaseUser.getImageUrlProfile(mainActivity, userResult.getImage(), (urlImageResult)->{
                                 if(urlImageResult != null){
@@ -144,6 +139,11 @@ public class ChatFragment extends Fragment {
                 });
             }
 
+        });
+
+        this.databaseChat.getAllChatsUser((chatPersonList)->{
+            this.chatPersonList = chatPersonList;
+            this.updateListInformation();
         });
 
         return view;

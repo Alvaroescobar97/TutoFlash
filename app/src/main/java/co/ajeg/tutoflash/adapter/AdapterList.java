@@ -21,6 +21,12 @@ public class AdapterList<T> {
         this.recyclerView.setAdapter(this.adaptador);
     }
 
+    public void positionFinal(){
+        if(this.recyclerView != null){
+            this.recyclerView.getLayoutManager().scrollToPosition(this.adaptador.lista.size()-1);
+        }
+    }
+
     public ArrayList<T> getListActual(){
         return this.adaptador.lista;
     }

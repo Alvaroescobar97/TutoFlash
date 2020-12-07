@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseChat;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.chat.ChatMensaje;
@@ -42,11 +44,13 @@ import co.ajeg.tutoflash.model.chat.ChatPerson;
  */
 public class ChatItemFragment extends Fragment {
 
-    List<ChatMensaje> chatMensajes;
-    AdapterList<ChatMensaje> adapterList;
-    MainActivity mainActivity;
-    DatabaseChat databaseChat;
-    ChatPerson chatPerson;
+    private List<ChatMensaje> chatMensajes;
+    private AdapterList<ChatMensaje> adapterList;
+    private MainActivity mainActivity;
+    private DatabaseChat databaseChat;
+    private ChatPerson chatPerson;
+
+    private RecyclerView rv_chat_item_dialogos;
 
     public ChatItemFragment(MainActivity mainActivity){
         this.mainActivity = mainActivity;
@@ -73,8 +77,12 @@ public class ChatItemFragment extends Fragment {
 
         TextInputLayout til_chat_item_mensaje = view.findViewById(R.id.til_chat_item_mensaje);
 
-        RecyclerView rv_chat_item_dialogos = view.findViewById(R.id.rv_chat_item_dialogos);
-        rv_chat_item_dialogos.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        this.rv_chat_item_dialogos = view.findViewById(R.id.rv_chat_item_dialogos);
+        this.rv_chat_item_dialogos.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        DateFormat diaMesYearActual = new SimpleDateFormat("EEE, d MMM yyyy");
+        Date actual = new Date();
+        String strDateActual = diaMesYearActual.format(actual);
 
         adapterList = new AdapterList(rv_chat_item_dialogos, this.chatMensajes, R.layout.list_item_chat_dialogo, new AdapterManagerList<ChatMensaje>() {
 
@@ -96,18 +104,38 @@ public class ChatItemFragment extends Fragment {
 
             }
 
+            String dateHoraActual = "";
+
             @Override
             public void onChangeView(ChatMensaje mensaje, View view, int position) {
-                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+                DateFormat diaMesYear = new SimpleDateFormat("EEE, d MMM yyyy");
+                DateFormat horaMin = new SimpleDateFormat("h:mm a");
                 Date date = new Date(mensaje.getDate());
-                String strDate = dateFormat.format(date).toString();
+
+                String diaMesYearString = diaMesYear.format(date);
+                String horaMinString = horaMin.format(date);
+
+                String strDate = diaMesYearString;
+
+                if(strDateActual.equals(diaMesYearString)){
+                    strDate = horaMinString;
+                    if(dateHoraActual.equals(strDate) == false) {
+                        dateHoraActual = horaMinString;
+                        this.tv_item_chat_dialogo_fecha.setVisibility(View.GONE);
+                    }
+
+                }
+
+
+
 
                 if(mensaje.getAutorId().equals(Autenticacion.getUser().getId())){
                     this.cl_item_chat_dialogo_contenedor_right.setVisibility(View.GONE);
-                    this.cl_item_chat_dialogo_contenedor.setBackgroundColor(Color.BLUE);
 
-                    this.tv_item_chat_dialogo_mensaje.setTextColor(Color.WHITE);
-                    this.tv_item_chat_dialogo_fecha.setTextColor(Color.WHITE);
+                    this.cl_item_chat_dialogo_contenedor.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity, R.color.blue));
+
+                   this.tv_item_chat_dialogo_mensaje.setTextColor(Color.WHITE);
+                   this.tv_item_chat_dialogo_fecha.setTextColor(Color.WHITE);
                 }else{
                     this.cl_item_chat_dialogo_contenedor_left.setVisibility(View.GONE);
                 }
@@ -153,9 +181,9 @@ public class ChatItemFragment extends Fragment {
 
         this.databaseChat.getChatAllMensaje(chatPerson.getId(), chatMensajeList -> {
             this.chatMensajes = chatMensajeList;
-            Toast.makeText(mainActivity, "Nuevos mensajes " + chatMensajeList.size(), Toast.LENGTH_SHORT).show();
             if (adapterList != null) {
                 adapterList.onUpdateData(chatMensajeList);
+                this.adapterList.positionFinal();
             }
         });
     }

@@ -67,19 +67,19 @@ public class DatabaseMateria {
         });
     }
 
-    public void seleccionarTutor(MateriaTutor tutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor){
-        activity.runOnUiThread(()->{
+    public void seleccionarTutor(MateriaTutor tutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {
+        activity.runOnUiThread(() -> {
             //String id, String sujectAId, String sujectBId, String dateLast
 
             User user = Autenticacion.getUser();
             DocumentReference userDocumentRef = DatabaseUser.getMyRefUser();
-            if(user != null && userDocumentRef != null){
+            if (user != null && userDocumentRef != null) {
                 userDocumentRef.collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task.getResult();
-                        if(documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
-                        }else{
+                        } else {
                             String uid = UUID.randomUUID().toString();
                             String sujectAId = user.getId();
                             String sujectBId = tutor.getTutorId();
@@ -89,40 +89,40 @@ public class DatabaseMateria {
 
                             //String id, String sujectAId, String sujectBId, long dateInit, long dateLast
                             ChatPerson chatPerson = new ChatPerson(uid, sujectAId, sujectBId, dateInit, dateLast);
-                            DatabaseChat.getCollectionsChats().document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((tareaChat)->{
-                                if(tareaChat.isSuccessful()){
+                            DatabaseChat.getCollectionsChats().document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((tareaChat) -> {
+                                if (tareaChat.isSuccessful()) {
 
-                                    DatabaseUser.getRefUser(tutor.getTutorId()).collection(DBROUTES.USERS_CHATS).document(user.getId()).set(chatPerson).addOnCompleteListener((chatFor)->{
-                                        if(chatFor.isSuccessful()){
-                                            DatabaseUser.getRefUser(user.getId()).collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).set(chatPerson).addOnCompleteListener((chatFrom)->{
-                                                if(chatFrom.isSuccessful()){
+                                    DatabaseUser.getRefUser(tutor.getTutorId()).collection(DBROUTES.USERS_CHATS).document(user.getId()).set(chatPerson).addOnCompleteListener((chatFor) -> {
+                                        if (chatFor.isSuccessful()) {
+                                            DatabaseUser.getRefUser(user.getId()).collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).set(chatPerson).addOnCompleteListener((chatFrom) -> {
+                                                if (chatFrom.isSuccessful()) {
                                                     onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
-                                                }else{
+                                                } else {
                                                     onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                                                 }
                                             });
-                                        }else{
+                                        } else {
                                             onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                                         }
                                     });
 
-                                }else{
+                                } else {
                                     onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                                 }
 
                             });
 
                         }
-                    }else{
+                    } else {
                         onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                     }
                 });
-            }else{
+            } else {
                 onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
             }
         });
 
-      //  FirebaseFirestore.getInstance().collection(DBROUTES.CHATS).
+        //  FirebaseFirestore.getInstance().collection(DBROUTES.CHATS).
 
     }
 
@@ -139,9 +139,9 @@ public class DatabaseMateria {
                         materia.setnEntradas(materia.getnEntradas() + 1);
 
                         getRefCollectionAllMaterias().document(materia.getName()).set(materia).addOnCompleteListener((task) -> {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 crearTemaDatabase(temaString, materiaTema, onCompleteListenerTema);
-                            }else{
+                            } else {
                                 onCompleteListenerTema.onLoadTema(null);
                             }
                         });
@@ -167,70 +167,70 @@ public class DatabaseMateria {
         });
     }
 
-    public void createMateriaTutor(String materiaName, MateriaTutor materiaTutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor){
-        activity.runOnUiThread(()->{
+    public void createMateriaTutor(String materiaName, MateriaTutor materiaTutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {
+        activity.runOnUiThread(() -> {
             getRefCollectionAllSolicitudes(materiaName)
                     .document(materiaTutor.getPublicacionId())
                     .collection(DBROUTES.MATERIAS_OFRECIMIENTOS)
                     .document(materiaTutor.getId())
                     .set(materiaTutor).addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            DocumentReference notificacionAutorDatabase =  this.databaseNotificacion
-                                    .getRefCollectionAllNotificaciones(materiaTutor.getAutorId())
-                                    .document(materiaTutor.getPublicacionId());
+                if (task.isSuccessful()) {
+                    DocumentReference notificacionAutorDatabase = this.databaseNotificacion
+                            .getRefCollectionAllNotificaciones(materiaTutor.getAutorId())
+                            .document(materiaTutor.getPublicacionId());
 
-                            notificacionAutorDatabase.get().addOnCompleteListener(taskAutor -> {
-                                if(taskAutor.isSuccessful()){
-                                    DocumentSnapshot documentSnapshot = taskAutor.getResult();
-                                    if(documentSnapshot.exists()){
-                                        Notificacion notificacionAutor = documentSnapshot.toObject(Notificacion.class);
-                                        notificacionAutor.setDescripcion("Alguien quiere ser tu tutor");
-                                        notificacionAutorDatabase.set(notificacionAutor).addOnCompleteListener(taskAutorUpdate -> {
-                                            if(taskAutorUpdate.isSuccessful()){
+                    notificacionAutorDatabase.get().addOnCompleteListener(taskAutor -> {
+                        if (taskAutor.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = taskAutor.getResult();
+                            if (documentSnapshot.exists()) {
+                                Notificacion notificacionAutor = documentSnapshot.toObject(Notificacion.class);
+                                notificacionAutor.setDescripcion("Alguien quiere ser tu tutor");
+                                notificacionAutorDatabase.set(notificacionAutor).addOnCompleteListener(taskAutorUpdate -> {
+                                    if (taskAutorUpdate.isSuccessful()) {
 
-                                                String id = materiaTutor.getPublicacionId();
-                                                String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR;
-                                                String refId = materiaTutor.getId();
+                                        String id = materiaTutor.getPublicacionId();
+                                        String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR;
+                                        String refId = materiaTutor.getId();
 
-                                                List<String> dirDatabase = new ArrayList<>();
-                                                dirDatabase.add(DBROUTES.MATERIAS);
-                                                dirDatabase.add(materiaName);
-                                                dirDatabase.add(DBROUTES.MATERIAS_SOLUCITUDES);
-                                                dirDatabase.add(materiaTutor.getPublicacionId());
-                                                dirDatabase.add(DBROUTES.MATERIAS_OFRECIMIENTOS);
-                                                dirDatabase.add(materiaTutor.getTutorId());
+                                        List<String> dirDatabase = new ArrayList<>();
+                                        dirDatabase.add(DBROUTES.MATERIAS);
+                                        dirDatabase.add(materiaName);
+                                        dirDatabase.add(DBROUTES.MATERIAS_SOLUCITUDES);
+                                        dirDatabase.add(materiaTutor.getPublicacionId());
+                                        dirDatabase.add(DBROUTES.MATERIAS_OFRECIMIENTOS);
+                                        dirDatabase.add(materiaTutor.getTutorId());
 
-                                                String title = materiaTutor.getDescripcion();
-                                                String descripcion = "Te has ofrecido a ayudar";
-                                                long fecha = new Date().getTime();
+                                        String title = materiaTutor.getDescripcion();
+                                        String descripcion = "Te has ofrecido a ayudar";
+                                        long fecha = new Date().getTime();
 
-                                                //String id, String type, String refId,  List<String>  dirDatabase, String title, String descripcion, long fecha
-                                                Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
-                                                this.databaseNotificacion.createNotificacion(materiaTutor.getTutorId(), notificacion, (notificacionDatabase)->{
-                                                    if(notificacionDatabase != null){
-                                                        onCompleteListenerMateriaTutor.onLoadMateriaTutor(materiaTutor);
+                                        //String id, String type, String refId,  List<String>  dirDatabase, String title, String descripcion, long fecha
+                                        Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
+                                        this.databaseNotificacion.createNotificacion(materiaTutor.getTutorId(), notificacion, (notificacionDatabase) -> {
+                                            if (notificacionDatabase != null) {
+                                                onCompleteListenerMateriaTutor.onLoadMateriaTutor(materiaTutor);
 
-                                                    }else{
-                                                        onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
-                                                    }
-                                                });
-                                            }else{
+                                            } else {
                                                 onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                                             }
                                         });
-                                    }else {
+                                    } else {
                                         onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                                     }
-                                }else{
-                                    onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
-                                }
-
-                            });
-
-
-                        }else{
+                                });
+                            } else {
+                                onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                            }
+                        } else {
                             onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
                         }
+
+                    });
+
+
+                } else {
+                    onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
+                }
             });
 
         });
@@ -256,10 +256,10 @@ public class DatabaseMateria {
 
                 //String id, String type, String refId, List<String>  dirDatabase, String title, String descripcion, long fecha
                 Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
-                this.databaseNotificacion.createNotificacion(materiaTema.getAutorId(), notificacion, (notificacionDatabase)->{
-                    if(notificacionDatabase != null){
+                this.databaseNotificacion.createNotificacion(materiaTema.getAutorId(), notificacion, (notificacionDatabase) -> {
+                    if (notificacionDatabase != null) {
                         onCompleteListenerTema.onLoadTema(materiaTema);
-                    }else{
+                    } else {
                         onCompleteListenerTema.onLoadTema(null);
                     }
                 });
@@ -270,70 +270,87 @@ public class DatabaseMateria {
         });
     }
 
+
     public void getAllMaterias(OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
 
         activity.runOnUiThread(() -> {
             this.onCompleteListenerAllMaterias = onCompleteListenerAllMaterias;
 
-            if(this.listenerMaterias == null){
+            if (this.listenerMaterias == null) {
                 this.listenerMaterias = getRefCollectionAllMaterias().addSnapshotListener((value, error) -> {
                     List<Materia> materias = value.toObjects(Materia.class);
                     this.materiaList = materias;
-                    if(this.onCompleteListenerAllMaterias !=null){
+                    if (this.onCompleteListenerAllMaterias != null) {
                         this.onCompleteListenerAllMaterias.onLoadAllMaterias(materias);
                     }
                 });
-            }else{
-                if(this.materiaList != null){
+            } else {
+                if (this.materiaList != null) {
                     this.onCompleteListenerAllMaterias.onLoadAllMaterias(this.materiaList);
                 }
             }
         });
     }
 
-    public void getNameUserId(String idUser, DatabaseUser.OnCompleteListenerUser onCompleteListenerUser){
+    public void getNameUserId(String idUser, DatabaseUser.OnCompleteListenerUser onCompleteListenerUser) {
         activity.runOnUiThread(() -> {
             DatabaseUser.getRefUserId(idUser, onCompleteListenerUser);
         });
 
     }
 
+    private String materiasTemasId;
+    private List<MateriaTema> materiasTemas;
+    private OnCompleteListenerAllSoliticudes onCompleteListenerAllSoliticudes;
+
     public void getAllSolicitudes(String materiaId, OnCompleteListenerAllSoliticudes onCompleteListenerAllSoliticudes) {
         activity.runOnUiThread(() -> {
-            if (this.listenerSolicitudes != null) {
-                this.stopListenerSolicitudes();
+            this.onCompleteListenerAllSoliticudes = onCompleteListenerAllSoliticudes;
+
+            if (this.materiasTemas == null || this.materiasTemasId.equals(materiaId) == false) {
+                this.materiasTemasId = materiaId;
+
+                if (this.listenerSolicitudes != null) {
+                    this.stopListenerSolicitudes();
+                }
+                this.listenerSolicitudes = getRefCollectionAllSolicitudes(materiaId).addSnapshotListener((value, error) -> {
+                    List<MateriaTema> materiasTemas = value.toObjects(MateriaTema.class);
+                    this.materiasTemas = materiasTemas;
+                    this.onCompleteListenerAllSoliticudes.onLoadAllSolicitudes(this.materiasTemas);
+                });
+
+            } else {
+                if (this.materiasTemas != null) {
+                    this.onCompleteListenerAllSoliticudes.onLoadAllSolicitudes(this.materiasTemas);
+                }
             }
 
-            this.listenerSolicitudes = getRefCollectionAllSolicitudes(materiaId).addSnapshotListener((value, error) -> {
-                List<MateriaTema> materiaTemas = value.toObjects(MateriaTema.class);
-                onCompleteListenerAllSoliticudes.onLoadAllSolicitudes(materiaTemas);
-            });
         });
     }
 
-    public void getSolicitudMateriaTema(String materiaId, String temaId, OnCompleteListenerTema onCompleteListenerTema, OnCompleteListenerMateriaTutores onCompleteListenerMateriaTutores){
-        activity.runOnUiThread(()->{
-            DocumentReference documentReferenceTema =  getRefCollectionAllSolicitudes(materiaId).document(temaId);
-            if(onCompleteListenerTema != null){
-                documentReferenceTema.get().addOnCompleteListener((task)->{
-                    if(task.isSuccessful()){
+    public void getSolicitudMateriaTema(String materiaId, String temaId, OnCompleteListenerTema onCompleteListenerTema, OnCompleteListenerMateriaTutores onCompleteListenerMateriaTutores) {
+        activity.runOnUiThread(() -> {
+            DocumentReference documentReferenceTema = getRefCollectionAllSolicitudes(materiaId).document(temaId);
+            if (onCompleteListenerTema != null) {
+                documentReferenceTema.get().addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task.getResult();
-                        if(documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             onCompleteListenerTema.onLoadTema(documentSnapshot.toObject(MateriaTema.class));
-                        }else{
+                        } else {
                             onCompleteListenerTema.onLoadTema(null);
                         }
-                    }else{
+                    } else {
                         onCompleteListenerTema.onLoadTema(null);
                     }
                 });
             }
-            if(onCompleteListenerMateriaTutores != null){
-                documentReferenceTema.collection(DBROUTES.MATERIAS_OFRECIMIENTOS).get().addOnCompleteListener((task)->{
-                    if(task.isSuccessful()){
+            if (onCompleteListenerMateriaTutores != null) {
+                documentReferenceTema.collection(DBROUTES.MATERIAS_OFRECIMIENTOS).get().addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         onCompleteListenerMateriaTutores.onLoadMateriaTutor(querySnapshot.toObjects(MateriaTutor.class));
-                    }else{
+                    } else {
                         onCompleteListenerMateriaTutores.onLoadMateriaTutor(null);
                     }
                 });
@@ -387,14 +404,13 @@ public class DatabaseMateria {
         void onLoadTema(MateriaTema materiaTema);
     }
 
-    public interface OnCompleteListenerMateriaTutor{
+    public interface OnCompleteListenerMateriaTutor {
         void onLoadMateriaTutor(MateriaTutor materiaTutor);
     }
 
-    public interface OnCompleteListenerMateriaTutores{
+    public interface OnCompleteListenerMateriaTutores {
         void onLoadMateriaTutor(List<MateriaTutor> materiaTutores);
     }
-
 
 
 }

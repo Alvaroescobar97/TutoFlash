@@ -27,68 +27,79 @@ public class DatabaseChat {
     static private DatabaseChat thisClass;
     private ListenerRegistration listenerMensajes;
 
-    private DatabaseChat(FragmentActivity activity){
+    private DatabaseChat(FragmentActivity activity) {
         this.activity = activity;
     }
 
-    static public DatabaseChat getInstance(FragmentActivity activity){
+    static public DatabaseChat getInstance(FragmentActivity activity) {
         activity = activity;
-        if(thisClass == null){
+        if (thisClass == null) {
             thisClass = new DatabaseChat(activity);
         }
         return thisClass;
     }
 
-    public void getAllChatsUser(OnCompleteListenerChats onCompleteListenerChats){
-        this.activity.runOnUiThread(()->{
-            CollectionReference collectionReference = getReferenceCollectionUserChats();
-            if(collectionReference != null){
-                collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+    private OnCompleteListenerChats onCompleteListenerChats;
+    private List<ChatPerson> listaChatsPersonsDatabase;
+    private ListenerRegistration listenerRegistrationChats;
+
+    public void getAllChatsUser(OnCompleteListenerChats onCompleteListenerChats) {
+        this.activity.runOnUiThread(() -> {
+            this.onCompleteListenerChats = onCompleteListenerChats;
+
+            if (this.listenerRegistrationChats == null) {
+                CollectionReference collectionReference = getReferenceCollectionUserChats();
+                if (collectionReference != null) {
+                    this.listenerRegistrationChats = collectionReference.addSnapshotListener((value, error) -> {
                         List<ChatPerson> listaChatsDatabase = value.toObjects(ChatPerson.class);
-                        onCompleteListenerChats.onLoad(listaChatsDatabase);
-                    }
-                });
+                        this.listaChatsPersonsDatabase = listaChatsDatabase;
+                        this.onCompleteListenerChats.onLoad(listaChatsDatabase);
+                    });
+
+                } else {
+                    onCompleteListenerChats.onLoad(new ArrayList<>());
+                }
             }else{
-                onCompleteListenerChats.onLoad(new ArrayList<>());
+                if(listaChatsPersonsDatabase != null){
+                    this.onCompleteListenerChats.onLoad(this.listaChatsPersonsDatabase);
+                }
             }
         });
-
     }
 
-    public void getChatAllMensaje(String chatId, OnCompleteListenerChatMensajes onCompleteListenerChatMensajes){
-        this.activity.runOnUiThread(()->{
+    public void getChatAllMensaje(String chatId, OnCompleteListenerChatMensajes onCompleteListenerChatMensajes) {
+        this.activity.runOnUiThread(() -> {
             if (this.listenerMensajes != null) {
                 this.stopListenerMensajes();
             }
-            this.listenerMensajes = getReferenceChatMensajes(chatId).orderBy("date", Query.Direction.ASCENDING).addSnapshotListener((value, error)->{
+            this.listenerMensajes = getReferenceChatMensajes(chatId).orderBy("date", Query.Direction.ASCENDING).addSnapshotListener((value, error) -> {
                 List<ChatMensaje> mensajes = value.toObjects(ChatMensaje.class);
                 onCompleteListenerChatMensajes.onLoad(mensajes);
             });
         });
     }
 
-    public void createNewChat(ChatPerson chatPerson, OnCompleteListenerChat onCompleteListenerChat){
-        this.activity.runOnUiThread(()->{
+    public void createNewChat(ChatPerson chatPerson, OnCompleteListenerChat onCompleteListenerChat) {
+        this.activity.runOnUiThread(() -> {
             CollectionReference collectionReference = getReferenceCollectionUserChats();
-            if(collectionReference != null){
-                collectionReference.document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((task)->{
-                    if(task.isSuccessful()){
+            if (collectionReference != null) {
+                collectionReference.document(chatPerson.getId()).set(chatPerson).addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
                         onCompleteListenerChat.onLoad(chatPerson);
-                    }else{
+                    } else {
                         onCompleteListenerChat.onLoad(null);
                     }
                 });
-            }else{
+            } else {
                 onCompleteListenerChat.onLoad(null);
             }
         });
 
     }
 
-    public void sendMensaje(String chatid, ChatMensaje mensaje){
-        this.activity.runOnUiThread(()->{
+    public void sendMensaje(String chatid, ChatMensaje mensaje) {
+        this.activity.runOnUiThread(() -> {
             getReferenceChatMensajes(chatid).document(mensaje.getId()).set(mensaje);
         });
 
@@ -102,14 +113,14 @@ public class DatabaseChat {
     }
 
 
-    private static CollectionReference getReferenceChatMensajes(String uidChat){
+    private static CollectionReference getReferenceChatMensajes(String uidChat) {
         CollectionReference collectionReference = getReferenceChat(uidChat)
                 .collection(DBROUTES.CHATS_MENSAJES);
 
         return collectionReference;
     }
 
-    private static DocumentReference getReferenceChat(String uidChat){
+    private static DocumentReference getReferenceChat(String uidChat) {
         User user = Autenticacion.getUser();
         DocumentReference documentReference = null;
         documentReference = FirebaseFirestore
@@ -120,7 +131,7 @@ public class DatabaseChat {
         return documentReference;
     }
 
-    public static CollectionReference getCollectionsChats(){
+    public static CollectionReference getCollectionsChats() {
         CollectionReference documentReference = FirebaseFirestore
                 .getInstance()
                 .collection(DBROUTES.CHATS);
@@ -129,10 +140,10 @@ public class DatabaseChat {
     }
 
 
-    private static CollectionReference getReferenceCollectionUserChats(){
+    private static CollectionReference getReferenceCollectionUserChats() {
         User user = Autenticacion.getUser();
         CollectionReference collectionReference = null;
-        if(user != null){
+        if (user != null) {
             collectionReference = FirebaseFirestore
                     .getInstance()
                     .collection(DBROUTES.USERS)
@@ -144,15 +155,15 @@ public class DatabaseChat {
     }
 
 
-    public interface OnCompleteListenerChats{
+    public interface OnCompleteListenerChats {
         void onLoad(List<ChatPerson> chatPersonList);
     }
 
-    public interface OnCompleteListenerChat{
+    public interface OnCompleteListenerChat {
         void onLoad(ChatPerson chatPersonList);
     }
 
-    public interface OnCompleteListenerChatMensajes{
+    public interface OnCompleteListenerChatMensajes {
         void onLoad(List<ChatMensaje> chatMensajeList);
     }
 }
