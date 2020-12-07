@@ -75,19 +75,23 @@ public class NotificacionTemaColaborarFragment extends Fragment {
                             User user = Autenticacion.getUser();
                             if(user != null && tema.getAutorId().equals(user.getId())){
                                 DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
-                                    Glide.with(this.iv_notificacion_tema_colaborar_image)
-                                            .load(urlImage)
-                                            .apply(RequestOptions.circleCropTransform())
-                                            .into(this.iv_notificacion_tema_colaborar_image);
+                                    if(urlImage != null){
+                                        Glide.with(this.iv_notificacion_tema_colaborar_image)
+                                                .load(urlImage)
+                                                .apply(RequestOptions.circleCropTransform())
+                                                .into(this.iv_notificacion_tema_colaborar_image);
+                                    }
                                 });
                                 this.tv_notificacion_tema_colaborar_usuario.setText(user.getName());
                             }else {
                                 DatabaseUser.getRefUserId(tema.getAutorId(), (usuarioAutor)->{
                                     DatabaseUser.getImageUrlProfile(mainActivity, usuarioAutor.getImage(), (urlImage)->{
-                                        Glide.with(this.iv_notificacion_tema_colaborar_image)
-                                                .load(urlImage)
-                                                .apply(RequestOptions.circleCropTransform())
-                                                .into(this.iv_notificacion_tema_colaborar_image);
+                                        if(urlImage != null){
+                                            Glide.with(this.iv_notificacion_tema_colaborar_image)
+                                                    .load(urlImage)
+                                                    .apply(RequestOptions.circleCropTransform())
+                                                    .into(this.iv_notificacion_tema_colaborar_image);
+                                        }
                                     });
                                     this.tv_notificacion_tema_colaborar_usuario.setText(usuarioAutor.getName());
                                 });

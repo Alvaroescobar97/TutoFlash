@@ -12,15 +12,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseChat;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,6 +93,47 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void onChangeView(ChatPerson elemnto, View view, int position) {
+
+
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+                Date date = new Date(elemnto.getDateLast());
+                String strDate = dateFormat.format(date).toString();
+
+
+                this.tv_item_chat_persona_fecha.setText(strDate);
+                User user = Autenticacion.getUser();
+                if(user != null){
+                    String currentId = null;
+                    if(elemnto.getSujectAId().equals(user.getId()) == false){
+                        currentId = elemnto.getSujectAId();
+                    } else if(elemnto.getSujectBId().equals(user.getId()) == false){
+                        currentId = elemnto.getSujectBId();
+                    }
+
+                    if(currentId !=null){
+                        DatabaseUser.getRefUserId(mainActivity, currentId, (userResult)->{
+
+
+                            this.tv_item_chat_persona_name.setText(userResult.getName());
+                            this.tv_item_chat_persona_rol.setText(userResult.getCarrera());
+
+
+                            DatabaseUser.getImageUrlProfile(mainActivity, userResult.getImage(), (urlImageResult)->{
+                                if(urlImageResult != null){
+                                    Glide.with(this.civ_item_chat_persona_image)
+                                            .load(urlImageResult)
+                                            .apply(RequestOptions.circleCropTransform())
+                                            .into(this.civ_item_chat_persona_image);
+                                }
+
+                            });
+
+                        });
+                    }
+
+
+                }
+
 
                 view.setOnClickListener( v -> {
                     FragmentUtil.getActivity((mainActivity)->{

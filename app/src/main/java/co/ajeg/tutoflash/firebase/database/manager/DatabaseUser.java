@@ -33,7 +33,6 @@ public class DatabaseUser {
                     onCompleteImageProfile.onLoadUrlImageProfile(urlImageResult);
 
                 }
-
             } else {
                 onCompleteImageProfile.onLoadUrlImageProfile(null);
             }
@@ -53,10 +52,15 @@ public class DatabaseUser {
                     String urlImageResult = urlImage;
                     onCompleteImageProfile.onLoadUrlImageProfile(urlImageResult);
                 }
-
             } else {
                 onCompleteImageProfile.onLoadUrlImageProfile(null);
             }
+        });
+    }
+
+    public static void getRefUserId(AppCompatActivity appCompatActivity, String id, OnCompleteListenerUser onCompleeteListenerUser ){
+        appCompatActivity.runOnUiThread(()->{
+            getRefUserId(id, onCompleeteListenerUser);
         });
     }
 

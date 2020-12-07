@@ -113,10 +113,13 @@ public class NotificacionTemaTutorFragment extends Fragment {
             this.tv_notificacion_tema_tutor_tema.setText(this.currentTutor.getCarrera());
 
             DatabaseUser.getImageUrlProfile(mainActivity, currentTutor.getImage(), (urlImage)->{
-                Glide.with(this.iv_notificacion_tema_tutor_image)
-                        .load(urlImage)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(this.iv_notificacion_tema_tutor_image);
+                if(urlImage != null){
+                    Glide.with(this.iv_notificacion_tema_tutor_image)
+                            .load(urlImage)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(this.iv_notificacion_tema_tutor_image);
+                }
+
             });
         }
 

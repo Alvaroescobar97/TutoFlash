@@ -120,7 +120,9 @@ public class MateriasItemFragment extends Fragment {
 
                         this.tv_item_home_tema_username.setText(autor.getName());
                         DatabaseUser.getImageUrlProfile(thisFragment, autor.getImage(), (urlImage)->{
-                            getImageViewProfile(urlImage, this.iv_item_home_tema_image);
+                            if(urlImage != null){
+                                getImageViewProfile(urlImage, this.iv_item_home_tema_image);
+                            }
                         });
 
                     }else{

@@ -39,7 +39,7 @@ import co.ajeg.tutoflash.model.notificacion.Notificacion;
 public class NotificacionTemaCreateFragment extends Fragment {
 
     private MainActivity mainActivity;
-    private ImageView iv_notificacion_tema_create_image;
+    private ImageView iv_notificacion_tema_create_imageuser;
     private TextView tv_notificacion_tema_create_tema;
     private TextView tv_notificacion_tema_create_usuario;
     private TextView tv_notificacion_tema_create_descripcion;
@@ -72,7 +72,7 @@ public class NotificacionTemaCreateFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notificacion_tema_create, container, false);
 
-        this.iv_notificacion_tema_create_image = view.findViewById(R.id.iv_notificacion_tema_create_image);
+        this.iv_notificacion_tema_create_imageuser = view.findViewById(R.id.iv_notificacion_tema_create_imageuser);
         this.tv_notificacion_tema_create_tema = view.findViewById(R.id.tv_notificacion_tema_create_tema);
         this.tv_notificacion_tema_create_usuario = view.findViewById(R.id.tv_notificacion_tema_create_usuario);
         this.tv_notificacion_tema_create_descripcion = view.findViewById(R.id.tv_notificacion_tema_create_descripcion);
@@ -106,10 +106,13 @@ public class NotificacionTemaCreateFragment extends Fragment {
                 DatabaseUser.getRefUserId(tutor.getTutorId(), (userTutor)->{
                     if(userTutor != null){
                         DatabaseUser.getImageUrlProfile(mainActivity, userTutor.getImage(), (urlImage)->{
-                            Glide.with(this.iv_item_materia_tutor_image)
-                                    .load(urlImage)
-                                    .apply(RequestOptions.circleCropTransform())
-                                    .into(this.iv_item_materia_tutor_image);
+                            if(urlImage != null){
+                                Glide.with(this.iv_item_materia_tutor_image)
+                                        .load(urlImage)
+                                        .apply(RequestOptions.circleCropTransform())
+                                        .into(this.iv_item_materia_tutor_image);
+                            }
+
                         });
                         this.tv_item_materia_tutor_name.setText(userTutor.getName());
                         /*
@@ -144,19 +147,24 @@ public class NotificacionTemaCreateFragment extends Fragment {
                             User user = Autenticacion.getUser();
                             if(user != null && tema.getAutorId().equals(user.getId())){
                                 DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
-                                    Glide.with(this.iv_notificacion_tema_create_image)
-                                            .load(urlImage)
-                                            .apply(RequestOptions.circleCropTransform())
-                                            .into(this.iv_notificacion_tema_create_image);
+                                    if(urlImage != null){
+                                        Glide.with(this.iv_notificacion_tema_create_imageuser)
+                                                .load(urlImage)
+                                                .apply(RequestOptions.circleCropTransform())
+                                                .into(this.iv_notificacion_tema_create_imageuser);
+                                    }
                                 });
                                 this.tv_notificacion_tema_create_usuario.setText(user.getName());
                             }else {
                                 DatabaseUser.getRefUserId(tema.getId(), (usuarioAutor)->{
                                     DatabaseUser.getImageUrlProfile(mainActivity, usuarioAutor.getImage(), (urlImage)->{
-                                        Glide.with(this.iv_notificacion_tema_create_image)
-                                                .load(urlImage)
-                                                .apply(RequestOptions.circleCropTransform())
-                                                .into(this.iv_notificacion_tema_create_image);
+                                        if(urlImage != null){
+                                            Glide.with(this.iv_notificacion_tema_create_imageuser)
+                                                    .load(urlImage)
+                                                    .apply(RequestOptions.circleCropTransform())
+                                                    .into(this.iv_notificacion_tema_create_imageuser);
+                                        }
+
                                     });
                                     this.tv_notificacion_tema_create_usuario.setText(usuarioAutor.getName());
                                 });

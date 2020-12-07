@@ -97,10 +97,13 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
                 if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
                     String imageUserActual = Autenticacion.getUser().getImage();
                     DatabaseUser.getImageUrlProfile(mainActivity, imageUserActual, (urlResul)->{
-                        Glide.with(civ_item_notificaciones_notificacion_image)
-                                .load(urlResul)
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(civ_item_notificaciones_notificacion_image);
+                        if(urlResul != null){
+                            Glide.with(civ_item_notificaciones_notificacion_image)
+                                    .load(urlResul)
+                                    .apply(RequestOptions.circleCropTransform())
+                                    .into(civ_item_notificaciones_notificacion_image);
+                        }
+
                     });
                 }
 
