@@ -6,22 +6,24 @@ public class User implements Serializable {
 
 
     private String id;
-    private String date;
+    private long date;
     private String name;
     private String email;
     private String carrera;
     private String image;
+    private int type;
 
     public User() {
     }
 
-    public User(String id, String date, String name, String email, String carrera, String image) {
+    public User(String id, long date, String name, String email, String carrera, String image, int type) {
         this.id = id;
         this.date = date;
         this.name = name;
         this.email = email;
         this.carrera = carrera;
         this.image = image;
+        this.type = type;
     }
 
     public String getId() {
@@ -32,11 +34,11 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -70,5 +72,13 @@ public class User implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

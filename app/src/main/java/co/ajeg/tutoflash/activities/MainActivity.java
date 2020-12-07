@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     public HeaderFragment headerFragment;
 
-    Autenticacion autenticacion;
+    public Autenticacion autenticacion;
     FragmentUtil fragmentUtil;
 
     private BottomNavigationView navigationView;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         chatFragment = new ChatFragment(this);
         chatItemFragment = ChatItemFragment.newInstance(this);
 
-        perfilFragment = PerfilFragment.newInstance();
+        perfilFragment = PerfilFragment.newInstance(this);
 
         fragmentUtil.replaceFragment(R.id.fragment_container_header, headerFragment);
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,7 +35,10 @@ import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.activities.PreLogin;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.Database;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.galeria.Galeria;
 import co.ajeg.tutoflash.galeria.UtilDomi;
 import co.ajeg.tutoflash.model.User;
 
@@ -52,19 +56,22 @@ public class PerfilFragment extends Fragment {
     private ImageView fotoPerfil;
     private EditText nombreET,correoET,passwordET;
 
+    private Galeria galeria;
     private User user;
+    private MainActivity mainActivity;
     private String path;
 
-    private FirebaseFirestore db;
-    private FirebaseStorage storage;
-    private FirebaseAuth auth;
+    Autenticacion autenticacion;
 
-    public PerfilFragment() {
+    public PerfilFragment(MainActivity mainActivity) {
         // Required empty public constructor
+        this.mainActivity = mainActivity;
+        this.galeria = new Galeria(mainActivity);
+        this.autenticacion = new Autenticacion(mainActivity);
     }
 
-    public static PerfilFragment newInstance() {
-        PerfilFragment fragment = new PerfilFragment();
+    public static PerfilFragment newInstance(MainActivity mainActivity) {
+        PerfilFragment fragment = new PerfilFragment(mainActivity);
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -79,11 +86,7 @@ public class PerfilFragment extends Fragment {
 
         FragmentUtil.getActivity().headerFragment.changeTitleHeader( "Perfil" );
 
-        user = Autenticacion.getUser();
-        Log.e( ">>>>",user.getName() );
-        db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
-        auth = FirebaseAuth.getInstance();
+        this.user = Autenticacion.getUser();
 
         fotoPerfil = view.findViewById(R.id.fotoPerfil);
         nombreET = view.findViewById( R.id.nombreET);
@@ -95,73 +98,90 @@ public class PerfilFragment extends Fragment {
 
         nombreET.setText( user.getName() );
         correoET.setText( user.getEmail() );
-        if(user.getImage()!= null){
-            loadPhoto();
+
+        if(user.getType() == Autenticacion.USER_GOOGLE){
+            correoET.setVisibility(View.GONE);
+            passwordET.setVisibility(View.GONE);
         }
+
+        DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
+            Glide.with(fotoPerfil)
+                    .load(urlImage)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(fotoPerfil);
+        });
 
         btn_perfil_cerrar_session.setOnClickListener(this::cerrarSession);
         fotoPerfil.setOnClickListener( this::cargarFoto );
         guardarBtn.setOnClickListener( this::guardar );
+
         return view;
     }
 
     private void cargarFoto(View view) {
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/*");
-        startActivityForResult(i,GALLERY_CALLBACK);
+        this.galeria.openGaleria();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GALLERY_CALLBACK && resultCode == RESULT_OK){
-            Uri photoUri = data.getData();
-            path = UtilDomi.getPath(getContext(),photoUri);
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            fotoPerfil.setImageBitmap(bitmap);
-        }
+        this.galeria.onActivityResult(requestCode, resultCode, data);
     }
 
     private void guardar(View view) {
-        user.setEmail( correoET.getText().toString() );
-        user.setName( nombreET.getText().toString() );
+
+
+        String name = nombreET.getText().toString();
+        String email = correoET.getText().toString().trim();
+        String password = passwordET.getText().toString().trim();
+
+
+        User newUser = this.user;
+
+        boolean condicionName = !name.equals("");
+        boolean condicionEmail = !email.equals("") && user.getEmail().equals(email) == false;
+        boolean condicionPass = !password.equals("");
+
+        if(condicionName){
+            newUser.setName(name);
+            this.autenticacion.updateEmail(email, (updateEmail)->{
+                if(updateEmail != null){
+
+                    this.autenticacion.updateUserInformation(newUser, this.path, (usuarioResult)->{
+                        this.path = null;
+                        if(usuarioResult != null){
+                            FragmentUtil.goToBackFragment();
+                        } else {
+
+                        }
+                    });
+
+                }else if(condicionEmail){
+                    newUser.setEmail(email);
+                    this.autenticacion.updateUserInformation(newUser, this.path, (usuarioResult)->{
+                        this.path = null;
+                        if(usuarioResult != null){
+                            FragmentUtil.goToBackFragment();
+                        } else {
+
+                        }
+                    });
+
+                }
+            });
+
+        }
+
+        if(condicionPass){
+            this.autenticacion.updatePass(password,(passwordResult)->{});
+        }
+
 
         if(!passwordET.getText().toString().trim().isEmpty()){
-            auth.getCurrentUser().updatePassword(passwordET.getText().toString().trim());
-        }
-        if(path == user.getImage() || path == null) return;
-        try {
-            FileInputStream fis = new FileInputStream(new File(path));
-            Log.e(">>>",path);
-            storage.getReference().child("aplicacion").child("profiles").child( user.getId() ).putStream(fis).addOnCompleteListener(
-                    task -> {
-                        if(task.isSuccessful()){
-                            loadPhoto();
-                            user.setImage( path );
-                            db.collection("users").document(user.getId()).set(user);
-                            getFragmentManager().beginTransaction().remove(this).commit();
-                        }
-                    }
-            );
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void loadPhoto(){
-        db.collection("users").document(user.getId()).get().addOnCompleteListener(
-                task -> {
-                    user = task.getResult().toObject(User.class);
-                    if(user.getImage() != null){
-                        storage.getReference().child("aplicacion").child("profiles").child( user.getId() ).getDownloadUrl().addOnCompleteListener(
-                                urlTask->{
-                                    String url = urlTask.getResult().toString();
-                                    Glide.with(fotoPerfil).load(url).into(fotoPerfil);
-                                }
-                        );
-                    }
-                }
-        );
+           // auth.getCurrentUser().updatePassword(passwordET.getText().toString().trim());
+        }
+
     }
 
     public void cerrarSession(View v){

@@ -40,6 +40,9 @@ public class Autenticacion {
     private GoogleSignInClient googleSignInClient;
     private int RC_SIGN_IN = 1;
     FirebaseAuth auth;
+    public static int USER_GOOGLE = 1;
+    public static int USER_LOCAL = 0;
+    public static int USER_TYPE = 0;
 
     static public User user;
 
@@ -52,16 +55,52 @@ public class Autenticacion {
         this.inicializar(appCompatActivity, onCompleteListenerUser);
     }
 
-    private void updateUserInformation(User user, String path, OnCompleteListenerUser onCompleteListenerUser) {
+
+    public void updatePass(String pass, OnCompleteListenetEmail onCompleteListenetEmail){
+        this.appCompatActivity.runOnUiThread(()->{
+            if(pass!= null && pass.equals("") == false){
+                FirebaseAuth.getInstance().getCurrentUser().updatePassword(pass).addOnCompleteListener((updatePass)->{
+                    if(updatePass.isSuccessful()){
+                        onCompleteListenetEmail.onUpdateEmail(pass);
+                    }else{
+                        onCompleteListenetEmail.onUpdateEmail(null);
+                    }
+                });
+            }else {
+                onCompleteListenetEmail.onUpdateEmail(null);
+            }
+        });
+    }
+
+
+    public void updateEmail(String email, OnCompleteListenetEmail onCompleteListenetEmail){
+        this.appCompatActivity.runOnUiThread(()->{
+            if(email != null && email.equals("") ==false && email.equals(user.getEmail()) == false){
+                FirebaseAuth.getInstance().getCurrentUser().updateEmail(email).addOnCompleteListener((updateEmail)->{
+                    if(updateEmail.isSuccessful()){
+                        onCompleteListenetEmail.onUpdateEmail(email);
+                    }else{
+                        onCompleteListenetEmail.onUpdateEmail(null);
+                    }
+                });
+            }else{
+                onCompleteListenetEmail.onUpdateEmail(null);
+            }
+
+        });
+    }
+
+    public void updateUserInformation(User newUser, String path, OnCompleteListenerUser onCompleteListenerUser) {
         this.appCompatActivity.runOnUiThread(() -> {
             if (path != null) {
-                StorageFirebase.uploadFile(new String[]{DBROUTES.USERS_IMAGES, user.getId()}, path, (urlResult) -> {
+                StorageFirebase.uploadFile(new String[]{DBROUTES.USERS_IMAGES, newUser.getId()}, path, (urlResult) -> {
                     this.appCompatActivity.runOnUiThread(() -> {
                         if (urlResult != null) {
-                            user.setImage(urlResult);
-                            FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(user.getId()).set(user).addOnCompleteListener(task -> {
+                            newUser.setImage(urlResult);
+                            FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(newUser.getId()).set(newUser).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    onCompleteListenerUser.onLoad(user);
+                                    user = newUser;
+                                    onCompleteListenerUser.onLoad(newUser);
                                 } else {
                                     onCompleteListenerUser.onLoad(null);
                                 }
@@ -70,9 +109,10 @@ public class Autenticacion {
                     });
                 });
             }else{
-                FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(user.getId()).set(user).addOnCompleteListener(task -> {
+                FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(newUser.getId()).set(newUser).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        onCompleteListenerUser.onLoad(user);
+                        user = newUser;
+                        onCompleteListenerUser.onLoad(newUser);
                     } else {
                         onCompleteListenerUser.onLoad(null);
                     }
@@ -134,11 +174,11 @@ public class Autenticacion {
     public static void logout() {
         user = null;
         FirebaseAuth.getInstance().signOut();
+        USER_TYPE = 0;
     }
 
     public void loginWithGoogle() {
         this.appCompatActivity.runOnUiThread(() -> {
-
             Intent signInIntent = this.googleSignInClient.getSignInIntent();
             this.appCompatActivity.startActivityForResult(signInIntent, this.RC_SIGN_IN);
         });
@@ -218,14 +258,15 @@ public class Autenticacion {
                         String image = user.getPhotoUrl().toString();
                         String email = user.getEmail();
                         String carrera = "Estudiante";
-                        String date = (new Date()).toString();
+                        long date = (new Date()).getTime();
+                        int type = Autenticacion.USER_GOOGLE;
 
-                        User usuario = new User(user.getUid(), date, name, email, carrera, image);
+                        //String id, long date, String name, String email, String carrera, String image, int type
+                        User usuario = new User(user.getUid(), date, name, email, carrera, image, type);
+                        USER_TYPE = USER_GOOGLE;
                         Database.createUser(usuario, onCompleteListenerUser);
                     } else {
-
                         onCompleteListenerUser.onLoad(null);
-
                     }
                 });
     }
@@ -236,6 +277,10 @@ public class Autenticacion {
 
     public interface OnCompleteListenerUser {
         public void onLoad(User user);
+    }
+
+    public interface OnCompleteListenetEmail{
+        void onUpdateEmail(String email);
     }
 
     public static User getUser() {
