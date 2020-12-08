@@ -1,11 +1,13 @@
 package co.ajeg.tutoflash.fragments.materias;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,9 +123,23 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
                 ImageView iv_item_home_materia_image;
                 iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
-
-                if(materia.getName().equals("OTRA")){
-                  //  iv_item_home_materia_image.setBackground("@drawable/");
+                Log.e(">>",materia.getName());
+                if(materia.getName().equals("Matematicas")){
+                    iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.math,getContext().getTheme()));
+                }
+                if(materia.getName().equals("Fisica")){
+                    iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.fisica,getContext().getTheme()));
+                }
+                if(materia.getName().equals("Literatura")){
+                    iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.literatura,getContext().getTheme()));
+                }
+                if(materia.getName().equals("Ingles")){
+                    iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.ingles,getContext().getTheme()));
+                }
+                if(materia.getName().equals("Programación")){
+                    iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.programacion,getContext().getTheme()));
+                }if(materia.getName().equals("Sistemas")){
+                    iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.sistemas,getContext().getTheme()));
                 }
 
                 int nEntradas = materia.getnEntradas();
@@ -195,8 +211,6 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
     @Override
     public void onLoadAllMaterias(List<Materia> materiaList){
         this.materiaList = materiaList;
-        //String id, String name, long lastFecha, int nEntradas
-        this.materiaList.add(new Materia(UUID.randomUUID().toString(), "OTRA", new Date().getTime(), 1));
         if(this.adapterList != null && this.materiaList != null && this.rv_home_materias != null){
             this.adapterList.onUpdateData(this.materiaList);
         }
