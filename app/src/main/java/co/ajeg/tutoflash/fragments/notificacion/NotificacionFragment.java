@@ -45,7 +45,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
 
      */
 
-    public NotificacionTemaTutorFragment notificacionTemaTutorFragment;
+    public NotificacionTemaTutorFragment notificacionTemaTutorFragments;
     public NotificacionTemaCreateFragment notificacionTemaCreateFragment;
     public NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
 
@@ -56,7 +56,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
         this.databaseNotificacion = DatabaseNotificacion.getInstance(mainActivity);
         this.databaseNotificacion.getAllNotificaciones(this);
 
-        notificacionTemaTutorFragment = new NotificacionTemaTutorFragment(this);
+        notificacionTemaTutorFragments = new NotificacionTemaTutorFragment(this);
         notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
         notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
     }

@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -49,7 +50,7 @@ public class NotificacionTemaCreateFragment extends Fragment {
     private Button btn_notificacion_tema_create_eliminar;
     private RecyclerView rv_notificacion_tema_create_tutores;
     private AdapterList<MateriaTutor> adapterList;
-    private ArrayList<MateriaTutor> materiaTutorsList;
+    private List<MateriaTutor> materiaTutorsList;
     private Notificacion notificacion;
 
     private MateriaTema materiaTema;
@@ -128,12 +129,12 @@ public class NotificacionTemaCreateFragment extends Fragment {
 
                         view.setOnClickListener(v->{
                             String nameMateria = notificacion.getDirDatabase().get(1);
-                            notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaTema(materiaTema);
-                            notificacionFragment.notificacionTemaTutorFragment.setCurrentTutoresAll(materiaTutorsList);
-                            notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaName(nameMateria);
-                            notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaTutor(tutor);
-                            notificacionFragment.notificacionTemaTutorFragment.setCurrentTutor(userTutor);
-                            FragmentUtil.replaceFragmentInMain(mainActivity.notificacionFragment.notificacionTemaTutorFragment);
+                            notificacionFragment.notificacionTemaTutorFragments.setCurrentMateriaTema(materiaTema);
+                            notificacionFragment.notificacionTemaTutorFragments.setCurrentTutoresAll(materiaTutorsList);
+                            notificacionFragment.notificacionTemaTutorFragments.setCurrentMateriaName(nameMateria);
+                            notificacionFragment.notificacionTemaTutorFragments.setCurrentMateriaTutor(tutor);
+                            notificacionFragment.notificacionTemaTutorFragments.setCurrentTutor(userTutor);
+                            FragmentUtil.replaceFragmentInMain(mainActivity.notificacionFragment.notificacionTemaTutorFragments);
                         });
                     }
                 });
@@ -194,7 +195,8 @@ public class NotificacionTemaCreateFragment extends Fragment {
                     }
 
                     , (tutores) -> {
-                        this.adapterList.onUpdateData(tutores);
+                        materiaTutorsList = tutores;
+                        this.adapterList.onUpdateData(materiaTutorsList);
 
                     });
         }

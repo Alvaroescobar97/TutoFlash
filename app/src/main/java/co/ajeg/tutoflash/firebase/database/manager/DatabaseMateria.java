@@ -93,14 +93,11 @@ public class DatabaseMateria {
                     }
         });
 
-        DatabaseNotificacion
-                .getRefCollectionAllNotificaciones(materiaTema.getAutorId()).document(materiaTema.getId()).delete();
-
-
 
         getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).delete();
 
-       // DatabaseNotificacion.getRefCollectionAllNotificaciones(tutor.getTutorId()).
+        DatabaseNotificacion.getRefCollectionAllNotificaciones(tutor.getAutorId()).document(materiaTema.getId()).delete();
+
 
         for (MateriaTutor materiaTutor : materiaTutorList){
             if(materiaTutor.getId().equals(tutor.getId()) == false){
@@ -297,10 +294,11 @@ public class DatabaseMateria {
             getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).collection(DBROUTES.MATERIAS_OFRECIMIENTOS)
                     .document(tutorId).delete().addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-
+                            Toast.makeText(activity, "Delete OFRECIEMIENTO", Toast.LENGTH_SHORT).show();
                             DatabaseNotificacion.getRefCollectionAllNotificaciones(tutorId).document(materiaTema.getId()).delete()
                                     .addOnCompleteListener((deleteNotificacion)->{
                                         if(deleteNotificacion.isSuccessful()){
+                                            Toast.makeText(activity, "D: NOTIFICIACION", Toast.LENGTH_SHORT).show();
                                             onCompleteListenerTema.onLoadTema(materiaTema);
                                         }else{
                                             onCompleteListenerTema.onLoadTema(null);
