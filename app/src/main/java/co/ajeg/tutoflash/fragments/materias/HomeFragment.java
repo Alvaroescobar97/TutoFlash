@@ -124,21 +124,21 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 ImageView iv_item_home_materia_image;
                 iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
                 Log.e(">>",materia.getName());
-                if(materia.getName().equals("Matematicas")){
+                if(materia.getName().contains("matematicas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.math,getContext().getTheme()));
                 }
-                if(materia.getName().equals("Fisica")){
+                if(materia.getName().contains("fisica")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.fisica,getContext().getTheme()));
                 }
-                if(materia.getName().equals("Literatura")){
+                if(materia.getName().contains("literatura")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.literatura,getContext().getTheme()));
                 }
-                if(materia.getName().equals("Ingles")){
+                if(materia.getName().contains("ingles")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.ingles,getContext().getTheme()));
                 }
-                if(materia.getName().equals("Programación")){
+                if(materia.getName().contains("programación")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.programacion,getContext().getTheme()));
-                }if(materia.getName().equals("Sistemas")){
+                }if(materia.getName().contains("sistemas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.sistemas,getContext().getTheme()));
                 }
 

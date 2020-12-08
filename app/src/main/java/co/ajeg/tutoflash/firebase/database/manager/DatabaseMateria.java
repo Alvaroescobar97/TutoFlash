@@ -104,7 +104,23 @@ public class DatabaseMateria {
 
 
         }
+
         DatabaseNotificacion.getRefCollectionAllNotificaciones(materiaTema.getAutorId()).document(materiaTema.getId()).delete();
+
+        getRefCollectionAllMaterias().document(nameMateria).collection(DBROUTES.MATERIAS_SOLUCITUDES).get().addOnCompleteListener((materiasR)->{
+            if(materiasR.isSuccessful()){
+                getRefCollectionAllMaterias().document(nameMateria).get().addOnCompleteListener((task -> {
+                    if(task.isSuccessful()){
+                        Materia currenteObjMateria = task.getResult().toObject(Materia.class);
+                        long date =new Date().getTime();
+                        currenteObjMateria.setLastFecha(date);
+                        currenteObjMateria.setnEntradas(materiasR.getResult().getDocuments().size()-1);
+                        getRefCollectionAllMaterias().document(nameMateria).set(currenteObjMateria);
+                    }
+                }));
+            }
+        });
+
         getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).delete().addOnCompleteListener(task -> {
             if (onCompleteListenerTema != null) {
                 if (task.isSuccessful()) {
@@ -211,23 +227,35 @@ public class DatabaseMateria {
 
     public void createTema(String materiaName, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
         activity.runOnUiThread(() -> {
-            String temaString = materiaName.trim().replaceAll(" ", "");
+            String temaString = materiaName.trim().replaceAll(" ", "").toLowerCase();
             getRefCollectionAllMaterias().document(temaString).get().addOnCompleteListener(result -> {
                 if (result.isSuccessful()) {
                     DocumentSnapshot documentReference = result.getResult();
                     if (documentReference.exists()) {
                         Materia materia = documentReference.toObject(Materia.class);
 
-                        materia.setLastFecha((int) (new Date()).getTime());
-                        materia.setnEntradas(materia.getnEntradas() + 1);
+                        getRefCollectionAllMaterias().document(materia.getName()).collection(DBROUTES.MATERIAS_SOLUCITUDES).get().addOnCompleteListener(taskMa -> {
+                            if(taskMa.isSuccessful()){
+                                int nEntradasDatabase = taskMa.getResult().getDocuments().size();
+                                materia.setnEntradas(nEntradasDatabase + 1);
 
-                        getRefCollectionAllMaterias().document(materia.getName()).set(materia).addOnCompleteListener((task) -> {
-                            if (task.isSuccessful()) {
-                                crearTemaDatabase(temaString, materiaTema, onCompleteListenerTema);
-                            } else {
+                                materia.setLastFecha((int) (new Date()).getTime());
+
+                                getRefCollectionAllMaterias().document(materia.getName()).set(materia).addOnCompleteListener((task) -> {
+                                    if (task.isSuccessful()) {
+                                        crearTemaDatabase(temaString, materiaTema, onCompleteListenerTema);
+                                    } else {
+                                        onCompleteListenerTema.onLoadTema(null);
+                                    }
+                                });
+
+                            }else{
                                 onCompleteListenerTema.onLoadTema(null);
                             }
+
                         });
+
+
 
                     } else {
                         String uid = UUID.randomUUID().toString();
