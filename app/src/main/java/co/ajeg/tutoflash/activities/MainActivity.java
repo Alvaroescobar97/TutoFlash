@@ -74,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = HomeFragment.newInstance(this);
 
-
         notificacionFragment = new NotificacionFragment(this);
-
 
         calendarioFragment = CalendarioFragment.newInstance();
 
@@ -93,13 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
        // NotificacionUtil.createNotification(this, "prueba", "Esto es una prueba de notificacion");
 
-        FirebaseMessaging.getInstance().subscribeToTopic("noticias").addOnCompleteListener((task)->{
-            if(task.isSuccessful()){
-                Log.e(">>>>", "Subscripcion exitosa");
-            }else{
-                Log.e(">>>>", "Subscripcion NO exitosa");
-            }
-        });
+
 
         navigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
 
