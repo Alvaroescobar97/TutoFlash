@@ -20,7 +20,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
@@ -116,9 +118,13 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
             @Override
             public void onChangeView(Materia materia, View view, int position) {
-                
+
                 ImageView iv_item_home_materia_image;
                 iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
+
+                if(materia.getName().equals("OTRA")){
+                  //  iv_item_home_materia_image.setBackground("@drawable/");
+                }
 
                 int nEntradas = materia.getnEntradas();
                 tv_item_home_materia_name.setText(ucFirst(materia.getName()));
@@ -189,6 +195,8 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
     @Override
     public void onLoadAllMaterias(List<Materia> materiaList){
         this.materiaList = materiaList;
+        //String id, String name, long lastFecha, int nEntradas
+        this.materiaList.add(new Materia(UUID.randomUUID().toString(), "OTRA", new Date().getTime(), 1));
         if(this.adapterList != null && this.materiaList != null && this.rv_home_materias != null){
             this.adapterList.onUpdateData(this.materiaList);
         }
