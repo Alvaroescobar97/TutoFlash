@@ -12,11 +12,12 @@ public class User implements Serializable {
     private String carrera;
     private String image;
     private int type;
+    private int calificacion;
 
     public User() {
     }
 
-    public User(String id, long date, String name, String email, String carrera, String image, int type) {
+    public User(String id, long date, String name, String email, String carrera, String image, int type, int calificacion) {
         this.id = id;
         this.date = date;
         this.name = name;
@@ -24,6 +25,7 @@ public class User implements Serializable {
         this.carrera = carrera;
         this.image = image;
         this.type = type;
+        this.calificacion = calificacion;
     }
 
     public String getId() {
@@ -80,5 +82,13 @@ public class User implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
     }
 }

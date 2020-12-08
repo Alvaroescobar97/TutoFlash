@@ -266,7 +266,7 @@ public class Autenticacion {
                         int type = Autenticacion.USER_GOOGLE;
 
                         //String id, long date, String name, String email, String carrera, String image, int type
-                        User usuario = new User(user.getUid(), date, name, email, carrera, image, type);
+                        User usuario = new User(user.getUid(), date, name, email, carrera, image, type, 0);
                         USER_TYPE = USER_GOOGLE;
                         Database.createUser(usuario, onCompleteListenerUser);
                     } else {

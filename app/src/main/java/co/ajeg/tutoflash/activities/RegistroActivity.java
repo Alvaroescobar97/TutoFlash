@@ -77,9 +77,9 @@ public class RegistroActivity extends AppCompatActivity implements Galeria.OnCom
             Date date = new Date();
             User user = null;
             if (path != null) {
-                user = new User("", date.getTime(), nombre, email, carrera, "image", Autenticacion.USER_LOCAL);
+                user = new User("", date.getTime(), nombre, email, carrera, "image", Autenticacion.USER_LOCAL, 0);
             }else {
-                user = new User("", date.getTime(), nombre, email, carrera, "",Autenticacion.USER_LOCAL);
+                user = new User("", date.getTime(), nombre, email, carrera, "",Autenticacion.USER_LOCAL, 0);
             }
 
             autenticacion.registro(email, password, user, usuario->{
