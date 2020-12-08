@@ -129,6 +129,14 @@ public class ChatFragment extends Fragment {
 
                             });
 
+                            view.setOnClickListener( v -> {
+                                FragmentUtil.getActivity((mainActivity)->{
+                                    chatItemFragment.changeCurrentChat(elemnto);
+                                    chatItemFragment.setCurrentUsuario(userResult);
+                                    FragmentUtil.replaceFragment(R.id.fragment_container, chatItemFragment);
+                                });
+                            });
+
                         });
                     }
 
@@ -136,12 +144,7 @@ public class ChatFragment extends Fragment {
                 }
 
 
-                view.setOnClickListener( v -> {
-                    FragmentUtil.getActivity((mainActivity)->{
-                        chatItemFragment.changeCurrentChat(elemnto);
-                        FragmentUtil.replaceFragment(R.id.fragment_container, chatItemFragment);
-                    });
-                });
+
             }
 
         });

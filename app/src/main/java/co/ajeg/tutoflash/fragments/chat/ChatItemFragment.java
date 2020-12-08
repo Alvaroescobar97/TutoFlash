@@ -14,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroupOverlay;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DateFormat;
@@ -33,7 +36,9 @@ import co.ajeg.tutoflash.adapter.AdapterManagerList;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseChat;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.chat.ChatMensaje;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 
@@ -52,7 +57,12 @@ public class ChatItemFragment extends Fragment {
     private DatabaseChat databaseChat;
     private ChatPerson chatPerson;
 
+    private User usuario;
+
     private RecyclerView rv_chat_item_dialogos;
+
+    private ImageView iv_chat_item_imagen;
+    private TextView tv_chat_item_username;
 
     public ChatItemFragment(ChatFragment chatFragment){
         this.chatFragment = chatFragment;
@@ -79,7 +89,23 @@ public class ChatItemFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_chat_item, container, false);
 
+        this.iv_chat_item_imagen = view.findViewById(R.id.iv_chat_item_imagen);
+        this.tv_chat_item_username = view.findViewById(R.id.tv_chat_item_username);
+
+        if(this.usuario != null){
+            DatabaseUser.getImageUrlProfile(this, this.usuario.getImage(), (imagen)->{
+                if(imagen != null){
+                    Glide.with(iv_chat_item_imagen)
+                            .load(imagen)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(iv_chat_item_imagen);
+                }
+            });
+            this.tv_chat_item_username.setText(this.usuario.getName());
+        }
+
         TextInputLayout til_chat_item_mensaje = view.findViewById(R.id.til_chat_item_mensaje);
+
 
         this.rv_chat_item_dialogos = view.findViewById(R.id.rv_chat_item_dialogos);
         this.rv_chat_item_dialogos.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -187,5 +213,9 @@ public class ChatItemFragment extends Fragment {
                 this.adapterList.positionFinal();
             }
         });
+    }
+
+    public void setCurrentUsuario(User usuario){
+        this.usuario = usuario;
     }
 }
