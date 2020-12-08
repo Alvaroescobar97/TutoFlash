@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import co.ajeg.tutoflash.firebase.FirebaseMensajes;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.Database;
@@ -67,7 +68,49 @@ public class DatabaseMateria {
         });
     }
 
-    public void seleccionarTutor(MateriaTutor tutor, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {
+    private void deleteAllTutoresFromTema(String nameMateria,MateriaTema materiaTema, List<MateriaTutor> materiaTutorList, MateriaTutor tutor, ChatPerson chatPerson){
+
+        String id = UUID.randomUUID().toString();
+        String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO;
+        String refId = chatPerson.getId();
+        List<String> dirDatabase = new ArrayList<>();
+        dirDatabase.add(DBROUTES.CHATS);
+        dirDatabase.add(chatPerson.getId());
+        String title ="Tutor Aceptado";
+        String descripcion = "Te han seleccionado para tutor";
+        long fecha = new Date().getTime();
+
+        //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
+        Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
+
+        DatabaseNotificacion
+                .getRefCollectionAllNotificaciones(tutor.getId())
+                .document(notificacion.getId()).set(notificacion).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+
+                    }else{
+
+                    }
+        });
+
+        DatabaseNotificacion
+                .getRefCollectionAllNotificaciones(materiaTema.getAutorId()).document(materiaTema.getId()).delete();
+
+
+
+        getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).delete();
+
+       // DatabaseNotificacion.getRefCollectionAllNotificaciones(tutor.getTutorId()).
+
+        for (MateriaTutor materiaTutor : materiaTutorList){
+            if(materiaTutor.getId().equals(tutor.getId()) == false){
+                FirebaseMensajes.sendNotificacion(tutor.getTutorId(), "Solicitur Eliminada", "Ya se ha seleccionado un tutor. Gracias por el ofrecimiento");
+            }
+            deteletMateriaTutor(nameMateria, materiaTema, materiaTutor.getTutorId(), (t)->{});
+        }
+    }
+
+    public void seleccionarTutor(String nameMateria, MateriaTema materiaTema, MateriaTutor tutor, List<MateriaTutor> materiaTutorList,  OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {
         activity.runOnUiThread(() -> {
             //String id, String sujectAId, String sujectBId, String dateLast
 
@@ -76,16 +119,23 @@ public class DatabaseMateria {
             if (user != null && userDocumentRef != null) {
                 userDocumentRef.collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+
+                        FirebaseMensajes.sendNotificacion(tutor.getTutorId(), "Seleccionado", "Felicitaciones te han seleccionado como tutor");
+
                         DocumentSnapshot documentSnapshot = task.getResult();
                         if (documentSnapshot.exists()) {
+                            ChatPerson chatPerson = documentSnapshot.toObject(ChatPerson.class);
+
+                            deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, tutor, chatPerson);
+
                             onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
+
                         } else {
                             String uid = UUID.randomUUID().toString();
                             String sujectAId = user.getId();
                             String sujectBId = tutor.getTutorId();
                             long dateInit = new Date().getTime();
                             long dateLast = new Date().getTime();
-
 
                             //String id, String sujectAId, String sujectBId, long dateInit, long dateLast
                             ChatPerson chatPerson = new ChatPerson(uid, sujectAId, sujectBId, dateInit, dateLast);
@@ -96,6 +146,9 @@ public class DatabaseMateria {
                                         if (chatFor.isSuccessful()) {
                                             DatabaseUser.getRefUser(user.getId()).collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).set(chatPerson).addOnCompleteListener((chatFrom) -> {
                                                 if (chatFrom.isSuccessful()) {
+
+                                                    deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, tutor, chatPerson);
+
                                                     onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
                                                 } else {
                                                     onCompleteListenerMateriaTutor.onLoadMateriaTutor(null);
@@ -187,6 +240,8 @@ public class DatabaseMateria {
                                 notificacionAutor.setDescripcion("Alguien quiere ser tu tutor");
                                 notificacionAutorDatabase.set(notificacionAutor).addOnCompleteListener(taskAutorUpdate -> {
                                     if (taskAutorUpdate.isSuccessful()) {
+
+                                        FirebaseMensajes.sendNotificacion(materiaTutor.getAutorId(), "Nuevo tutor", "Alguien se ha ofrecido a ayudar");
 
                                         String id = materiaTutor.getPublicacionId();
                                         String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR;

@@ -28,6 +28,7 @@ import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.materia.MateriaTema;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
@@ -50,6 +51,8 @@ public class NotificacionTemaCreateFragment extends Fragment {
     private AdapterList<MateriaTutor> adapterList;
     private ArrayList<MateriaTutor> materiaTutorsList;
     private Notificacion notificacion;
+
+    private MateriaTema materiaTema;
 
     private DatabaseMateria databaseMateria;
 
@@ -124,8 +127,12 @@ public class NotificacionTemaCreateFragment extends Fragment {
                          */
 
                         view.setOnClickListener(v->{
-                            mainActivity.notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaTutor(tutor);
-                            mainActivity.notificacionFragment.notificacionTemaTutorFragment.setCurrentTutor(userTutor);
+                            String nameMateria = notificacion.getDirDatabase().get(1);
+                            notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaTema(materiaTema);
+                            notificacionFragment.notificacionTemaTutorFragment.setCurrentTutoresAll(materiaTutorsList);
+                            notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaName(nameMateria);
+                            notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaTutor(tutor);
+                            notificacionFragment.notificacionTemaTutorFragment.setCurrentTutor(userTutor);
                             FragmentUtil.replaceFragmentInMain(mainActivity.notificacionFragment.notificacionTemaTutorFragment);
                         });
                     }
@@ -147,6 +154,7 @@ public class NotificacionTemaCreateFragment extends Fragment {
             this.databaseMateria.getSolicitudMateriaTema(nameMateria, notificacion.getRefId(),
                     (tema) -> {
                         if (tema != null) {
+                            this.materiaTema = tema;
                             User user = Autenticacion.getUser();
                             if(user != null && tema.getAutorId().equals(user.getId())){
                                 DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{

@@ -17,6 +17,7 @@ public interface DBROUTES {
     String HISTORY = "history";
 
     String NOTIFICACION_TYPE_SOLICITUD_TUTOR = "solicitud_tutor";
+    String NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO = "solicitud_tutor_seleccionado";
     String NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR = "solicitud_tutor_dar";
 
 

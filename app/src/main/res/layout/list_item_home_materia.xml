@@ -10,7 +10,7 @@
         android:id="@+id/iv_item_home_materia_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,9 +27,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="239dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="30dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_item_home_materia_image"
         app:layout_constraintEnd_toStartOf="@+id/tv_item_home_materia_fecha"
         app:layout_constraintStart_toEndOf="@+id/iv_item_home_materia_image"
@@ -37,8 +37,8 @@
 
         <TextView
             android:id="@+id/tv_item_home_materia_name"
-            android:layout_width="212dp"
-            android:layout_height="18dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:text="Nombre de usuario"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

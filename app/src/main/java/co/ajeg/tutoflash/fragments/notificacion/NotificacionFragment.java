@@ -154,7 +154,6 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
         }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
             fragmentResult = this.notificacionTemaColaborarFragment;
             this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
-            this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
         }
         return fragmentResult;
     }

@@ -132,6 +132,8 @@ public class NotificacionTemaColaborarFragment extends Fragment {
 
     }
 
+
+
     public void setCurrentNotificacion(Notificacion notificacion){
         this.notificacion = notificacion;
     }

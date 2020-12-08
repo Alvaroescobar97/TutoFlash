@@ -27,6 +27,7 @@ import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.materia.MateriaTema;
 import co.ajeg.tutoflash.model.materia.MateriaTutor;
 
 /**
@@ -52,6 +53,10 @@ public class NotificacionTemaTutorFragment extends Fragment {
     private AdapterList<String> adapterList;
     private List<String> horarios = new ArrayList();
     private DatabaseMateria databaseMateria;
+    private List<MateriaTutor> tutoresAll;
+
+    private String currentMateriaName;
+    private MateriaTema currentMateriaTema;
 
     public NotificacionTemaTutorFragment(NotificacionFragment notificacionFragment) {
         // Required empty public constructor
@@ -83,7 +88,7 @@ public class NotificacionTemaTutorFragment extends Fragment {
         this.rv_notificacion_tema_tutor_horarios = view.findViewById(R.id.rv_notificacion_tema_tutor_horarios);
         this.rv_notificacion_tema_tutor_horarios.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        if(this.materiaTutor != null){
+        if (this.materiaTutor != null) {
             this.tv_notificacion_tema_tutor_descripcion.setText(this.materiaTutor.getDescripcion());
             this.tv_notificacion_tema_tutor_precio.setText(this.materiaTutor.getPrecio());
             this.horarios = this.materiaTutor.getFechas();
@@ -108,12 +113,12 @@ public class NotificacionTemaTutorFragment extends Fragment {
         this.btn_notificacion_tema_tutor_seleccionar = view.findViewById(R.id.btn_notificacion_tema_tutor_seleccionar);
         this.btn_notificacion_tema_tutor_cancelar = view.findViewById(R.id.btn_notificacion_tema_tutor_cancelar);
 
-        if(this.currentTutor != null){
+        if (this.currentTutor != null) {
             this.tv_notificacion_tema_tutor_usuario.setText(this.currentTutor.getName());
             this.tv_notificacion_tema_tutor_tema.setText(this.currentTutor.getCarrera());
 
-            DatabaseUser.getImageUrlProfile(this.notificacionFragment.mainActivity, currentTutor.getImage(), (urlImage)->{
-                if(urlImage != null){
+            DatabaseUser.getImageUrlProfile(this.notificacionFragment.mainActivity, currentTutor.getImage(), (urlImage) -> {
+                if (urlImage != null) {
                     Glide.with(this.iv_notificacion_tema_tutor_image)
                             .load(urlImage)
                             .apply(RequestOptions.circleCropTransform())
@@ -130,31 +135,49 @@ public class NotificacionTemaTutorFragment extends Fragment {
         return view;
     }
 
-    public void onClickSelecionarTutor(View v){
+    public void onClickSelecionarTutor(View v) {
 
-        this.databaseMateria.seleccionarTutor(this.materiaTutor, (tutor)->{
-            if(tutor != null){
-                FragmentUtil.resetFragmentNav();
-                FragmentUtil.replaceFragment(R.id.fragment_container, this.notificacionFragment.mainActivity.chatFragment);
-            }else{
+        if (this.currentMateriaTema != null && this.currentMateriaName != null && this.tutoresAll != null && this.materiaTutor != null) {
+            this.databaseMateria.seleccionarTutor(
+                    this.currentMateriaName,
+                    this.currentMateriaTema,
+                    this.materiaTutor,
+                    this.tutoresAll,
+                    (tutor) -> {
+                        if (tutor != null) {
+                            FragmentUtil.resetFragmentNav();
+                            FragmentUtil.replaceFragment(R.id.fragment_container, this.notificacionFragment.mainActivity.chatFragment);
+                        } else {
 
-            }
-        });
+                        }
+                    });
+        }
 
     }
 
-    public void onClickCancelar(View v){
+    public void onClickCancelar(View v) {
         FragmentUtil.goToBackFragment();
     }
 
-    public void setCurrentTutor(User user){
+    public void setCurrentTutor(User user) {
         this.currentTutor = user;
     }
 
-    public void setCurrentMateriaTutor(MateriaTutor materiaTutor){
+    public void setCurrentMateriaTutor(MateriaTutor materiaTutor) {
         this.materiaTutor = materiaTutor;
     }
 
+    public void setCurrentMateriaTema(MateriaTema materiaTema) {
+        this.currentMateriaTema = materiaTema;
+    }
+
+    public void setCurrentMateriaName(String currentMateriaName) {
+        this.currentMateriaName = currentMateriaName;
+    }
+
+    public void setCurrentTutoresAll(List<MateriaTutor> materiaTutorList) {
+        this.tutoresAll = materiaTutorList;
+    }
 
 
 }
