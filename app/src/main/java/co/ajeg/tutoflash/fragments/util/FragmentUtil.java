@@ -43,6 +43,10 @@ public class FragmentUtil {
         onChangeFragmentNavActivity = onChange;
     }
 
+    public static Fragment getFragmentCurrent(){
+        return currentFragment;
+    }
+
     public static void setOnChangeFragmentNav(OnChangeFragmentNav onChange){
         onChangeFragmentNav = onChange;
         onChangeFragmentNav.onChangeFragmentNav(fragmentsNav);

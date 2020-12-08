@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView = findViewById(R.id.navegacion_view);
 
-        headerFragment = HeaderFragment.newInstance();
+        headerFragment = HeaderFragment.newInstance(this);
 
         homeFragment = HomeFragment.newInstance(this);
         materiasItemFragment = new MateriasItemFragment(this);

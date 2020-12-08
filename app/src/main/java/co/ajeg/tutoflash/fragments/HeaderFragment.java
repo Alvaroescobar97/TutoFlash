@@ -29,15 +29,18 @@ import co.ajeg.tutoflash.model.User;
  */
 public class HeaderFragment extends Fragment {
 
-    private MainActivity appCompatActivity;
+    private MainActivity mainActivity;
 
-    public HeaderFragment() {
+
+
+    public HeaderFragment(MainActivity mainActivity) {
         // Required empty public constructor
+        this.mainActivity = mainActivity;
     }
 
     // TODO: Rename and change types and number of parameters
-    public static HeaderFragment newInstance() {
-        HeaderFragment fragment = new HeaderFragment();
+    public static HeaderFragment newInstance(MainActivity mainActivity) {
+        HeaderFragment fragment = new HeaderFragment(mainActivity);
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -81,8 +84,10 @@ public class HeaderFragment extends Fragment {
 
     private void onClickVerPerfil(View v){
         FragmentUtil.getActivity((activity)->{
+            if(FragmentUtil.getFragmentCurrent() != this.mainActivity.perfilFragment){
+                FragmentUtil.replaceFragmentInMain(activity.perfilFragment);
+            }
 
-            FragmentUtil.replaceFragmentInMain(activity.perfilFragment);
         });
     }
 

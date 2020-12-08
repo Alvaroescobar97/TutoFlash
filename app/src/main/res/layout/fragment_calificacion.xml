@@ -4,14 +4,134 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+android:background="#E8E8E8"
 tools:context=".fragments.CalificacionFragment">
 
-<TextView
-    android:id="@+id/textView4"
-    android:layout_width="wrap_content"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraintLayout8"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginBottom="7dp"
+    android:background="#FFFFFF"
+    app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout13"
+        android:layout_width="414dp"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_calificacion_usuario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="13dp"
+            android:text="Nombre de usuario"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_calificacion_rol"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Carrera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_calificacion_usuario"
+            app:layout_constraintTop_toBottomOf="@+id/tv_calificacion_usuario" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/iv_calificacion_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:drawable/sym_def_app_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="¿Cómo calificas a tu tutor?"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout13" />
+
+    <RatingBar
+        android:id="@+id/rb_calificacion_calificacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraintLayout11"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:text="Registro"
-    tools:layout_editor_absoluteX="175dp"
-    tools:layout_editor_absoluteY="34dp" />
+    android:layout_marginBottom="20dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <Button
+        android:id="@+id/btn_calificacion_calificar"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/blue"
+        android:text="Selecionar tutor"
+        app:cornerRadius="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_calificacion_cancelar"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="50dp"
+        android:color="@color/white"
+        android:fontFamily="@font/mulish_semibold"
+        android:text="Cancelar"
+        android:textColor="@color/blue"
+        app:cornerRadius="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_calificacion_calificar"
+        app:rippleColor="#FFFFFF"
+        app:strokeColor="@color/blue"
+        app:strokeWidth="2dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
