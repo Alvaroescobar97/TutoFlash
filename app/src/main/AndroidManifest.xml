@@ -32,6 +32,8 @@
             </intent-filter>
         </service>
 
+
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="co.ajeg.tutoflash"

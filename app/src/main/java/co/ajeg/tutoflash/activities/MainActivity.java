@@ -3,38 +3,28 @@ package co.ajeg.tutoflash.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.firebase.FirebaseMensajes;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
-import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.fragments.CalendarioFragment;
 import co.ajeg.tutoflash.fragments.chat.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
 import co.ajeg.tutoflash.fragments.PerfilFragment;
-import co.ajeg.tutoflash.fragments.chat.ChatItemFragment;
 import co.ajeg.tutoflash.fragments.materias.HomeFragment;
-import co.ajeg.tutoflash.fragments.materias.MateriasItemFragment;
-import co.ajeg.tutoflash.fragments.materias.MateriasItemOfrecerFragment;
-import co.ajeg.tutoflash.fragments.materias.MateriasSolicitarFragment;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
-import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaColaborarFragment;
-import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaCreateFragment;
-import co.ajeg.tutoflash.fragments.notificacion.NotificacionTemaTutorFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
-import co.ajeg.tutoflash.model.notificacion.Notificacion;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigationView;
 
+    public FirebaseMensajes firebaseMensajes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firebaseMensajes = FirebaseMensajes.getInstance(this);
 
         this.galeria = new Galeria(this);
 
@@ -86,11 +80,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentUtil.replaceFragment(R.id.fragment_container_header, headerFragment);
         fragmentUtil.replaceFragment(R.id.fragment_container, homeFragment);
 
-       // Autenticacion.logout();
 
 
-       // NotificacionUtil.createNotification(this, "prueba", "Esto es una prueba de notificacion");
+       firebaseMensajes.suscribir((task)->{
+           if(task){
 
+           }else{
+
+           }
+       });
 
 
         navigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);

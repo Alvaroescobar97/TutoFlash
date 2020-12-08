@@ -34,6 +34,7 @@ import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.activities.PreLogin;
+import co.ajeg.tutoflash.firebase.FirebaseMensajes;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
@@ -173,8 +174,11 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
     }
 
     public void cerrarSession(View v){
-        Autenticacion.logout();
-        FragmentUtil.startActivity(PreLogin.class);
+        FirebaseMensajes.desuscribirse((task -> {
+            Autenticacion.logout();
+            FragmentUtil.startActivity(PreLogin.class);
+        }));
+
     }
 
     @Override

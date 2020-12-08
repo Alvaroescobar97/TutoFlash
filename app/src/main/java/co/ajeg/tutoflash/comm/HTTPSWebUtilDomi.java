@@ -118,7 +118,7 @@ public class HTTPSWebUtilDomi {
             HttpsURLConnection connection = (HttpsURLConnection) page.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", API_KEY_MESSAGE);
+            connection.setRequestProperty("Authorization", "key=" + API_KEY_MESSAGE);
 
             connection.setDoInput(true);
             connection.setDoOutput(true);
