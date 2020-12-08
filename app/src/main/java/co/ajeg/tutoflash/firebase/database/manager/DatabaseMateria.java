@@ -68,46 +68,64 @@ public class DatabaseMateria {
         });
     }
 
-    private void deleteAllTutoresFromTema(String nameMateria,MateriaTema materiaTema, List<MateriaTutor> materiaTutorList, MateriaTutor tutor, ChatPerson chatPerson){
+    public void deleteAllTutoresFromTema(String nameMateria, MateriaTema materiaTema, List<MateriaTutor> materiaTutorList, OnCompleteListenerTema onCompleteListenerTema) {
+        activity.runOnUiThread(()->{
+            deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, null, null, onCompleteListenerTema);
+        });
+    }
 
-        String id = UUID.randomUUID().toString();
-        String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO;
-        String refId = chatPerson.getId();
-        List<String> dirDatabase = new ArrayList<>();
-        dirDatabase.add(DBROUTES.CHATS);
-        dirDatabase.add(chatPerson.getId());
-        String title ="Tutor Aceptado";
-        String descripcion = "Te han seleccionado para tutor";
-        long fecha = new Date().getTime();
 
-        //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
-        Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
+    private void deleteAllTutoresFromTema(String nameMateria, MateriaTema materiaTema, List<MateriaTutor> materiaTutorList, MateriaTutor tutor, ChatPerson chatPerson, OnCompleteListenerTema onCompleteListenerTema) {
 
-        DatabaseNotificacion
-                .getRefCollectionAllNotificaciones(tutor.getId())
-                .document(notificacion.getId()).set(notificacion).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+        if (tutor != null) {
 
-                    }else{
+            String id = UUID.randomUUID().toString();
+            String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO;
+            String refId = chatPerson.getId();
+            List<String> dirDatabase = new ArrayList<>();
+            dirDatabase.add(DBROUTES.CHATS);
+            dirDatabase.add(chatPerson.getId());
+            String title = "Tutor Aceptado";
+            String descripcion = "Te han seleccionado para tutor";
+            long fecha = new Date().getTime();
 
-                    }
+            //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
+            Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
+
+            DatabaseNotificacion
+                    .getRefCollectionAllNotificaciones(tutor.getId())
+                    .document(notificacion.getId()).set(notificacion).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+
+                } else {
+
+                }
+            });
+
+
+        }
+        DatabaseNotificacion.getRefCollectionAllNotificaciones(materiaTema.getAutorId()).document(materiaTema.getId()).delete();
+        getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).delete().addOnCompleteListener(task -> {
+            if (onCompleteListenerTema != null) {
+                if (task.isSuccessful()) {
+                    onCompleteListenerTema.onLoadTema(materiaTema);
+                } else {
+                    onCompleteListenerTema.onLoadTema(null);
+                }
+            }
         });
 
 
-        getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).delete();
-
-        DatabaseNotificacion.getRefCollectionAllNotificaciones(tutor.getAutorId()).document(materiaTema.getId()).delete();
-
-
-        for (MateriaTutor materiaTutor : materiaTutorList){
-            if(materiaTutor.getId().equals(tutor.getId()) == false){
+        for (MateriaTutor materiaTutor : materiaTutorList) {
+            if (tutor != null && materiaTutor.getId().equals(tutor.getId()) == false) {
                 FirebaseMensajes.sendNotificacion(tutor.getTutorId(), "Solicitur Eliminada", "Ya se ha seleccionado un tutor. Gracias por el ofrecimiento");
             }
-            deteletMateriaTutor(nameMateria, materiaTema, materiaTutor.getTutorId(), (t)->{});
+            deteletMateriaTutor(nameMateria, materiaTema, materiaTutor.getTutorId(), (t) -> {
+            });
         }
     }
 
-    public void seleccionarTutor(String nameMateria, MateriaTema materiaTema, MateriaTutor tutor, List<MateriaTutor> materiaTutorList,  OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {
+    public void seleccionarTutor(String nameMateria, MateriaTema materiaTema, MateriaTutor tutor, List<MateriaTutor> materiaTutorList, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {
         activity.runOnUiThread(() -> {
             //String id, String sujectAId, String sujectBId, String dateLast
 
@@ -123,7 +141,7 @@ public class DatabaseMateria {
                         if (documentSnapshot.exists()) {
                             ChatPerson chatPerson = documentSnapshot.toObject(ChatPerson.class);
 
-                            deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, tutor, chatPerson);
+                            deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, tutor, chatPerson, null);
 
                             onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
 
@@ -144,7 +162,7 @@ public class DatabaseMateria {
                                             DatabaseUser.getRefUser(user.getId()).collection(DBROUTES.USERS_CHATS).document(tutor.getTutorId()).set(chatPerson).addOnCompleteListener((chatFrom) -> {
                                                 if (chatFrom.isSuccessful()) {
 
-                                                    deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, tutor, chatPerson);
+                                                    deleteAllTutoresFromTema(nameMateria, materiaTema, materiaTutorList, tutor, chatPerson, null);
 
                                                     onCompleteListenerMateriaTutor.onLoadMateriaTutor(tutor);
                                                 } else {
@@ -288,25 +306,25 @@ public class DatabaseMateria {
         });
     }
 
-    public void deteletMateriaTutor(String nameMateria, MateriaTema materiaTema, String tutorId, OnCompleteListenerTema onCompleteListenerTema){
-        activity.runOnUiThread(()->{
+    public void deteletMateriaTutor(String nameMateria, MateriaTema materiaTema, String tutorId, OnCompleteListenerTema onCompleteListenerTema) {
+        activity.runOnUiThread(() -> {
 
             getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).collection(DBROUTES.MATERIAS_OFRECIMIENTOS)
                     .document(tutorId).delete().addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            Toast.makeText(activity, "Delete OFRECIEMIENTO", Toast.LENGTH_SHORT).show();
-                            DatabaseNotificacion.getRefCollectionAllNotificaciones(tutorId).document(materiaTema.getId()).delete()
-                                    .addOnCompleteListener((deleteNotificacion)->{
-                                        if(deleteNotificacion.isSuccessful()){
-                                            Toast.makeText(activity, "D: NOTIFICIACION", Toast.LENGTH_SHORT).show();
-                                            onCompleteListenerTema.onLoadTema(materiaTema);
-                                        }else{
-                                            onCompleteListenerTema.onLoadTema(null);
-                                        }
-                                    });
-                        }else{
-                            onCompleteListenerTema.onLoadTema(null);
-                        }
+                if (task.isSuccessful()) {
+                    Toast.makeText(activity, "Delete OFRECIEMIENTO", Toast.LENGTH_SHORT).show();
+                    DatabaseNotificacion.getRefCollectionAllNotificaciones(tutorId).document(materiaTema.getId()).delete()
+                            .addOnCompleteListener((deleteNotificacion) -> {
+                                if (deleteNotificacion.isSuccessful()) {
+                                    Toast.makeText(activity, "D: NOTIFICIACION", Toast.LENGTH_SHORT).show();
+                                    onCompleteListenerTema.onLoadTema(materiaTema);
+                                } else {
+                                    onCompleteListenerTema.onLoadTema(null);
+                                }
+                            });
+                } else {
+                    onCompleteListenerTema.onLoadTema(null);
+                }
             });
         });
     }

@@ -206,7 +206,16 @@ public class NotificacionTemaCreateFragment extends Fragment {
     }
 
     private void onDeletePublicacionTema(View v){
+        if(this.notificacion != null && this.materiaTema != null && this.materiaTutorsList != null){
+            String nameMateria = this.notificacion.getDirDatabase().get(1);
+            this.databaseMateria.deleteAllTutoresFromTema(nameMateria, this.materiaTema, this.materiaTutorsList, (resultMateria)->{
+                if(resultMateria != null){
+                    FragmentUtil.goToBackFragment();
+                }else{
 
+                }
+            });
+        }
     }
 
     public void setCurrentNotificacion(Notificacion notificacion) {
