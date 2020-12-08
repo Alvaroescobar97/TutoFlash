@@ -55,7 +55,7 @@ public class DatabaseMateria {
     }
 
     public void findMateriasForName(String name, OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
-        String temaString = name.trim().replaceAll(" ", "").toLowerCase();
+        String temaString = name.trim().replaceAll(" ", "");
         activity.runOnUiThread(() -> {
             getRefCollectionAllMaterias().whereEqualTo("name", temaString).get().addOnCompleteListener((task) -> {
                 if (task.isSuccessful()) {
@@ -211,7 +211,7 @@ public class DatabaseMateria {
 
     public void createTema(String materiaName, MateriaTema materiaTema, OnCompleteListenerTema onCompleteListenerTema) {
         activity.runOnUiThread(() -> {
-            String temaString = materiaName.trim().replaceAll(" ", "").toLowerCase();
+            String temaString = materiaName.trim().replaceAll(" ", "");
             getRefCollectionAllMaterias().document(temaString).get().addOnCompleteListener(result -> {
                 if (result.isSuccessful()) {
                     DocumentSnapshot documentReference = result.getResult();
