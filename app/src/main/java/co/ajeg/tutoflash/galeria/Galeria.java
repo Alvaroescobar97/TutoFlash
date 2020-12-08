@@ -80,9 +80,7 @@ public class Galeria {
                     onCompleteListenerImage.onLoad(image, path);
                 }
 
-            }
-
-            if(requestCode == GALLERY_CALLBACK && resultCode == this.activity.RESULT_OK){
+            }else if(requestCode == GALLERY_CALLBACK && resultCode == this.activity.RESULT_OK){
                 Uri uri = data.getData();
                 String path = UtilDomi.getPath(this.activity, uri);
                 Bitmap bitmap = BitmapFactory.decodeFile(path);
@@ -90,7 +88,13 @@ public class Galeria {
                 if(onCompleteListenerImage != null){
                     onCompleteListenerImage.onLoad(bitmap, path);
                 }
+            }else{
+                if(onCompleteListenerImage != null){
+                    onCompleteListenerImage.onLoad(null, null);
+                }
             }
+
+
         });
 
 

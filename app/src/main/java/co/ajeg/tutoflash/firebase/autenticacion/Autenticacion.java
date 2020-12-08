@@ -83,10 +83,11 @@ public class Autenticacion {
                         onCompleteListenetEmail.onUpdateEmail(null);
                     }
                 });
+            }else if(email.equals(user.getEmail())){
+                onCompleteListenetEmail.onUpdateEmail(email);
             }else{
                 onCompleteListenetEmail.onUpdateEmail(null);
             }
-
         });
     }
 
@@ -96,6 +97,9 @@ public class Autenticacion {
                 StorageFirebase.uploadFile(new String[]{DBROUTES.USERS_IMAGES, newUser.getId()}, path, (urlResult) -> {
                     this.appCompatActivity.runOnUiThread(() -> {
                         if (urlResult != null) {
+                            if(newUser.getName() == null || newUser.getName().equals("")){
+                                newUser.setName(user.getName());
+                            }
                             newUser.setImage(urlResult);
                             FirebaseFirestore.getInstance().collection(DBROUTES.USERS).document(newUser.getId()).set(newUser).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {

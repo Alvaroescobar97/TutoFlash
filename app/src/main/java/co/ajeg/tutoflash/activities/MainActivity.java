@@ -60,12 +60,16 @@ public class MainActivity extends AppCompatActivity {
     public Autenticacion autenticacion;
     FragmentUtil fragmentUtil;
 
+    public Galeria galeria;
+
     private BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.galeria = new Galeria(this);
 
         fragmentUtil = new FragmentUtil(this);
 
@@ -149,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         this.autenticacion = new Autenticacion(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.galeria.onActivityResult(requestCode, resultCode, data);
     }
 
 }

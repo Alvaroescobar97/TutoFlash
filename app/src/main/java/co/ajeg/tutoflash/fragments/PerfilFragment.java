@@ -50,13 +50,13 @@ import static co.ajeg.tutoflash.galeria.Galeria.GALLERY_CALLBACK;
  * Use the {@link PerfilFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PerfilFragment extends Fragment {
+public class PerfilFragment extends Fragment implements Galeria.OnCompleteListenerImage {
 
     private Button btn_perfil_cerrar_session,guardarBtn;
     private ImageView fotoPerfil;
     private EditText nombreET,correoET,passwordET;
 
-    private Galeria galeria;
+
     private User user;
     private MainActivity mainActivity;
     private String path;
@@ -66,8 +66,10 @@ public class PerfilFragment extends Fragment {
     public PerfilFragment(MainActivity mainActivity) {
         // Required empty public constructor
         this.mainActivity = mainActivity;
-        this.galeria = new Galeria(mainActivity);
+
         this.autenticacion = new Autenticacion(mainActivity);
+
+
     }
 
     public static PerfilFragment newInstance(MainActivity mainActivity) {
@@ -87,6 +89,7 @@ public class PerfilFragment extends Fragment {
         FragmentUtil.getActivity().headerFragment.changeTitleHeader( "Perfil" );
 
         this.user = Autenticacion.getUser();
+        this.mainActivity.galeria.getResultImage(this);
 
         fotoPerfil = view.findViewById(R.id.fotoPerfil);
         nombreET = view.findViewById( R.id.nombreET);
@@ -104,72 +107,62 @@ public class PerfilFragment extends Fragment {
             passwordET.setVisibility(View.GONE);
         }
 
-        DatabaseUser.getImageUrlProfile(mainActivity, user.getImage(), (urlImage)->{
-            Glide.with(fotoPerfil)
-                    .load(urlImage)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(fotoPerfil);
-        });
+        if(path == null){
+            DatabaseUser.getImageUrlProfile(this.mainActivity, user.getImage(), (urlResult)->{
+                if(urlResult != null){
+                    Glide.with(this.fotoPerfil)
+                            .load(urlResult)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(this.fotoPerfil);
+                }
+
+            });
+        }
+
 
         btn_perfil_cerrar_session.setOnClickListener(this::cerrarSession);
         fotoPerfil.setOnClickListener( this::cargarFoto );
         guardarBtn.setOnClickListener( this::guardar );
 
+
+
         return view;
     }
 
     private void cargarFoto(View view) {
-        this.galeria.openGaleria();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.galeria.onActivityResult(requestCode, resultCode, data);
+        this.path = "";
+        this.mainActivity.galeria.openGaleria();
     }
 
     private void guardar(View view) {
 
-
         String name = nombreET.getText().toString();
         String email = correoET.getText().toString().trim();
         String password = passwordET.getText().toString().trim();
-
-
+        
         User newUser = this.user;
 
         boolean condicionName = !name.equals("");
         boolean condicionEmail = !email.equals("") && user.getEmail().equals(email) == false;
         boolean condicionPass = !password.equals("");
 
-        if(condicionName){
+        if(this.path != null || condicionName || condicionEmail){
             newUser.setName(name);
             this.autenticacion.updateEmail(email, (updateEmail)->{
                 if(updateEmail != null){
-
-                    this.autenticacion.updateUserInformation(newUser, this.path, (usuarioResult)->{
-                        this.path = null;
-                        if(usuarioResult != null){
-                            FragmentUtil.goToBackFragment();
-                        } else {
-
-                        }
-                    });
-
-                }else if(condicionEmail){
                     newUser.setEmail(email);
-                    this.autenticacion.updateUserInformation(newUser, this.path, (usuarioResult)->{
-                        this.path = null;
-                        if(usuarioResult != null){
-                            FragmentUtil.goToBackFragment();
-                        } else {
-
-                        }
-                    });
-
+                        this.autenticacion.updateUserInformation(newUser, this.path, (usuarioResult)->{
+                            this.path = null;
+                            if(usuarioResult != null){
+                                FragmentUtil.goToBackFragment();
+                            } else {
+                                FragmentUtil.goToBackFragment();
+                            }
+                        });
+                }else{
+                    FragmentUtil.goToBackFragment();
                 }
             });
-
         }
 
         if(condicionPass){
@@ -177,15 +170,18 @@ public class PerfilFragment extends Fragment {
         }
 
 
-        if(!passwordET.getText().toString().trim().isEmpty()){
-
-           // auth.getCurrentUser().updatePassword(passwordET.getText().toString().trim());
-        }
-
     }
 
     public void cerrarSession(View v){
         Autenticacion.logout();
         FragmentUtil.startActivity(PreLogin.class);
+    }
+
+    @Override
+    public void onLoad(Bitmap bitmap, String path) {
+        this.path = path;
+        this.fotoPerfil.setImageBitmap(bitmap);
+
+
     }
 }
