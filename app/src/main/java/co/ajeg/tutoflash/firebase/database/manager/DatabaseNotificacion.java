@@ -3,6 +3,7 @@ package co.ajeg.tutoflash.firebase.database.manager;
 import android.app.Notification;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -34,6 +35,19 @@ public class DatabaseNotificacion {
             thisClass = new DatabaseNotificacion(activity);
         }
         return thisClass;
+    }
+
+    public static void eliminarNotificacionId(Fragment fragment, Notificacion notificacion, OnCompleteListenerNotificacion onCompleteListenerNotificacion){
+        fragment.getActivity().runOnUiThread(()->{
+            getRefMyCollectionAllNotificaciones().document(notificacion.getId()).delete().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    onCompleteListenerNotificacion.onLoadNotificacion(notificacion);
+                }else{
+                    onCompleteListenerNotificacion.onLoadNotificacion(null);
+                }
+            });
+        });
+
     }
 
     public void getAllNotificaciones(OnCompleteListenerAllNotificaciones onCompleteListenerAllNotificaciones){

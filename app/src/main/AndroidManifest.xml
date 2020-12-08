@@ -14,17 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TutoFlash">
-        <activity android:name=".activities.MainActivity"></activity>
-        <activity android:name=".activities.RegistroActivity" />
-        <activity android:name=".activities.PreLogin" />
-        <activity android:name=".activities.SplashScreen">
+        <activity android:name=".activities.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.RegistroActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.PreLogin"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.SplashScreen"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".services.FCMService">
             <intent-filter>

@@ -6,12 +6,25 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".fragments.notificacion.NotificacionItemFragment">
 
-<TextView
-    android:id="@+id/textView4"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Registro"
-    tools:layout_editor_absoluteX="175dp"
-    tools:layout_editor_absoluteY="34dp" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Notificación"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_notificacion_item_eliminar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:backgroundTint="@color/red"
+        android:text="ELIMINAR NOTIFICACIÓN"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

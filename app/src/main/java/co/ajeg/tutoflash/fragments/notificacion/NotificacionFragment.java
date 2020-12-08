@@ -45,9 +45,11 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
 
      */
 
+    private NotificacionItemFragment notificacionItemFragment;
     public NotificacionTemaTutorFragment notificacionTemaTutorFragments;
-    public NotificacionTemaCreateFragment notificacionTemaCreateFragment;
-    public NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
+    private NotificacionTemaCreateFragment notificacionTemaCreateFragment;
+    private NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
+
 
 
     public NotificacionFragment(MainActivity mainActivity) {
@@ -59,6 +61,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
         notificacionTemaTutorFragments = new NotificacionTemaTutorFragment(this);
         notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
         notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
+        this.notificacionItemFragment = NotificacionItemFragment.newInstance(this);
     }
 
 
@@ -154,6 +157,9 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
         }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
             fragmentResult = this.notificacionTemaColaborarFragment;
             this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
+        }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO)){
+            fragmentResult = this.notificacionItemFragment;
+            this.notificacionItemFragment.setCurrentNotificacion(notificacion);
         }
         return fragmentResult;
     }
