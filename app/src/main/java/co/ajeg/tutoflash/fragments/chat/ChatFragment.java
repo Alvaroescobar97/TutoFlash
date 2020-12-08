@@ -77,7 +77,7 @@ public class ChatFragment extends Fragment {
 
         this.adapterList = new AdapterList(this.rv_chat_personas, this.chatPersonList, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
 
-            private ImageView civ_item_chat_persona_image;
+
             private TextView tv_item_chat_persona_name;
             private TextView tv_item_chat_persona_rol;
             private TextView tv_item_chat_persona_fecha;
@@ -85,7 +85,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onCreateView(View v) {
 
-                this.civ_item_chat_persona_image = v.findViewById(R.id.iv_item_chat_persona_image);
+
                 this.tv_item_chat_persona_name = v.findViewById(R.id.tv_item_chat_persona_name);
                 this.tv_item_chat_persona_rol = v.findViewById(R.id.tv_item_chat_persona_rol);
                 this.tv_item_chat_persona_fecha = v.findViewById(R.id.tv_item_chat_persona_fecha);
@@ -95,6 +95,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onChangeView(ChatPerson elemnto, View view, int position) {
 
+                ImageView civ_item_chat_persona_image;
+                civ_item_chat_persona_image = view.findViewById(R.id.iv_item_chat_persona_image);
 
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
                 Date date = new Date(elemnto.getDateLast());
@@ -119,10 +121,10 @@ public class ChatFragment extends Fragment {
 
                             DatabaseUser.getImageUrlProfile(mainActivity, userResult.getImage(), (urlImageResult)->{
                                 if(urlImageResult != null){
-                                    Glide.with(this.civ_item_chat_persona_image)
+                                    Glide.with(civ_item_chat_persona_image)
                                             .load(urlImageResult)
                                             .apply(RequestOptions.circleCropTransform())
-                                            .into(this.civ_item_chat_persona_image);
+                                            .into(civ_item_chat_persona_image);
                                 }
 
                             });

@@ -101,14 +101,14 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
         adapterList = new AdapterList(this.rv_home_materias, this.materiaList, R.layout.list_item_home_materia, new AdapterManagerList<Materia>() {
 
-            private ImageView iv_item_home_materia_image;
+
             private TextView tv_item_home_materia_name;
             private TextView tv_item_home_materia_fecha;
 
             @Override
             public void onCreateView(View v) {
 
-                iv_item_home_materia_image = v.findViewById(R.id.iv_item_home_materia_image);
+
                 tv_item_home_materia_name = v.findViewById(R.id.tv_item_home_materia_name);
                 tv_item_home_materia_fecha = v.findViewById(R.id.tv_item_home_materia_fecha);
 
@@ -116,6 +116,10 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
             @Override
             public void onChangeView(Materia materia, View view, int position) {
+                
+                ImageView iv_item_home_materia_image;
+                iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
+
                 int nEntradas = materia.getnEntradas();
                 tv_item_home_materia_name.setText(ucFirst(materia.getName()));
                 tv_item_home_materia_fecha.setText(nEntradas + " entradas");
