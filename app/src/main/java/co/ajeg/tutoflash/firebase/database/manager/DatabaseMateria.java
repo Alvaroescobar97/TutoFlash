@@ -150,7 +150,7 @@ public class DatabaseMateria {
                         //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
                         Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
 
-                        DatabaseNotificacion.getRefCollectionAllNotificaciones(tutor.getAutorId()).document(notificacion.getId()).set(notificacion);
+                        DatabaseNotificacion.getRefCollectionAllNotificaciones(materiaTema.getAutorId()).document(notificacion.getId()).set(notificacion);
 
                         DocumentSnapshot documentSnapshot = task.getResult();
                         if (documentSnapshot.exists()) {
