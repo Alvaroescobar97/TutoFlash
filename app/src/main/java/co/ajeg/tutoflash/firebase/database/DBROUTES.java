@@ -19,6 +19,7 @@ public interface DBROUTES {
     String NOTIFICACION_TYPE_SOLICITUD_TUTOR = "solicitud_tutor";
     String NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO = "solicitud_tutor_seleccionado";
     String NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR = "solicitud_tutor_dar";
+    String NOTIFICACION_TYPE_SOLICITUD_CALIFICAR = "solicitud_calificar";
 
 
     //De notificaciones de usuarios

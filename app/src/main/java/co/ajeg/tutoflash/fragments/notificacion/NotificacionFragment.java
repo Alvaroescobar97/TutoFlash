@@ -29,6 +29,7 @@ import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseNotificacion;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
+import co.ajeg.tutoflash.fragments.CalificacionFragment;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
@@ -45,6 +46,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
 
      */
 
+    private CalificacionFragment calificacionFragment;
     private NotificacionItemFragment notificacionItemFragment;
     public NotificacionTemaTutorFragment notificacionTemaTutorFragments;
     private NotificacionTemaCreateFragment notificacionTemaCreateFragment;
@@ -62,6 +64,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
         notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
         notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
         this.notificacionItemFragment = NotificacionItemFragment.newInstance(this);
+        this.calificacionFragment = CalificacionFragment.newInstance(this);
     }
 
 
@@ -160,6 +163,9 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
         }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_SELECIONADO)){
             fragmentResult = this.notificacionItemFragment;
             this.notificacionItemFragment.setCurrentNotificacion(notificacion);
+        }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_CALIFICAR)){
+            fragmentResult = this.calificacionFragment;
+            this.calificacionFragment.setCurrentNotificacion(notificacion);
         }
         return fragmentResult;
     }

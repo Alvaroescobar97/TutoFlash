@@ -13,6 +13,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,12 +30,17 @@ public class CalificacionFragment extends Fragment {
     private Button btn_calificacion_calificar;
     private Button btn_calificacion_cancelar;
 
-    public CalificacionFragment() {
+    private Notificacion notificacion;
+
+    private NotificacionFragment notificacionFragment;
+
+    public CalificacionFragment(NotificacionFragment notificacionFragment) {
         // Required empty public constructor
+        this.notificacionFragment = notificacionFragment;
     }
 
-    public static CalificacionFragment newInstance() {
-        CalificacionFragment fragment = new CalificacionFragment();
+    public static CalificacionFragment newInstance(NotificacionFragment notificacionFragment) {
+        CalificacionFragment fragment = new CalificacionFragment(notificacionFragment);
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -58,5 +65,9 @@ public class CalificacionFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void setCurrentNotificacion(Notificacion notificacion){
+        this.notificacion = notificacion;
     }
 }

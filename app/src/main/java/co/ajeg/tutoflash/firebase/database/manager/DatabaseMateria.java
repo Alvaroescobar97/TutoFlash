@@ -137,6 +137,21 @@ public class DatabaseMateria {
 
                         FirebaseMensajes.sendNotificacion(tutor.getTutorId(), "Seleccionado", "Felicitaciones te han seleccionado como tutor");
 
+                        String id = UUID.randomUUID().toString();
+                        String type = DBROUTES.NOTIFICACION_TYPE_SOLICITUD_CALIFICAR;
+                        String refId = tutor.getTutorId();
+                        List<String> dirDatabase = new ArrayList<>();
+                        dirDatabase.add(DBROUTES.USERS);
+                        dirDatabase.add(tutor.getTutorId());
+                        String title = "Califica al tutor";
+                        String descripcion = "Despues de la tutoria danos tu opinion";
+                        long fecha = new Date().getTime();
+
+                        //String id, String type, String refId, List<String> dirDatabase, String title, String descripcion, long fecha
+                        Notificacion notificacion = new Notificacion(id, type, refId, dirDatabase, title, descripcion, fecha);
+
+                        DatabaseNotificacion.getRefCollectionAllNotificaciones(tutor.getAutorId()).document(notificacion.getId()).set(notificacion);
+
                         DocumentSnapshot documentSnapshot = task.getResult();
                         if (documentSnapshot.exists()) {
                             ChatPerson chatPerson = documentSnapshot.toObject(ChatPerson.class);
