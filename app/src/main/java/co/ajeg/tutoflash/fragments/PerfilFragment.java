@@ -55,7 +55,7 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
 
     private Button btn_perfil_cerrar_session,guardarBtn;
     private ImageView fotoPerfil;
-    private EditText nombreET,correoET,passwordET;
+    private EditText nombreET,correoET,passwordET, et_perfil_carrera;
 
 
     private User user;
@@ -87,7 +87,7 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
 
-        FragmentUtil.getActivity().headerFragment.changeTitleHeader( "Perfil" );
+        FragmentUtil.getActivity().headerFragment.changeTitleHeader( "Mi Perfil" );
 
         this.user = Autenticacion.getUser();
         this.mainActivity.galeria.getResultImage(this);
@@ -96,12 +96,14 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
         nombreET = view.findViewById( R.id.nombreET);
         correoET = view.findViewById( R.id.correoET );
         passwordET = view.findViewById( R.id.passwordET );
+        et_perfil_carrera = view.findViewById( R.id.et_perfil_carrera );
 
         guardarBtn = view.findViewById( R.id.guardarBtn );
         btn_perfil_cerrar_session = view.findViewById(R.id.btn_perfil_cerrar_session);
 
         nombreET.setText( user.getName() );
         correoET.setText( user.getEmail() );
+        et_perfil_carrera.setText( user.getCarrera() );
 
         if(user.getType() == Autenticacion.USER_GOOGLE){
             correoET.setVisibility(View.GONE);
@@ -140,7 +142,8 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
         String name = nombreET.getText().toString();
         String email = correoET.getText().toString().trim();
         String password = passwordET.getText().toString().trim();
-        
+        String carrera = et_perfil_carrera.getText().toString().trim();
+
         User newUser = this.user;
 
         boolean condicionName = !name.equals("");
@@ -149,6 +152,11 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
 
         if(this.path != null || condicionName || condicionEmail){
             newUser.setName(name);
+
+            if(carrera.equals("") == false){
+                newUser.setCarrera(carrera);
+            }
+            
             this.autenticacion.updateEmail(email, (updateEmail)->{
                 if(updateEmail != null){
                     newUser.setEmail(email);
