@@ -35,17 +35,30 @@ import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 public class NotificacionFragment extends Fragment implements DatabaseNotificacion.OnCompleteListenerAllNotificaciones {
 
-    private MainActivity mainActivity;
+    public MainActivity mainActivity;
     private DatabaseNotificacion databaseNotificacion;
     private RecyclerView rv_notificaciones_lista;
     private List<Notificacion> notificacions;
     private AdapterList<Notificacion> adapterList;
+
+    /*Fragments
+
+     */
+
+    public NotificacionTemaTutorFragment notificacionTemaTutorFragment;
+    public NotificacionTemaCreateFragment notificacionTemaCreateFragment;
+    public NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
+
 
     public NotificacionFragment(MainActivity mainActivity) {
         // Required empty public constructor
         this.mainActivity = mainActivity;
         this.databaseNotificacion = DatabaseNotificacion.getInstance(mainActivity);
         this.databaseNotificacion.getAllNotificaciones(this);
+
+        notificacionTemaTutorFragment = new NotificacionTemaTutorFragment(this);
+        notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
+        notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
     }
 
 
@@ -108,7 +121,7 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
                 }
 
                 view.setOnClickListener((v)->{
-                    Fragment fragmentResult = mainActivity.getNotificacionType(notificacion);
+                    Fragment fragmentResult = getNotificacionType(notificacion);
                     if(fragmentResult != null){
                         FragmentUtil.replaceFragmentInMain(fragmentResult);
                     }
@@ -131,5 +144,18 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
 
             this.adapterList.onUpdateData(this.notificacions);
         }
+    }
+
+    public Fragment getNotificacionType(Notificacion notificacion){
+        Fragment fragmentResult = null;
+        if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
+            fragmentResult = this.notificacionTemaCreateFragment;
+            this.notificacionTemaCreateFragment.setCurrentNotificacion(notificacion);
+        }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
+            fragmentResult = this.notificacionTemaColaborarFragment;
+            this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
+            this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
+        }
+        return fragmentResult;
     }
 }

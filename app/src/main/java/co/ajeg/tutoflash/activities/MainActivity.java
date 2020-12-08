@@ -44,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public MateriasSolicitarFragment materiasSolicitarFragment;
 
     public NotificacionFragment notificacionFragment;
-    public NotificacionTemaTutorFragment notificacionTemaTutorFragment;
-    public NotificacionTemaCreateFragment notificacionTemaCreateFragment;
-    public NotificacionTemaColaborarFragment notificacionTemaColaborarFragment;
+
 
     public CalendarioFragment calendarioFragment;
 
@@ -83,9 +81,7 @@ public class MainActivity extends AppCompatActivity {
         materiasSolicitarFragment = new MateriasSolicitarFragment(this);
 
         notificacionFragment = new NotificacionFragment(this);
-        notificacionTemaTutorFragment = new NotificacionTemaTutorFragment(this);
-        notificacionTemaCreateFragment = NotificacionTemaCreateFragment.newInstance(this);
-        notificacionTemaColaborarFragment = NotificacionTemaColaborarFragment.newInstance(this);
+
 
         calendarioFragment = CalendarioFragment.newInstance();
 
@@ -136,18 +132,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public Fragment getNotificacionType(Notificacion notificacion){
-        Fragment fragmentResult = null;
-        if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
-            fragmentResult = this.notificacionTemaCreateFragment;
-            this.notificacionTemaCreateFragment.setCurrentNotificacion(notificacion);
-        }else if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR_DAR)){
-            fragmentResult = this.notificacionTemaColaborarFragment;
-            this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
-            this.notificacionTemaColaborarFragment.setCurrentNotificacion(notificacion);
-        }
-        return fragmentResult;
-    }
+
 
     @Override
     protected void onStart() {

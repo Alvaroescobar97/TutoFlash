@@ -38,7 +38,8 @@ import co.ajeg.tutoflash.model.notificacion.Notificacion;
  */
 public class NotificacionTemaCreateFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    private NotificacionFragment notificacionFragment;
+
     private ImageView iv_notificacion_tema_create_imageuser;
     private TextView tv_notificacion_tema_create_tema;
     private TextView tv_notificacion_tema_create_usuario;
@@ -52,15 +53,15 @@ public class NotificacionTemaCreateFragment extends Fragment {
 
     private DatabaseMateria databaseMateria;
 
-    public NotificacionTemaCreateFragment(MainActivity mainActivity) {
+    public NotificacionTemaCreateFragment(NotificacionFragment notificacionFragment) {
         // Required empty public constructor
-        this.mainActivity = mainActivity;
+        this.notificacionFragment = notificacionFragment;
         this.materiaTutorsList = new ArrayList<>();
-        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
+        this.databaseMateria = DatabaseMateria.getInstance(notificacionFragment.mainActivity);
     }
 
-    public static NotificacionTemaCreateFragment newInstance(MainActivity mainActivity) {
-        NotificacionTemaCreateFragment fragment = new NotificacionTemaCreateFragment(mainActivity);
+    public static NotificacionTemaCreateFragment newInstance(NotificacionFragment notificacionFragment) {
+        NotificacionTemaCreateFragment fragment = new NotificacionTemaCreateFragment(notificacionFragment);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -71,6 +72,8 @@ public class NotificacionTemaCreateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notificacion_tema_create, container, false);
+
+        MainActivity mainActivity = notificacionFragment.mainActivity;
 
         this.iv_notificacion_tema_create_imageuser = view.findViewById(R.id.iv_notificacion_tema_create_imageuser);
         this.tv_notificacion_tema_create_tema = view.findViewById(R.id.tv_notificacion_tema_create_tema);
@@ -121,9 +124,9 @@ public class NotificacionTemaCreateFragment extends Fragment {
                          */
 
                         view.setOnClickListener(v->{
-                            mainActivity.notificacionTemaTutorFragment.setCurrentMateriaTutor(tutor);
-                            mainActivity.notificacionTemaTutorFragment.setCurrentTutor(userTutor);
-                            FragmentUtil.replaceFragmentInMain(mainActivity.notificacionTemaTutorFragment);
+                            mainActivity.notificacionFragment.notificacionTemaTutorFragment.setCurrentMateriaTutor(tutor);
+                            mainActivity.notificacionFragment.notificacionTemaTutorFragment.setCurrentTutor(userTutor);
+                            FragmentUtil.replaceFragmentInMain(mainActivity.notificacionFragment.notificacionTemaTutorFragment);
                         });
                     }
                 });

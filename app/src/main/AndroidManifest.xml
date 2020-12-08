@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TutoFlash">
         <activity android:name=".activities.MainActivity"></activity>
-        <activity android:name=".activities.InicioActivity" />
         <activity android:name=".activities.RegistroActivity" />
         <activity android:name=".activities.PreLogin" />
         <activity android:name=".activities.SplashScreen">

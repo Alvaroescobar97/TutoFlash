@@ -108,7 +108,7 @@ public class MateriasItemFragment extends Fragment {
 
                                 DatabaseNotificacion.getMyNotificacion(mainActivity, tema.getId(), (notificacion)->{
                                     if(notificacion != null){
-                                        Fragment fragmentResult = mainActivity.getNotificacionType(notificacion);
+                                        Fragment fragmentResult = mainActivity.notificacionFragment.getNotificacionType(notificacion);
                                         if(fragmentResult != null){
                                             FragmentUtil.replaceFragmentInMain(fragmentResult);
                                         }

@@ -36,7 +36,7 @@ import co.ajeg.tutoflash.model.materia.MateriaTutor;
  */
 public class NotificacionTemaTutorFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    private NotificacionFragment notificacionFragment;
 
     private ImageView iv_notificacion_tema_tutor_image;
     private TextView tv_notificacion_tema_tutor_usuario;
@@ -53,16 +53,16 @@ public class NotificacionTemaTutorFragment extends Fragment {
     private List<String> horarios = new ArrayList();
     private DatabaseMateria databaseMateria;
 
-    public NotificacionTemaTutorFragment(MainActivity mainActivity) {
+    public NotificacionTemaTutorFragment(NotificacionFragment notificacionFragment) {
         // Required empty public constructor
-        this.mainActivity = mainActivity;
+        this.notificacionFragment = notificacionFragment;
         this.horarios = new ArrayList<>();
-        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
+        this.databaseMateria = DatabaseMateria.getInstance(notificacionFragment.mainActivity);
     }
 
 
-    public static NotificacionTemaTutorFragment newInstance(MainActivity mainActivity) {
-        NotificacionTemaTutorFragment fragment = new NotificacionTemaTutorFragment(mainActivity);
+    public static NotificacionTemaTutorFragment newInstance(NotificacionFragment notificacionFragment) {
+        NotificacionTemaTutorFragment fragment = new NotificacionTemaTutorFragment(notificacionFragment);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -112,7 +112,7 @@ public class NotificacionTemaTutorFragment extends Fragment {
             this.tv_notificacion_tema_tutor_usuario.setText(this.currentTutor.getName());
             this.tv_notificacion_tema_tutor_tema.setText(this.currentTutor.getCarrera());
 
-            DatabaseUser.getImageUrlProfile(mainActivity, currentTutor.getImage(), (urlImage)->{
+            DatabaseUser.getImageUrlProfile(this.notificacionFragment.mainActivity, currentTutor.getImage(), (urlImage)->{
                 if(urlImage != null){
                     Glide.with(this.iv_notificacion_tema_tutor_image)
                             .load(urlImage)
@@ -135,7 +135,7 @@ public class NotificacionTemaTutorFragment extends Fragment {
         this.databaseMateria.seleccionarTutor(this.materiaTutor, (tutor)->{
             if(tutor != null){
                 FragmentUtil.resetFragmentNav();
-                FragmentUtil.replaceFragment(R.id.fragment_container, mainActivity.chatFragment);
+                FragmentUtil.replaceFragment(R.id.fragment_container, this.notificacionFragment.mainActivity.chatFragment);
             }else{
 
             }

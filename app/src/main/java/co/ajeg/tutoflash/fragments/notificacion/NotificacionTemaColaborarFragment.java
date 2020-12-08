@@ -31,7 +31,7 @@ import co.ajeg.tutoflash.model.notificacion.Notificacion;
  */
 public class NotificacionTemaColaborarFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    private NotificacionFragment notificacionFragment;
     private ImageView iv_notificacion_tema_colaborar_image;
     private TextView tv_notificacion_tema_colaborar_tema;
     private  TextView tv_notificacion_tema_colaborar_usuario;
@@ -42,14 +42,14 @@ public class NotificacionTemaColaborarFragment extends Fragment {
     private DatabaseMateria databaseMateria;
     private MateriaTema materiaTema;
 
-    public NotificacionTemaColaborarFragment(MainActivity mainActivity) {
+    public NotificacionTemaColaborarFragment(NotificacionFragment notificacionFragment) {
         // Required empty public constructor
-        this.mainActivity = mainActivity;
-        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
+        this.notificacionFragment = notificacionFragment;
+        this.databaseMateria = DatabaseMateria.getInstance(notificacionFragment.mainActivity);
     }
 
-    public static NotificacionTemaColaborarFragment newInstance(MainActivity mainActivity) {
-        NotificacionTemaColaborarFragment fragment = new NotificacionTemaColaborarFragment(mainActivity);
+    public static NotificacionTemaColaborarFragment newInstance(NotificacionFragment notificacionFragment) {
+        NotificacionTemaColaborarFragment fragment = new NotificacionTemaColaborarFragment(notificacionFragment);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -61,6 +61,8 @@ public class NotificacionTemaColaborarFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_notificacion_tema_colaborar, container, false);
+
+        MainActivity mainActivity = this.notificacionFragment.mainActivity;
 
         this.iv_notificacion_tema_colaborar_image = view.findViewById(R.id.iv_notificacion_tema_colaborar_image);
         this.tv_notificacion_tema_colaborar_tema = view.findViewById(R.id.tv_notificacion_tema_colaborar_tema);
