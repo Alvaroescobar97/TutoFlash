@@ -44,22 +44,24 @@ import co.ajeg.tutoflash.model.chat.ChatPerson;
  */
 public class ChatItemFragment extends Fragment {
 
+    private ChatFragment chatFragment;
+
     private List<ChatMensaje> chatMensajes;
     private AdapterList<ChatMensaje> adapterList;
-    private MainActivity mainActivity;
+
     private DatabaseChat databaseChat;
     private ChatPerson chatPerson;
 
     private RecyclerView rv_chat_item_dialogos;
 
-    public ChatItemFragment(MainActivity mainActivity){
-        this.mainActivity = mainActivity;
+    public ChatItemFragment(ChatFragment chatFragment){
+        this.chatFragment = chatFragment;
         this.chatMensajes = new ArrayList<>();
-        this.databaseChat = DatabaseChat.getInstance(mainActivity);
+        this.databaseChat = DatabaseChat.getInstance(this.chatFragment.mainActivity);
     }
 
-    public static ChatItemFragment newInstance(MainActivity mainActivity) {
-        ChatItemFragment fragment = new ChatItemFragment(mainActivity);
+    public static ChatItemFragment newInstance(ChatFragment chatFragment) {
+        ChatItemFragment fragment = new ChatItemFragment(chatFragment);
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -70,8 +72,10 @@ public class ChatItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         this.databaseChat = DatabaseChat.getInstance(this.getActivity());
-        this.mainActivity = FragmentUtil.getActivity();
+        MainActivity mainActivity = FragmentUtil.getActivity();
 
         View view = inflater.inflate(R.layout.fragment_chat_item, container, false);
 

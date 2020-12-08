@@ -39,9 +39,7 @@ import co.ajeg.tutoflash.model.notificacion.Notificacion;
 public class MainActivity extends AppCompatActivity {
 
     public HomeFragment homeFragment;
-    public MateriasItemFragment materiasItemFragment;
-    public MateriasItemOfrecerFragment materiasItemOfrecerFragment;
-    public MateriasSolicitarFragment materiasSolicitarFragment;
+
 
     public NotificacionFragment notificacionFragment;
 
@@ -49,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     public CalendarioFragment calendarioFragment;
 
     public ChatFragment chatFragment;
-    public ChatItemFragment chatItemFragment;
 
     public PerfilFragment perfilFragment;
 
@@ -76,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
         headerFragment = HeaderFragment.newInstance(this);
 
         homeFragment = HomeFragment.newInstance(this);
-        materiasItemFragment = new MateriasItemFragment(this);
-        materiasItemOfrecerFragment = new MateriasItemOfrecerFragment(this);
-        materiasSolicitarFragment = new MateriasSolicitarFragment(this);
+
 
         notificacionFragment = new NotificacionFragment(this);
 
@@ -86,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         calendarioFragment = CalendarioFragment.newInstance();
 
         chatFragment = new ChatFragment(this);
-        chatItemFragment = ChatItemFragment.newInstance(this);
+
 
         perfilFragment = PerfilFragment.newInstance(this);
 

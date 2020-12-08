@@ -34,7 +34,7 @@ public class NotificacionTemaColaborarFragment extends Fragment {
     private NotificacionFragment notificacionFragment;
     private ImageView iv_notificacion_tema_colaborar_image;
     private TextView tv_notificacion_tema_colaborar_tema;
-    private  TextView tv_notificacion_tema_colaborar_usuario;
+    private TextView tv_notificacion_tema_colaborar_usuario;
     private TextView tv_notificacion_tema_colaborar_descripcion;
     private TextView tv_notificacion_tema_colaborar_tiempo;
     private Button btn_notificacion_tema_colaborar_desertar;

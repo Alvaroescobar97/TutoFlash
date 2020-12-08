@@ -38,7 +38,7 @@ import co.ajeg.tutoflash.model.materia.MateriaTutor;
 
 public class MateriasItemOfrecerFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    private HomeFragment homeFragment;
     private User autor;
     private String materiaName;
     private MateriaTema materiaTema;
@@ -57,10 +57,10 @@ public class MateriasItemOfrecerFragment extends Fragment {
     private Button btn_materias_ofrecer_ofrecer;
     private Button btn_materias_ofrecer_cancelar;
 
-    public MateriasItemOfrecerFragment(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public MateriasItemOfrecerFragment(HomeFragment homeFragment) {
+        this.homeFragment = homeFragment;
         this.horariosDisponibles = new ArrayList<>();
-        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
+        this.databaseMateria = DatabaseMateria.getInstance(homeFragment.mainActivity);
     }
 
 
@@ -145,7 +145,7 @@ public class MateriasItemOfrecerFragment extends Fragment {
                 if(materiaTutor != null){
                     FragmentUtil.resetFragmentNav();
 
-                    FragmentUtil.replaceFragment(R.id.fragment_container, mainActivity.homeFragment);
+                    FragmentUtil.replaceFragment(R.id.fragment_container, homeFragment.mainActivity.homeFragment);
                 }else{
 
                 }

@@ -41,7 +41,8 @@ import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 public class MateriasItemFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    private HomeFragment homeFragment;
+
     private List<MateriaTema> materiasTemas;
     private AdapterList<MateriaTema> adapterList;
     private RecyclerView rv_home_materias_item_lista;
@@ -49,10 +50,10 @@ public class MateriasItemFragment extends Fragment {
     private DatabaseMateria databaseMateria;
     private Materia materia;
 
-    public MateriasItemFragment(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public MateriasItemFragment(HomeFragment homeFragment) {
+        this.homeFragment = homeFragment;
         materiasTemas = new ArrayList<>();
-        databaseMateria = DatabaseMateria.getInstance(mainActivity);
+        databaseMateria = DatabaseMateria.getInstance(homeFragment.mainActivity);
     }
 
     public void setCurrentMateria(Materia materia){
@@ -101,6 +102,8 @@ public class MateriasItemFragment extends Fragment {
                 this.tv_item_home_tema_rol.setText(tema.getDescripcion());
                 this.tv_item_home_tema_fecha.setText(strDate);
 
+                MainActivity mainActivity = homeFragment.mainActivity;
+
                 databaseMateria.getNameUserId(tema.getAutorId(), (autor)->{
                     if(autor != null){
                         view.setOnClickListener(v->{
@@ -116,9 +119,9 @@ public class MateriasItemFragment extends Fragment {
                                 });
 
                             }else{
-                                mainActivity.materiasItemOfrecerFragment.setAutorId(autor);
-                                mainActivity.materiasItemOfrecerFragment.setCurrentTema(tema, materia.getName());
-                                FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
+                                homeFragment.materiasItemOfrecerFragment.setAutorId(autor);
+                                homeFragment.materiasItemOfrecerFragment.setCurrentTema(tema, materia.getName());
+                                FragmentUtil.replaceFragmentInMain(homeFragment.materiasItemOfrecerFragment);
                             }
 
                         });
@@ -132,7 +135,7 @@ public class MateriasItemFragment extends Fragment {
 
                     }else{
                         view.setOnClickListener(v->{
-                            FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemOfrecerFragment);
+                            FragmentUtil.replaceFragmentInMain(homeFragment.materiasItemOfrecerFragment);
                         });
                     }
                 });
@@ -166,8 +169,8 @@ public class MateriasItemFragment extends Fragment {
 
     public void onClickAgregarTema(View v){
         if(this.materia != null){
-            mainActivity.materiasSolicitarFragment.setCurrentMateria(this.materia);
-            FragmentUtil.replaceFragmentInMain(mainActivity.materiasSolicitarFragment);
+            homeFragment.materiasSolicitarFragment.setCurrentMateria(this.materia);
+            FragmentUtil.replaceFragmentInMain(homeFragment.materiasSolicitarFragment);
         }
     }
 }

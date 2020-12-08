@@ -31,7 +31,7 @@ import co.ajeg.tutoflash.model.materia.MateriaTema;
 
 public class MateriasSolicitarFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    private HomeFragment homeFragment;
     private DatabaseMateria databaseMateria;
 
     private AppCompatAutoCompleteTextView act_materias_solicitar_list_opciones;
@@ -47,11 +47,11 @@ public class MateriasSolicitarFragment extends Fragment {
 
     private ArrayList<String> listNamesMaterias;
 
-    public MateriasSolicitarFragment(MainActivity mainActivity) {
+    public MateriasSolicitarFragment(HomeFragment homeFragment) {
         // Required empty public constructor
-        this.mainActivity = mainActivity;
+        this.homeFragment = homeFragment;
         this.listNamesMaterias = new ArrayList<>();
-        this.databaseMateria = DatabaseMateria.getInstance(mainActivity);
+        this.databaseMateria = DatabaseMateria.getInstance(homeFragment.mainActivity);
 
         this.categoriasNameListAll = new HashMap<>();
         for (int i = 0; i < categoriasNameList.length; i++) {
@@ -68,7 +68,7 @@ public class MateriasSolicitarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_materias_solicitar, container, false);
 
-        this.mainActivity.headerFragment.changeTitleHeader("Solicitar tutor");
+        this.homeFragment.mainActivity.headerFragment.changeTitleHeader("Solicitar tutor");
 
 
         this.til_materias_solicitar_tema = view.findViewById(R.id.til_materias_solicitar_tema);
@@ -151,15 +151,15 @@ public class MateriasSolicitarFragment extends Fragment {
             this.databaseMateria.createTema(materiaName, materiaTema, (materiaTemaDatabase) -> {
                 if(materiaTemaDatabase != null){
                     this.resetView();
-                    FragmentUtil.replaceFragmentInMain(this.mainActivity.homeFragment);
+                    FragmentUtil.replaceFragmentInMain(this.homeFragment.mainActivity.homeFragment);
                     FragmentUtil.resetFragmentNav();
                 }else{
-                    Toast.makeText(mainActivity, "Ocurrio un error. Lo sentimos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.homeFragment.mainActivity, "Ocurrio un error. Lo sentimos", Toast.LENGTH_SHORT).show();
                 }
             });
 
         }else{
-            Toast.makeText(mainActivity, "Faltan campos por llenar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.homeFragment.mainActivity, "Faltan campos por llenar", Toast.LENGTH_SHORT).show();
         }
     }
 

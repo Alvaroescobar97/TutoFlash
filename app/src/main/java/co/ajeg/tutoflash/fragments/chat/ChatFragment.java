@@ -36,19 +36,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatFragment extends Fragment {
 
-    private MainActivity mainActivity;
+    public MainActivity mainActivity;
+
     private DatabaseChat databaseChat;
     private List<ChatPerson> chatPersonList;
     private TextView tv_chat_no_chats;
     private RecyclerView rv_chat_personas;
     private AdapterList<ChatPerson> adapterList;
 
+    public ChatItemFragment chatItemFragment;
+
     public ChatFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.databaseChat = DatabaseChat.getInstance(this.mainActivity);
         this.chatPersonList = new ArrayList<>();
 
-
+        chatItemFragment = ChatItemFragment.newInstance(this);
     }
 
 
@@ -133,8 +136,8 @@ public class ChatFragment extends Fragment {
 
                 view.setOnClickListener( v -> {
                     FragmentUtil.getActivity((mainActivity)->{
-                        mainActivity.chatItemFragment.changeCurrentChat(elemnto);
-                        FragmentUtil.replaceFragment(R.id.fragment_container, mainActivity.chatItemFragment);
+                        chatItemFragment.changeCurrentChat(elemnto);
+                        FragmentUtil.replaceFragment(R.id.fragment_container, chatItemFragment);
                     });
                 });
             }

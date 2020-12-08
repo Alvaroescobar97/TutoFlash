@@ -39,17 +39,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment implements DatabaseMateria.OnCompleteListenerAllMaterias {
 
+    public MainActivity mainActivity;
+
     private EditText et_home_busqueda;
     private static DatabaseMateria databaseMateria;
     private List<Materia> materiaList;
     private AdapterList<Materia> adapterList;
     private RecyclerView rv_home_materias;
-    private MainActivity mainActivity;
+
+
+    /*Fragments*/
+    public MateriasItemFragment materiasItemFragment;
+    public MateriasItemOfrecerFragment materiasItemOfrecerFragment;
+    public MateriasSolicitarFragment materiasSolicitarFragment;
 
     public HomeFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.materiaList = new ArrayList<>();
         this.databaseMateria = DatabaseMateria.getInstance(this.mainActivity);
+
+        this.materiasItemFragment = new MateriasItemFragment(this);
+        this.materiasItemOfrecerFragment = new MateriasItemOfrecerFragment(this);
+        this.materiasSolicitarFragment = new MateriasSolicitarFragment(this);
     }
 
     public static HomeFragment newInstance(MainActivity mainActivity) {
@@ -110,8 +121,8 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 tv_item_home_materia_fecha.setText(nEntradas + " entradas");
 
                 view.setOnClickListener((v)->{
-                    mainActivity.materiasItemFragment.setCurrentMateria(materia);
-                    FragmentUtil.replaceFragmentInMain(mainActivity.materiasItemFragment);
+                    materiasItemFragment.setCurrentMateria(materia);
+                    FragmentUtil.replaceFragmentInMain(materiasItemFragment);
                 });
 
             }
@@ -153,7 +164,7 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
     public void addMateriaListPrincipal(View v){
         FragmentUtil.getActivity(activity->{
-            FragmentUtil.replaceFragmentInMain(activity.materiasSolicitarFragment);
+            FragmentUtil.replaceFragmentInMain(materiasSolicitarFragment);
         });
     }
 
