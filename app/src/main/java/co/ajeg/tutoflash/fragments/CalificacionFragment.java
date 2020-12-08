@@ -12,8 +12,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import co.ajeg.tutoflash.R;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.notificacion.NotificacionFragment;
+import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 /**
@@ -31,6 +37,7 @@ public class CalificacionFragment extends Fragment {
     private Button btn_calificacion_cancelar;
 
     private Notificacion notificacion;
+    private User currentUser;
 
     private NotificacionFragment notificacionFragment;
 
@@ -61,11 +68,58 @@ public class CalificacionFragment extends Fragment {
         this.btn_calificacion_calificar = view.findViewById(R.id.btn_calificacion_calificar);
         this.btn_calificacion_cancelar = view.findViewById(R.id.btn_calificacion_cancelar);
 
+        if(this.notificacion != null){
+            String userId = this.notificacion.getDirDatabase().get(1);
+            DatabaseUser.getRefUserId(userId, (userResult)->{
+                this.currentUser = userResult;
+
+                this.tv_calificacion_usuario.setText(userResult.getName());
+                this.tv_calificacion_rol.setText(userResult.getCarrera());
 
 
+                DatabaseUser.getImageUrlProfile(this, userResult.getImage(), (imageResult)->{
+                    if(imageResult != null){
+                        Glide.with(this.iv_calificacion_image)
+                                .load(imageResult)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(this.iv_calificacion_image);
+                    }
+                });
+            });
+
+
+        }
+
+        this.btn_calificacion_calificar.setOnClickListener(this::onClickCalificar);
+        this.btn_calificacion_cancelar.setOnClickListener(this::onClickCancelar);
 
         return view;
     }
+
+    public void onClickCalificar(View v){
+
+        float numberCalificacion = rb_calificacion_calificacion.getRating();
+
+
+
+        if(this.currentUser != null && this.notificacion != null){
+            DatabaseUser.calificarUser(this, this.notificacion, this.currentUser, numberCalificacion, (userResult)->{
+                if(userResult != null){
+                    this.currentUser = null;
+                    FragmentUtil.goToBackFragment();
+                }else{
+
+                }
+            });
+        }
+    }
+
+    public void onClickCancelar(View v){
+        this.currentUser = null;
+        FragmentUtil.goToBackFragment();
+    }
+
+
 
     public void setCurrentNotificacion(Notificacion notificacion){
         this.notificacion = notificacion;

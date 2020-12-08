@@ -327,11 +327,11 @@ public class DatabaseMateria {
             getRefCollectionAllSolicitudes(nameMateria).document(materiaTema.getId()).collection(DBROUTES.MATERIAS_OFRECIMIENTOS)
                     .document(tutorId).delete().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(activity, "Delete OFRECIEMIENTO", Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(activity, "Delete OFRECIEMIENTO", Toast.LENGTH_SHORT).show();
                     DatabaseNotificacion.getRefCollectionAllNotificaciones(tutorId).document(materiaTema.getId()).delete()
                             .addOnCompleteListener((deleteNotificacion) -> {
                                 if (deleteNotificacion.isSuccessful()) {
-                                    Toast.makeText(activity, "D: NOTIFICIACION", Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(activity, "D: NOTIFICIACION", Toast.LENGTH_SHORT).show();
                                     onCompleteListenerTema.onLoadTema(materiaTema);
                                 } else {
                                     onCompleteListenerTema.onLoadTema(null);

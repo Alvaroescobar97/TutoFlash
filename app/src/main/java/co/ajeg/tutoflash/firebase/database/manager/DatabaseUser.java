@@ -9,12 +9,36 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.UUID;
+
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.storage.StorageFirebase;
+import co.ajeg.tutoflash.model.Calificacion;
 import co.ajeg.tutoflash.model.User;
+import co.ajeg.tutoflash.model.notificacion.Notificacion;
 
 public class DatabaseUser {
+
+    public static void calificarUser(Fragment fragment, Notificacion notificacion, User currentUser, float nCalificacion, OnCompleteListenerUser onCompleteListenerUser){
+        fragment.getActivity().runOnUiThread(()->{
+
+            User user = Autenticacion.getUser();
+            if(user != null){
+                getMyRefUser().collection(DBROUTES.USERS_NOTIFICACIONES).document(notificacion.getId()).delete().addOnCompleteListener((task)->{
+                    if(task.isSuccessful()){
+                        //String uid, String userId, String tema, int value
+                        Calificacion calificacion = new Calificacion(UUID.randomUUID().toString(), user.getId(), nCalificacion);
+                        getRefUser(currentUser.getId()).collection(DBROUTES.USERS_CALIFICACIONES).document(calificacion.getUid()).set(calificacion);
+                        onCompleteListenerUser.onLoadUser(currentUser);
+                    }else{
+
+                    }
+                });
+
+            }
+        });
+    }
 
 
     public static void getImageUrlProfile(AppCompatActivity activity, String urlImage, OnCompleteImageProfile onCompleteImageProfile) {
