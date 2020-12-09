@@ -48,8 +48,6 @@ public class CalendarioFragment extends Fragment {
     public static CalendarioFragment newInstance(MainActivity mainActivity) {
         CalendarioFragment fragment = new CalendarioFragment(mainActivity);
         Bundle args = new Bundle();
-       // args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,7 +74,6 @@ public class CalendarioFragment extends Fragment {
     }
 
     public void setUpCalendar(){
-
 
     }
 
