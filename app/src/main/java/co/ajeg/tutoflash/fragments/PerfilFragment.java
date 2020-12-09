@@ -1,50 +1,30 @@
 package co.ajeg.tutoflash.fragments;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Date;
-import java.util.UUID;
 
 import co.ajeg.tutoflash.R;
-import co.ajeg.tutoflash.activities.LoginActivity;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.activities.PreLogin;
 import co.ajeg.tutoflash.firebase.FirebaseMensajes;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
-import co.ajeg.tutoflash.firebase.database.Database;
 import co.ajeg.tutoflash.firebase.database.manager.DatabaseUser;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.galeria.Galeria;
-import co.ajeg.tutoflash.galeria.UtilDomi;
 import co.ajeg.tutoflash.model.User;
-
-import static android.app.Activity.RESULT_OK;
-import static co.ajeg.tutoflash.galeria.Galeria.GALLERY_CALLBACK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +36,7 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
     private Button btn_perfil_cerrar_session,guardarBtn;
     private ImageView fotoPerfil;
     private EditText nombreET,correoET,passwordET, et_perfil_carrera;
+    private TextView passwordTV;
 
 
     private User user;
@@ -97,6 +78,7 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
         correoET = view.findViewById( R.id.correoET );
         passwordET = view.findViewById( R.id.passwordET );
         et_perfil_carrera = view.findViewById( R.id.et_perfil_carrera );
+        passwordTV = view.findViewById( R.id.passwordTV );
 
         guardarBtn = view.findViewById( R.id.guardarBtn );
         btn_perfil_cerrar_session = view.findViewById(R.id.btn_perfil_cerrar_session);
@@ -104,10 +86,11 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
         nombreET.setText( user.getName() );
         correoET.setText( user.getEmail() );
         et_perfil_carrera.setText( user.getCarrera() );
+        correoET.setEnabled( false );
 
         if(user.getType() == Autenticacion.USER_GOOGLE){
-            correoET.setVisibility(View.GONE);
             passwordET.setVisibility(View.GONE);
+            passwordTV.setVisibility(View.GONE);
         }
 
         if(path == null){
@@ -126,8 +109,6 @@ public class PerfilFragment extends Fragment implements Galeria.OnCompleteListen
         btn_perfil_cerrar_session.setOnClickListener(this::cerrarSession);
         fotoPerfil.setOnClickListener( this::cargarFoto );
         guardarBtn.setOnClickListener( this::guardar );
-
-
 
         return view;
     }
