@@ -54,6 +54,22 @@ public class DatabaseMateria {
         return thisClass;
     }
 
+
+    public void findMateriasTemaForName(String name,String temaName, OnCompleteListenerAllSoliticudes onCompleteListenerAllSoliticudes) {
+        String nameString = name.trim().replaceAll(" ", "");
+        String temaString = temaName;
+        activity.runOnUiThread(() -> {
+            getRefCollectionAllMaterias().document(nameString).collection(DBROUTES.MATERIAS_SOLUCITUDES).whereEqualTo("title", temaString).get().addOnCompleteListener((task) -> {
+                if (task.isSuccessful()) {
+                    List<MateriaTema> materias = task.getResult().toObjects(MateriaTema.class);
+                    onCompleteListenerAllSoliticudes.onLoadAllSolicitudes(materias);
+                } else {
+                    onCompleteListenerAllSoliticudes.onLoadAllSolicitudes(null);
+                }
+            });
+        });
+    }
+
     public void findMateriasForName(String name, OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
         String temaString = name.trim().replaceAll(" ", "");
         activity.runOnUiThread(() -> {
@@ -535,6 +551,8 @@ public class DatabaseMateria {
     public interface OnCompleteListenerAllSoliticudes {
         void onLoadAllSolicitudes(List<MateriaTema> materiaTemaList);
     }
+
+
 
     public interface OnCompleteListenerTema {
         void onLoadTema(MateriaTema materiaTema);

@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.concurrent.RecursiveTask;
 
@@ -139,11 +141,13 @@ public class FragmentUtil {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[direccion].getBounds().width())) {
                 // your action here
-               return true;
+                return true;
             }
         }
         return false;
     }
+
+
 
     public static String stringFirtsUpperCase(String str) {
         if (str.isEmpty()) {

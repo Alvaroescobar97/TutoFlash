@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,7 @@ public class MateriasItemFragment extends Fragment {
     private List<MateriaTema> materiasTemas;
     private AdapterList<MateriaTema> adapterList;
     private RecyclerView rv_home_materias_item_lista;
+    private TextInputLayout til_home_materias_item_buscar;
     private Button btn_home_materias_item_agregar;
     private DatabaseMateria databaseMateria;
     private Materia materia;
@@ -67,6 +69,7 @@ public class MateriasItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_materias_item, container, false);
 
         this.btn_home_materias_item_agregar = view.findViewById(R.id.btn_home_materias_item_agregar);
+        this.til_home_materias_item_buscar = view.findViewById(R.id.til_home_materias_item_buscar);
         this.rv_home_materias_item_lista = view.findViewById(R.id.rv_home_materias_item_lista);
         this.rv_home_materias_item_lista.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -76,31 +79,28 @@ public class MateriasItemFragment extends Fragment {
         Fragment thisFragment = this;
         this.adapterList = new AdapterList(rv_home_materias_item_lista, this.materiasTemas, R.layout.list_item_home_tema, new AdapterManagerList<MateriaTema>() {
 
-            private ImageView iv_item_home_tema_image;
-            private TextView tv_item_home_tema_name;
-            private TextView tv_item_home_tema_rol;
-            private TextView tv_item_home_tema_username;
-            private TextView tv_item_home_tema_fecha;
+
 
 
             @Override
             public void onCreateView(View v) {
-
-                this.iv_item_home_tema_image = v.findViewById(R.id.iv_item_home_tema_image);
-                this.tv_item_home_tema_name = v.findViewById(R.id.tv_item_home_tema_name);
-                this.tv_item_home_tema_rol = v.findViewById(R.id.tv_item_home_tema_rol);
-                this.tv_item_home_tema_username = v.findViewById(R.id.tv_item_home_tema_username);
-                this.tv_item_home_tema_fecha = v.findViewById(R.id.tv_item_home_tema_fecha);
             }
 
             @Override
             public void onChangeView(MateriaTema tema, View view, int position) {
+
+                ImageView iv_item_home_tema_image = view.findViewById(R.id.iv_item_home_tema_image);
+                TextView tv_item_home_tema_name = view.findViewById(R.id.tv_item_home_tema_name);;
+                TextView tv_item_home_tema_rol = view.findViewById(R.id.tv_item_home_tema_rol);;
+                TextView tv_item_home_tema_username = view.findViewById(R.id.tv_item_home_tema_username);;
+                TextView tv_item_home_tema_fecha = view.findViewById(R.id.tv_item_home_tema_fecha);;
+
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
                 Date date = new Date(tema.getDate());
                 String strDate = dateFormat.format(date).toString();
-                this.tv_item_home_tema_name.setText(tema.getTitle());
-                this.tv_item_home_tema_rol.setText(tema.getDescripcion());
-                this.tv_item_home_tema_fecha.setText(strDate);
+                tv_item_home_tema_name.setText(tema.getTitle());
+                tv_item_home_tema_rol.setText(tema.getDescripcion());
+                tv_item_home_tema_fecha.setText(strDate);
 
                 MainActivity mainActivity = homeFragment.mainActivity;
 
@@ -126,10 +126,10 @@ public class MateriasItemFragment extends Fragment {
 
                         });
 
-                        this.tv_item_home_tema_username.setText(autor.getName());
+                        tv_item_home_tema_username.setText(autor.getName());
                         DatabaseUser.getImageUrlProfile(thisFragment, autor.getImage(), (urlImage)->{
                             if(urlImage != null){
-                                getImageViewProfile(urlImage, this.iv_item_home_tema_image);
+                                getImageViewProfile(urlImage, iv_item_home_tema_image);
                             }
                         });
 
@@ -151,6 +151,7 @@ public class MateriasItemFragment extends Fragment {
 
         if(this.materia != null){
             this.databaseMateria.getAllSolicitudes(this.materia.getName(), (solicitudes)->{
+                this.materiasTemas = solicitudes;
                 this.adapterList.onUpdateData(solicitudes);
             });
         }
@@ -163,8 +164,32 @@ public class MateriasItemFragment extends Fragment {
             }
         });
 
+        this.til_home_materias_item_buscar.getEditText().setOnTouchListener((v, event) -> {
+            boolean stateClick = FragmentUtil.onTouchEventIconDirectionUp(event, til_home_materias_item_buscar.getEditText(), FragmentUtil.DRAWABLE_RIGHT);
+            if(stateClick){
+                this.onFindMateria();
+            }
+            return stateClick;
+        });
 
         return view;
+    }
+
+    public void onFindMateria(){
+
+        if(this.til_home_materias_item_buscar != null){
+            String materiaString = til_home_materias_item_buscar.getEditText().getText().toString();
+            if(materiaString.equals("")){
+               // Toast.makeText(this.getContext(), "Todos " + this.materiasTemas.size(), Toast.LENGTH_SHORT).show();
+                this.adapterList.onUpdateData(this.materiasTemas);
+            }else{
+               // Toast.makeText(this.getContext(), "Buscando", Toast.LENGTH_SHORT).show();
+                this.databaseMateria.findMateriasTemaForName(materia.getName(), materiaString, (materiaList)->{
+                    this.adapterList.onUpdateData(materiaList);
+                });
+            }
+
+        }
     }
 
     public void onClickAgregarTema(View v){
