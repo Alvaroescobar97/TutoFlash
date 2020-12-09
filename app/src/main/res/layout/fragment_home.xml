@@ -41,6 +41,16 @@ tools:context=".fragments.materias.HomeFragment">
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/pb_home_header_imagen"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_home_header_imagen"
+            app:layout_constraintEnd_toEndOf="@+id/iv_home_header_imagen"
+            app:layout_constraintStart_toStartOf="@+id/iv_home_header_imagen"
+            app:layout_constraintTop_toTopOf="@+id/iv_home_header_imagen" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

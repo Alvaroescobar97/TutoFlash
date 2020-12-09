@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -96,7 +97,9 @@ public class ChatFragment extends Fragment {
             public void onChangeView(ChatPerson elemnto, View view, int position) {
 
                 ImageView civ_item_chat_persona_image;
+                ProgressBar pb_item_chat_persona_image;
                 civ_item_chat_persona_image = view.findViewById(R.id.iv_item_chat_persona_image);
+                pb_item_chat_persona_image = view.findViewById(R.id.pb_item_chat_persona_image);
 
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
                 Date date = new Date(elemnto.getDateLast());
@@ -126,7 +129,7 @@ public class ChatFragment extends Fragment {
                                             .apply(RequestOptions.circleCropTransform())
                                             .into(civ_item_chat_persona_image);
                                 }
-
+                                pb_item_chat_persona_image.setVisibility(View.GONE);
                             });
 
                             view.setOnClickListener( v -> {

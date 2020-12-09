@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -163,14 +164,19 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
         ImageView iv_home_header_imagen = view.findViewById(R.id.iv_home_header_imagen);
         TextView tv_home_header_username = view.findViewById(R.id.tv_home_header_username);
 
+        ProgressBar pb_home_header_imagen = view.findViewById(R.id.pb_home_header_imagen);
+
+
         User user = Autenticacion.user;
         if(user != null ){
             DatabaseUser.getImageUrlProfile(mainActivity,user.getImage(), (urlImage)->{
                 if(urlImage != null){
                     this.getImageViewProfile(urlImage, iv_home_header_imagen );
                 }
+                pb_home_header_imagen.setVisibility(View.GONE);
             });
             tv_home_header_username.setText(user.getName());
+
         }
 
         btn_home_agregar_materia.setOnClickListener(this::addMateriaListPrincipal);
