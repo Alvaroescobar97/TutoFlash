@@ -59,7 +59,7 @@ public class DatabaseMateria {
         String nameString = name.trim().replaceAll(" ", "");
         String temaString = temaName;
         activity.runOnUiThread(() -> {
-            getRefCollectionAllMaterias().document(nameString).collection(DBROUTES.MATERIAS_SOLUCITUDES).whereEqualTo("title", temaString).get().addOnCompleteListener((task) -> {
+            getRefCollectionAllMaterias().document(nameString).collection(DBROUTES.MATERIAS_SOLUCITUDES).whereGreaterThanOrEqualTo("title", temaString).get().addOnCompleteListener((task) -> {
                 if (task.isSuccessful()) {
                     List<MateriaTema> materias = task.getResult().toObjects(MateriaTema.class);
                     onCompleteListenerAllSoliticudes.onLoadAllSolicitudes(materias);
@@ -73,7 +73,7 @@ public class DatabaseMateria {
     public void findMateriasForName(String name, OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
         String temaString = name.trim().replaceAll(" ", "");
         activity.runOnUiThread(() -> {
-            getRefCollectionAllMaterias().whereEqualTo("name", temaString).get().addOnCompleteListener((task) -> {
+            getRefCollectionAllMaterias().whereGreaterThanOrEqualTo("name", temaString).get().addOnCompleteListener((task) -> {
                 if (task.isSuccessful()) {
                     List<Materia> materias = task.getResult().toObjects(Materia.class);
                     onCompleteListenerAllMaterias.onLoadAllMaterias(materias);

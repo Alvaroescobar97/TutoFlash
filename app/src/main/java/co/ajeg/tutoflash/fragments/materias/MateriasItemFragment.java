@@ -79,9 +79,6 @@ public class MateriasItemFragment extends Fragment {
         Fragment thisFragment = this;
         this.adapterList = new AdapterList(rv_home_materias_item_lista, this.materiasTemas, R.layout.list_item_home_tema, new AdapterManagerList<MateriaTema>() {
 
-
-
-
             @Override
             public void onCreateView(View v) {
             }
