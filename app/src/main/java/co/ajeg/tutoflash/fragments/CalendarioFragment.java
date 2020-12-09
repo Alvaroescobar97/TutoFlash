@@ -13,9 +13,13 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
+import co.ajeg.tutoflash.model.Appoinment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,14 +32,21 @@ public class CalendarioFragment extends Fragment {
     Button btn_calendario_agregar;
     CalendarView cv_calendario_calendar;
     RecyclerView rv_calendario_eventos;
+    List<Appoinment> tutorias;
+
+    private MainActivity mainActivity;
 
 
-    public CalendarioFragment() {
+
+
+    public CalendarioFragment(MainActivity mainActivity) {
         // Required empty public constructor
+        this.mainActivity = mainActivity;
     }
 
-    public static CalendarioFragment newInstance() {
-        CalendarioFragment fragment = new CalendarioFragment();
+
+    public static CalendarioFragment newInstance(MainActivity mainActivity) {
+        CalendarioFragment fragment = new CalendarioFragment(mainActivity);
         Bundle args = new Bundle();
        // args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
@@ -43,7 +54,6 @@ public class CalendarioFragment extends Fragment {
         return fragment;
     }
 
-    private MainActivity mainActivity;
 
 
     @Override
@@ -65,7 +75,18 @@ public class CalendarioFragment extends Fragment {
         return view;
     }
 
-    public void agregarEvento(View v){
+    public void setUpCalendar(){
+
 
     }
+
+
+
+
+
+    public void agregarEvento(View v){
+
+
+    }
+
 }

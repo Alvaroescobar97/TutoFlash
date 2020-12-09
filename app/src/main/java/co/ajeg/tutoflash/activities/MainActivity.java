@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         notificacionFragment = new NotificacionFragment(this);
 
-        calendarioFragment = CalendarioFragment.newInstance();
+        calendarioFragment = CalendarioFragment.newInstance(this);
 
         chatFragment = new ChatFragment(this);
 
