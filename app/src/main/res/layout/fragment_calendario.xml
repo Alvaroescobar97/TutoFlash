@@ -24,6 +24,7 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_calendario_hoy"
             app:layout_constraintTop_toTopOf="parent"
             app:rippleColor="#FFFFFF" />
 
@@ -33,8 +34,8 @@
             android:layout_height="0dp"
             android:layout_marginStart="24dp"
             android:gravity="center"
-            android:text="Fecha de hoy"
-            android:textAlignment="textStart"
+            android:text="@string/fecha_de_hoy"
+
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_calendario_agregar"
@@ -51,7 +52,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
-        tools:context=".fragments.CalendarioFragment">
+        tools:context=".fragments.calendario.CalendarioFragment">
 
 
         <CalendarView

@@ -1,10 +1,9 @@
-package co.ajeg.tutoflash.fragments;
+package co.ajeg.tutoflash.fragments.calendario;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
