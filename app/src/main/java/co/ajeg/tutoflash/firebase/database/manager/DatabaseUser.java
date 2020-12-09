@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
 import java.util.UUID;
 
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
@@ -29,7 +30,27 @@ public class DatabaseUser {
                     if(task.isSuccessful()){
                         //String uid, String userId, String tema, int value
                         Calificacion calificacion = new Calificacion(UUID.randomUUID().toString(), user.getId(), nCalificacion);
-                        getRefUser(currentUser.getId()).collection(DBROUTES.USERS_CALIFICACIONES).document(calificacion.getUid()).set(calificacion);
+                        getRefUser(currentUser.getId()).collection(DBROUTES.USERS_CALIFICACIONES).document(calificacion.getUid()).set(calificacion)
+                        .addOnCompleteListener((tarea)->{
+                            if(tarea.isSuccessful()){
+                                getRefUser(currentUser.getId()).collection(DBROUTES.USERS_CALIFICACIONES).get().addOnCompleteListener((allCalificaciones)->{
+                                    if(allCalificaciones.isSuccessful()){
+                                        List<Calificacion> allCali = allCalificaciones.getResult().toObjects(Calificacion.class);
+                                        float myCalificacionTotal = 0;
+                                        for (Calificacion c : allCali){
+                                            myCalificacionTotal += c.getValue();
+                                        }
+                                        if(allCali.size() > 0){
+                                            float myLastCalificacion = myCalificacionTotal/allCali.size();
+                                            currentUser.setCalificacion(myLastCalificacion);
+                                            getRefUser(currentUser.getId()).set(currentUser);
+                                        }
+                                    }
+                                });
+                            }
+
+                        });
+
                         onCompleteListenerUser.onLoadUser(currentUser);
                     }else{
 

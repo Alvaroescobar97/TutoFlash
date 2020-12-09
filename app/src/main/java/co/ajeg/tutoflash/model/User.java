@@ -12,12 +12,12 @@ public class User implements Serializable {
     private String carrera;
     private String image;
     private int type;
-    private int calificacion;
+    private float calificacion;
 
     public User() {
     }
 
-    public User(String id, long date, String name, String email, String carrera, String image, int type, int calificacion) {
+    public User(String id, long date, String name, String email, String carrera, String image, int type, float calificacion) {
         this.id = id;
         this.date = date;
         this.name = name;
@@ -84,11 +84,11 @@ public class User implements Serializable {
         this.type = type;
     }
 
-    public int getCalificacion() {
+    public float getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(int calificacion) {
+    public void setCalificacion(float calificacion) {
         this.calificacion = calificacion;
     }
 }

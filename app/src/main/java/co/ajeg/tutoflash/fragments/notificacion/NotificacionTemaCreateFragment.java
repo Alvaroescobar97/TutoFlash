@@ -90,38 +90,35 @@ public class NotificacionTemaCreateFragment extends Fragment {
 
         this.adapterList = new AdapterList<>(this.rv_notificacion_tema_create_tutores, this.materiaTutorsList, R.layout.list_item_materia_tutor, new AdapterManagerList<MateriaTutor>() {
 
-            private ImageView iv_item_materia_tutor_image;
-            private TextView tv_item_materia_tutor_name;
-            private TextView tv_item_materia_tutor_descripcion;
-            private TextView tv_item_materia_tutor_precio;
-            private TextView tv_item_materia_tutor_calificacion;
-            private RatingBar rb_item_materia_tutor_calificacion;
-
             @Override
-            public void onCreateView(View v) {
-                this.iv_item_materia_tutor_image = v.findViewById(R.id.iv_item_materia_tutor_image);
-                this.tv_item_materia_tutor_name = v.findViewById(R.id.tv_item_materia_tutor_name);
-                this.tv_item_materia_tutor_descripcion = v.findViewById(R.id.tv_item_materia_tutor_descripcion);
-                this.tv_item_materia_tutor_precio = v.findViewById(R.id.tv_item_materia_tutor_precio);
-                this.tv_item_materia_tutor_calificacion = v.findViewById(R.id.tv_item_materia_tutor_calificacion);
-                this.rb_item_materia_tutor_calificacion = v.findViewById(R.id.rb_item_materia_tutor_calificacion);
-            }
+            public void onCreateView(View v) { }
 
             @Override
             public void onChangeView(MateriaTutor tutor, View view, int position) {
+
+                ImageView iv_item_materia_tutor_image= view.findViewById(R.id.iv_item_materia_tutor_image);;
+               TextView tv_item_materia_tutor_name = view.findViewById(R.id.tv_item_materia_tutor_name);
+               TextView tv_item_materia_tutor_descripcion = view.findViewById(R.id.tv_item_materia_tutor_descripcion);
+               TextView tv_item_materia_tutor_precio = view.findViewById(R.id.tv_item_materia_tutor_precio);
+               TextView tv_item_materia_tutor_calificacion = view.findViewById(R.id.tv_item_materia_tutor_calificacion);
+               RatingBar rb_item_materia_tutor_calificacion = view.findViewById(R.id.rb_item_materia_tutor_calificacion);
+
 
                 DatabaseUser.getRefUserId(tutor.getTutorId(), (userTutor)->{
                     if(userTutor != null){
                         DatabaseUser.getImageUrlProfile(mainActivity, userTutor.getImage(), (urlImage)->{
                             if(urlImage != null){
-                                Glide.with(this.iv_item_materia_tutor_image)
+                                Glide.with(iv_item_materia_tutor_image)
                                         .load(urlImage)
                                         .apply(RequestOptions.circleCropTransform())
-                                        .into(this.iv_item_materia_tutor_image);
+                                        .into(iv_item_materia_tutor_image);
                             }
 
                         });
-                        this.tv_item_materia_tutor_name.setText(userTutor.getName());
+
+                        tv_item_materia_tutor_calificacion.setText(userTutor.getCalificacion() + "");
+                        rb_item_materia_tutor_calificacion.setRating(userTutor.getCalificacion());
+                        tv_item_materia_tutor_name.setText(userTutor.getName());
                         /*
                         this.tv_item_materia_tutor_calificacion;
                         this.rb_item_materia_tutor_calificacion;
@@ -140,10 +137,8 @@ public class NotificacionTemaCreateFragment extends Fragment {
                 });
 
 
-                this.tv_item_materia_tutor_descripcion.setText(tutor.getDescripcion());
-                this.tv_item_materia_tutor_precio.setText("$ " + tutor.getPrecio());
-
-
+                tv_item_materia_tutor_descripcion.setText(tutor.getDescripcion());
+                tv_item_materia_tutor_precio.setText("$ " + tutor.getPrecio());
 
             }
 
