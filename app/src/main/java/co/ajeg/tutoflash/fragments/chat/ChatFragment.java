@@ -79,22 +79,26 @@ public class ChatFragment extends Fragment {
         this.adapterList = new AdapterList(this.rv_chat_personas, this.chatPersonList, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
 
 
-            private TextView tv_item_chat_persona_name;
-            private TextView tv_item_chat_persona_rol;
-            private TextView tv_item_chat_persona_fecha;
+
 
             @Override
             public void onCreateView(View v) {
 
 
-                this.tv_item_chat_persona_name = v.findViewById(R.id.tv_item_chat_persona_name);
-                this.tv_item_chat_persona_rol = v.findViewById(R.id.tv_item_chat_persona_rol);
-                this.tv_item_chat_persona_fecha = v.findViewById(R.id.tv_item_chat_persona_fecha);
+
 
             }
 
             @Override
             public void onChangeView(ChatPerson elemnto, View view, int position) {
+
+                TextView tv_item_chat_persona_name;
+                TextView tv_item_chat_persona_rol;
+                TextView tv_item_chat_persona_fecha;
+
+                tv_item_chat_persona_name = view.findViewById(R.id.tv_item_chat_persona_name);
+                tv_item_chat_persona_rol = view.findViewById(R.id.tv_item_chat_persona_rol);
+                tv_item_chat_persona_fecha = view.findViewById(R.id.tv_item_chat_persona_fecha);
 
                 ImageView civ_item_chat_persona_image;
                 ProgressBar pb_item_chat_persona_image;
@@ -106,7 +110,7 @@ public class ChatFragment extends Fragment {
                 String strDate = dateFormat.format(date).toString();
 
 
-                this.tv_item_chat_persona_fecha.setText(strDate);
+                tv_item_chat_persona_fecha.setText(strDate);
                 User user = Autenticacion.getUser();
                 if(user != null){
                     String currentId = null;
@@ -119,8 +123,8 @@ public class ChatFragment extends Fragment {
                     if(currentId !=null){
                         DatabaseUser.getRefUserId(mainActivity, currentId, (userResult)->{
 
-                            this.tv_item_chat_persona_name.setText(userResult.getName());
-                            this.tv_item_chat_persona_rol.setText(userResult.getCarrera());
+                            tv_item_chat_persona_name.setText(userResult.getName());
+                            tv_item_chat_persona_rol.setText(userResult.getCarrera());
 
                             DatabaseUser.getImageUrlProfile(mainActivity, userResult.getImage(), (urlImageResult)->{
                                 if(urlImageResult != null){
