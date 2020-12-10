@@ -184,7 +184,7 @@ public class ChatItemFragment extends Fragment {
                     String id = UUID.randomUUID().toString();
                     String autorId = Autenticacion.getUser().getId();
 
-                    long fecha = (new Date()).getTime();
+                    String fecha = (new Date()).toString();
 
                     ChatMensaje mensaje = new ChatMensaje(id, autorId, mensajeString, fecha);
 
