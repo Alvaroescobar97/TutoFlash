@@ -2,6 +2,7 @@ package co.ajeg.tutoflash.firebase.database.manager;
 
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -23,6 +24,7 @@ import co.ajeg.tutoflash.firebase.FirebaseMensajes;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
 import co.ajeg.tutoflash.firebase.database.DBROUTES;
 import co.ajeg.tutoflash.firebase.database.Database;
+import co.ajeg.tutoflash.model.Horario;
 import co.ajeg.tutoflash.model.User;
 import co.ajeg.tutoflash.model.chat.ChatPerson;
 import co.ajeg.tutoflash.model.materia.Materia;
@@ -156,6 +158,11 @@ public class DatabaseMateria {
             deteletMateriaTutor(nameMateria, materiaTema, materiaTutor.getTutorId(), (t) -> {
             });
         }
+    }
+
+    public void addHorario(String userId, String horarioString, String mensaje){
+            Horario horario = new Horario(UUID.randomUUID().toString(), horarioString, mensaje);
+            DatabaseUser.getRefUser(userId).collection(DBROUTES.USERS_HORARIOS).document(horario.getId()).set(horario);
     }
 
     public void seleccionarTutor(String nameMateria, MateriaTema materiaTema, MateriaTutor tutor, List<MateriaTutor> materiaTutorList, OnCompleteListenerMateriaTutor onCompleteListenerMateriaTutor) {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,6 +59,8 @@ public class NotificacionTemaTutorFragment extends Fragment {
     private String currentMateriaName;
     private MateriaTema currentMateriaTema;
 
+    private String horarioString;
+
     public NotificacionTemaTutorFragment(NotificacionFragment notificacionFragment) {
         // Required empty public constructor
         this.notificacionFragment = notificacionFragment;
@@ -95,13 +98,30 @@ public class NotificacionTemaTutorFragment extends Fragment {
         }
 
 
-        this.adapterList = new AdapterList<>(this.rv_notificacion_tema_tutor_horarios, this.horarios, R.layout.list_item_materia_solicitar_horario, new AdapterManagerList<String>() {
+        this.adapterList = new AdapterList<>(this.rv_notificacion_tema_tutor_horarios, this.horarios, R.layout.list_item_materia_select_horario, new AdapterManagerList<String>() {
+
+            List<CheckBox> checkBoxs = new ArrayList<>();
 
             @Override
             public void onChangeView(String elemnto, View view, int position) {
 
-                TextView tv_list_item_materia_solicitar_horario_fecha = view.findViewById(R.id.tv_list_item_materia_solicitar_horario_fecha);
-                tv_list_item_materia_solicitar_horario_fecha.setText(elemnto);
+                CheckBox cb_list_item_materia_solicitar_horario_fecha = view.findViewById(R.id.cb_list_item_materia_solicitar_horario_fecha);
+                cb_list_item_materia_solicitar_horario_fecha.setText(elemnto);
+
+                if(checkBoxs.indexOf(cb_list_item_materia_solicitar_horario_fecha) == -1){
+                    checkBoxs.add(cb_list_item_materia_solicitar_horario_fecha);
+                }
+
+                cb_list_item_materia_solicitar_horario_fecha.setOnClickListener((v)->{
+                    horarioString = elemnto;
+                    for (CheckBox c : checkBoxs){
+                        if(c != cb_list_item_materia_solicitar_horario_fecha){
+                            c.setChecked(false);
+                        }
+                    }
+                });
+
+
             }
         });
 
@@ -133,6 +153,9 @@ public class NotificacionTemaTutorFragment extends Fragment {
     public void onClickSelecionarTutor(View v) {
 
         if (this.currentMateriaTema != null && this.currentMateriaName != null && this.tutoresAll != null && this.materiaTutor != null) {
+
+
+
             this.databaseMateria.seleccionarTutor(
                     this.currentMateriaName,
                     this.currentMateriaTema,
@@ -140,6 +163,10 @@ public class NotificacionTemaTutorFragment extends Fragment {
                     this.tutoresAll,
                     (tutor) -> {
                         if (tutor != null) {
+                            if(this.horarioString != null){
+                                this.databaseMateria.addHorario(this.materiaTutor.getAutorId(), this.horarioString, "Tutoria");
+                                this.databaseMateria.addHorario(this.materiaTutor.getTutorId(), this.horarioString,"Tutoria");
+                            }
                             FragmentUtil.resetFragmentNav();
                             FragmentUtil.replaceFragment(R.id.fragment_container, this.notificacionFragment.mainActivity.chatFragment);
                         } else {
