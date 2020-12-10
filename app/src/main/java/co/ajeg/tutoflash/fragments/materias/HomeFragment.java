@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 if(nameMaterias.contains("matematicas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.math,getContext().getTheme()));
                 }
-                Toast.makeText(getContext(), "Imagen: " +nameMaterias, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), "Imagen: " +nameMaterias, Toast.LENGTH_SHORT).show();
                 if(nameMaterias.contains("fisica")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.fisica,getContext().getTheme()));
                 }
