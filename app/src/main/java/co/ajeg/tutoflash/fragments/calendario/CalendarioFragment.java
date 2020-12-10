@@ -165,7 +165,7 @@ public class CalendarioFragment extends Fragment {
         if(!descripcion.equals("")){
 
             Tutoria tutoria= new Tutoria(descripcion,fecha);
-            adapterList.onRemoveItem(tutoria);
+            adapterList.onAddItem(tutoria);
         }
 
     }
