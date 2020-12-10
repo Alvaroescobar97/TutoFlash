@@ -116,28 +116,29 @@ public class ChatItemFragment extends Fragment {
 
         adapterList = new AdapterList(rv_chat_item_dialogos, this.chatMensajes, R.layout.list_item_chat_dialogo, new AdapterManagerList<ChatMensaje>() {
 
-            private TextView tv_item_chat_dialogo_mensaje;
-            private TextView tv_item_chat_dialogo_fecha;
-            private ConstraintLayout cl_item_chat_dialogo_contenedor;
-            private ConstraintLayout cl_item_chat_dialogo_contenedor_left;
-            private ConstraintLayout cl_item_chat_dialogo_contenedor_right;
+
 
 
             @Override
-            public void onCreateView(View v) {
-
-                this.cl_item_chat_dialogo_contenedor = v.findViewById(R.id.cl_item_chat_dialogo_contenedor);
-                this.cl_item_chat_dialogo_contenedor_left = v.findViewById(R.id.cl_item_chat_dialogo_contenedor_left);
-                this.cl_item_chat_dialogo_contenedor_right = v.findViewById(R.id.cl_item_chat_dialogo_contenedor_right);
-                this.tv_item_chat_dialogo_mensaje = v.findViewById(R.id.tv_item_chat_dialogo_mensaje);
-                this.tv_item_chat_dialogo_fecha = v.findViewById(R.id.tv_item_chat_dialogo_fecha);
-
-            }
+            public void onCreateView(View v) {}
 
             String dateHoraActual = "";
 
             @Override
             public void onChangeView(ChatMensaje mensaje, View view, int position) {
+
+               TextView tv_item_chat_dialogo_mensaje;
+               TextView tv_item_chat_dialogo_fecha;
+               ConstraintLayout cl_item_chat_dialogo_contenedor;
+               ConstraintLayout cl_item_chat_dialogo_contenedor_left;
+               ConstraintLayout cl_item_chat_dialogo_contenedor_right;
+
+                cl_item_chat_dialogo_contenedor = view.findViewById(R.id.cl_item_chat_dialogo_contenedor);
+                cl_item_chat_dialogo_contenedor_left = view.findViewById(R.id.cl_item_chat_dialogo_contenedor_left);
+                cl_item_chat_dialogo_contenedor_right = view.findViewById(R.id.cl_item_chat_dialogo_contenedor_right);
+                tv_item_chat_dialogo_mensaje = view.findViewById(R.id.tv_item_chat_dialogo_mensaje);
+                tv_item_chat_dialogo_fecha = view.findViewById(R.id.tv_item_chat_dialogo_fecha);
+
                 DateFormat diaMesYear = new SimpleDateFormat("EEE, d MMM yyyy");
                 DateFormat horaMin = new SimpleDateFormat("h:mm a");
                 /*
@@ -158,21 +159,21 @@ public class ChatItemFragment extends Fragment {
                 }
 
                  */
-                  this.tv_item_chat_dialogo_fecha.setText(mensaje.getDate());
+                  tv_item_chat_dialogo_fecha.setText(mensaje.getDate());
 
 
                 if(mensaje.getAutorId().equals(Autenticacion.getUser().getId())){
-                    this.cl_item_chat_dialogo_contenedor_right.setVisibility(View.GONE);
+                    cl_item_chat_dialogo_contenedor_right.setVisibility(View.GONE);
 
-                    this.cl_item_chat_dialogo_contenedor.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity, R.color.blue));
+                    cl_item_chat_dialogo_contenedor.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity, R.color.blue));
 
-                   this.tv_item_chat_dialogo_mensaje.setTextColor(Color.WHITE);
-                   this.tv_item_chat_dialogo_fecha.setTextColor(Color.WHITE);
+                   tv_item_chat_dialogo_mensaje.setTextColor(Color.WHITE);
+                   tv_item_chat_dialogo_fecha.setTextColor(Color.WHITE);
                 }else{
-                    this.cl_item_chat_dialogo_contenedor_left.setVisibility(View.GONE);
+                    cl_item_chat_dialogo_contenedor_left.setVisibility(View.GONE);
                 }
 
-                this.tv_item_chat_dialogo_mensaje.setText(mensaje.getMensaje());
+                tv_item_chat_dialogo_mensaje.setText(mensaje.getMensaje());
 
             }
 
