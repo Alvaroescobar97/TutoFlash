@@ -140,6 +140,7 @@ public class ChatItemFragment extends Fragment {
             public void onChangeView(ChatMensaje mensaje, View view, int position) {
                 DateFormat diaMesYear = new SimpleDateFormat("EEE, d MMM yyyy");
                 DateFormat horaMin = new SimpleDateFormat("h:mm a");
+                /*
                 Date date = new Date(mensaje.getDate());
 
                 String diaMesYearString = diaMesYear.format(date);
@@ -156,6 +157,10 @@ public class ChatItemFragment extends Fragment {
 
                 }
 
+                 */
+                  this.tv_item_chat_dialogo_fecha.setText(mensaje.getDate());
+
+
                 if(mensaje.getAutorId().equals(Autenticacion.getUser().getId())){
                     this.cl_item_chat_dialogo_contenedor_right.setVisibility(View.GONE);
 
@@ -168,7 +173,7 @@ public class ChatItemFragment extends Fragment {
                 }
 
                 this.tv_item_chat_dialogo_mensaje.setText(mensaje.getMensaje());
-                this.tv_item_chat_dialogo_fecha.setText(strDate);
+
             }
 
         });
