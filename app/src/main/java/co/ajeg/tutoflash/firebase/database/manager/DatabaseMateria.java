@@ -130,7 +130,8 @@ public class DatabaseMateria {
                         Materia currenteObjMateria = task.getResult().toObject(Materia.class);
                         long date =new Date().getTime();
                         currenteObjMateria.setLastFecha(date);
-                        currenteObjMateria.setnEntradas(materiasR.getResult().getDocuments().size()-1);
+                        int nEntradasNumber = materiasR.getResult().getDocuments().size()-1 >= 0? materiasR.getResult().getDocuments().size()-1: 0;
+                        currenteObjMateria.setnEntradas(nEntradasNumber);
                         getRefCollectionAllMaterias().document(nameMateria).set(currenteObjMateria);
                     }
                 }));

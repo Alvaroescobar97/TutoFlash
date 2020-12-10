@@ -124,7 +124,9 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
                 ImageView iv_item_home_materia_image;
                 iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
+
                 Log.e(">>",materia.getName());
+
                 if(materia.getName().contains("Matematicas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.math,getContext().getTheme()));
                 }
@@ -140,6 +142,7 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 if(materia.getName().contains("Programación")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.programacion,getContext().getTheme()));
                 }if(materia.getName().contains("Sistemas")){
+
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.sistemas,getContext().getTheme()));
                 }
 

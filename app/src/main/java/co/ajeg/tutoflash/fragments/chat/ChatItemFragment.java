@@ -120,11 +120,7 @@ public class ChatItemFragment extends Fragment {
 
 
             @Override
-            public void onCreateView(View v) {
-
-
-
-            }
+            public void onCreateView(View v) {}
 
             String dateHoraActual = "";
 
