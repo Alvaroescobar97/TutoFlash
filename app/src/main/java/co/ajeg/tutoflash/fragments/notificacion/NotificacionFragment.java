@@ -85,33 +85,21 @@ public class NotificacionFragment extends Fragment implements DatabaseNotificaci
 
         this.adapterList = new AdapterList(this.rv_notificaciones_lista, this.notificacions, R.layout.list_item_notificaciones_notificacion, new AdapterManagerList<Notificacion>() {
 
-
-            private ImageView civ_item_notificaciones_notificacion_image;
-            private TextView tv_item_notificaciones_notificacion_name;
-            private TextView tv_item_notificaciones_notificacion_descripcion;
-            private TextView tv_item_notificaciones_notificacion_fecha;
-
-
-            @Override
-            public void onCreateView(View v) {
-
-                this.civ_item_notificaciones_notificacion_image = v.findViewById(R.id.iv_item_notificaciones_notificacion_image);
-                this.tv_item_notificaciones_notificacion_name = v.findViewById(R.id.tv_item_notificaciones_notificacion_name);
-                this.tv_item_notificaciones_notificacion_descripcion = v.findViewById(R.id.tv_item_notificaciones_notificacion_descripcion);
-                this.tv_item_notificaciones_notificacion_fecha = v.findViewById(R.id.tv_item_notificaciones_notificacion_fecha);
-
-            }
-
             @Override
             public void onChangeView(Notificacion notificacion, View view, int position) {
+
+                ImageView civ_item_notificaciones_notificacion_image = view.findViewById(R.id.iv_item_notificaciones_notificacion_image);
+                TextView tv_item_notificaciones_notificacion_name = view.findViewById(R.id.tv_item_notificaciones_notificacion_name);
+                TextView tv_item_notificaciones_notificacion_descripcion = view.findViewById(R.id.tv_item_notificaciones_notificacion_descripcion);
+                TextView tv_item_notificaciones_notificacion_fecha = view.findViewById(R.id.tv_item_notificaciones_notificacion_fecha);
 
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
                 Date date = new Date(notificacion.getFecha());
                 String strDate = dateFormat.format(date).toString();
 
-                this.tv_item_notificaciones_notificacion_name.setText(notificacion.getTitle());
-                this.tv_item_notificaciones_notificacion_descripcion.setText(notificacion.getDescripcion());
-                this.tv_item_notificaciones_notificacion_fecha.setText(strDate);
+                tv_item_notificaciones_notificacion_name.setText(notificacion.getTitle());
+                tv_item_notificaciones_notificacion_descripcion.setText(notificacion.getDescripcion());
+                tv_item_notificaciones_notificacion_fecha.setText(strDate);
 
                 if(notificacion.getType().equals(DBROUTES.NOTIFICACION_TYPE_SOLICITUD_TUTOR)){
                     String imageUserActual = Autenticacion.getUser().getImage();

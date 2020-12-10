@@ -80,10 +80,6 @@ public class MateriasItemFragment extends Fragment {
         this.adapterList = new AdapterList(rv_home_materias_item_lista, this.materiasTemas, R.layout.list_item_home_tema, new AdapterManagerList<MateriaTema>() {
 
             @Override
-            public void onCreateView(View v) {
-            }
-
-            @Override
             public void onChangeView(MateriaTema tema, View view, int position) {
 
                 ImageView iv_item_home_tema_image = view.findViewById(R.id.iv_item_home_tema_image);

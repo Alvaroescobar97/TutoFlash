@@ -79,16 +79,6 @@ public class ChatFragment extends Fragment {
         this.adapterList = new AdapterList(this.rv_chat_personas, this.chatPersonList, R.layout.list_item_chat_persona, new AdapterManagerList<ChatPerson>() {
 
 
-
-
-            @Override
-            public void onCreateView(View v) {
-
-
-
-
-            }
-
             @Override
             public void onChangeView(ChatPerson elemnto, View view, int position) {
 

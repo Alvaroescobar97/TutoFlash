@@ -97,15 +97,10 @@ public class NotificacionTemaTutorFragment extends Fragment {
 
         this.adapterList = new AdapterList<>(this.rv_notificacion_tema_tutor_horarios, this.horarios, R.layout.list_item_materia_solicitar_horario, new AdapterManagerList<String>() {
 
-            TextView tv_list_item_materia_solicitar_horario_fecha;
-
-            @Override
-            public void onCreateView(View v) {
-                tv_list_item_materia_solicitar_horario_fecha = v.findViewById(R.id.tv_list_item_materia_solicitar_horario_fecha);
-            }
-
             @Override
             public void onChangeView(String elemnto, View view, int position) {
+
+                TextView tv_list_item_materia_solicitar_horario_fecha = view.findViewById(R.id.tv_list_item_materia_solicitar_horario_fecha);
                 tv_list_item_materia_solicitar_horario_fecha.setText(elemnto);
             }
         });

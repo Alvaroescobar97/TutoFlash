@@ -1,8 +1,10 @@
 package co.ajeg.tutoflash.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,21 +46,16 @@ public class AdapterList<T> {
 
     public void onRemoveItem(T item) {
         int position = this.adaptador.lista.indexOf(item);
+
         if(position != -1){
             this.adaptador.lista.remove(position);
             this.adaptador.notifyItemRemoved(position);
-        }
-        if(this.recyclerView != null){
-            this.recyclerView.setAdapter(this.adaptador);
         }
     }
 
     public void onRemoveItem(int position) {
         this.adaptador.lista.remove(position);
         this.adaptador.notifyItemRemoved(position);
-        if(this.recyclerView != null){
-            this.recyclerView.setAdapter(this.adaptador);
-        }
     }
 
     public void onUpdateData(List<T> items) {
@@ -115,7 +112,7 @@ public class AdapterList<T> {
 
         @NonNull
         @Override
-        public ViewHolderDatos onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ViewHolderDatos onCreateViewHolder(@NonNull ViewGroup parent, int position) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(layoutId,parent, false);
             return new ViewHolderDatos(view);
@@ -137,8 +134,13 @@ public class AdapterList<T> {
             public ViewHolderDatos(@NonNull View itemView) {
                 super(itemView);
                 this.view = itemView;
-                result.onCreateView(itemView);
+
             }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
         }
     }
 }

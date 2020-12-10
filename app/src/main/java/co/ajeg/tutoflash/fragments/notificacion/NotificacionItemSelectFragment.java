@@ -53,29 +53,15 @@ public class NotificacionItemSelectFragment extends Fragment {
         AdapterList<MateriaTutor> adapterList = new AdapterList(rv_chat_personas, materiaTutors, R.layout.list_item_materia_tutor, new AdapterManagerList<MateriaTutor>() {
 
 
-            private CircleImageView civ_item_materia_tutor_image;
-            private TextView tv_item_materia_tutor_name;
-            private TextView tv_item_materia_tutor_descripcion;
-            private TextView tv_item_materia_tutor_calificacion;
-            private RatingBar rb_item_materia_tutor_calificacion;
-            private TextView tv_item_materia_tutor_precio;
-
-
-            @Override
-            public void onCreateView(View v) {
-
-                this.civ_item_materia_tutor_image = v.findViewById(R.id.iv_item_materia_tutor_image);
-                this.tv_item_materia_tutor_name = v.findViewById(R.id.tv_item_materia_tutor_name);
-                this.tv_item_materia_tutor_descripcion = v.findViewById(R.id.tv_item_materia_tutor_descripcion);
-                this.tv_item_materia_tutor_calificacion = v.findViewById(R.id.tv_item_materia_tutor_calificacion);
-                this.rb_item_materia_tutor_calificacion = v.findViewById(R.id.rb_item_materia_tutor_calificacion);
-                this.tv_item_materia_tutor_precio = v.findViewById(R.id.tv_item_materia_tutor_precio);
-
-
-            }
-
             @Override
             public void onChangeView(MateriaTutor tutor, View view, int position) {
+
+                CircleImageView civ_item_materia_tutor_image = view.findViewById(R.id.iv_item_materia_tutor_image);
+                TextView tv_item_materia_tutor_name = view.findViewById(R.id.tv_item_materia_tutor_name);
+                TextView tv_item_materia_tutor_descripcion = view.findViewById(R.id.tv_item_materia_tutor_descripcion);
+                TextView tv_item_materia_tutor_calificacion = view.findViewById(R.id.tv_item_materia_tutor_calificacion);
+                RatingBar rb_item_materia_tutor_calificacion = view.findViewById(R.id.rb_item_materia_tutor_calificacion);
+                TextView tv_item_materia_tutor_precio = view.findViewById(R.id.tv_item_materia_tutor_precio);
 
             }
         });

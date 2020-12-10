@@ -117,11 +117,6 @@ public class ChatItemFragment extends Fragment {
         adapterList = new AdapterList(rv_chat_item_dialogos, this.chatMensajes, R.layout.list_item_chat_dialogo, new AdapterManagerList<ChatMensaje>() {
 
 
-
-
-            @Override
-            public void onCreateView(View v) {}
-
             String dateHoraActual = "";
 
             @Override

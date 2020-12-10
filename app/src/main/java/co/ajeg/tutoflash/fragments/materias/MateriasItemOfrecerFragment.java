@@ -83,23 +83,16 @@ public class MateriasItemOfrecerFragment extends Fragment {
 
         this.adapterList = new AdapterList<>(this.rv_materias_ofrecer_fechas, this.horariosDisponibles, R.layout.list_item_materia_solicitar_horario, new AdapterManagerList<String>() {
 
-            TextView tv_list_item_materia_solicitar_horario_fecha;
-            ImageView iv_list_item_materia_solicitar_horario_eliminar;
-
-
-            @Override
-            public void onCreateView(View v) {
-                tv_list_item_materia_solicitar_horario_fecha = v.findViewById(R.id.tv_list_item_materia_solicitar_horario_fecha);
-                iv_list_item_materia_solicitar_horario_eliminar = v.findViewById(R.id.iv_list_item_materia_solicitar_horario_eliminar);
-            }
-
             @Override
             public void onChangeView(String elemnto, View view, int position) {
+
+                TextView tv_list_item_materia_solicitar_horario_fecha =view.findViewById(R.id.tv_list_item_materia_solicitar_horario_fecha);
+                ImageView iv_list_item_materia_solicitar_horario_eliminar = view.findViewById(R.id.iv_list_item_materia_solicitar_horario_eliminar);
 
                 tv_list_item_materia_solicitar_horario_fecha.setText(elemnto);
 
                 iv_list_item_materia_solicitar_horario_eliminar.setOnClickListener(v->{
-                    adapterList.onRemoveItem(elemnto);
+                    adapterList.onRemoveItem(position);
                 });
 
             }

@@ -90,8 +90,6 @@ public class NotificacionTemaCreateFragment extends Fragment {
 
         this.adapterList = new AdapterList<>(this.rv_notificacion_tema_create_tutores, this.materiaTutorsList, R.layout.list_item_materia_tutor, new AdapterManagerList<MateriaTutor>() {
 
-            @Override
-            public void onCreateView(View v) { }
 
             @Override
             public void onChangeView(MateriaTutor tutor, View view, int position) {

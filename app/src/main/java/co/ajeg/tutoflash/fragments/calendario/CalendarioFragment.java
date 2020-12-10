@@ -109,21 +109,13 @@ public class CalendarioFragment extends Fragment {
 
         adapterList = new AdapterList<>(this.rv_calendario_eventos, this.tutoriaList, R.layout.list_item_calendario, new AdapterManagerList<Tutoria>() {
 
-            private TextView tv_list_item_calendario_descripcion;
-            private TextView tv_list_item_calendario_fecha;
-            private Button btn_list_item_calendario_erase;
-
-            @Override
-            public void onCreateView(View v) {
-                tv_list_item_calendario_descripcion= v.findViewById(R.id.tutoria_item_Des);
-                tv_list_item_calendario_fecha= v.findViewById(R.id.tutoria_Item_fecha);
-                btn_list_item_calendario_erase= v.findViewById(R.id.btn_Calendario_Erase);
-
-
-            }
 
             @Override
             public void onChangeView(Tutoria elemnto, View view, int position) {
+
+                TextView tv_list_item_calendario_descripcion = view.findViewById(R.id.tutoria_item_Des);
+                TextView tv_list_item_calendario_fecha = view.findViewById(R.id.tutoria_Item_fecha);
+                Button btn_list_item_calendario_erase = view.findViewById(R.id.btn_Calendario_Erase);
 
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
                 Date fecha = new Date(elemnto.getFecha());
