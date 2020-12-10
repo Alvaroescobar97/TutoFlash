@@ -20,11 +20,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.activities.MainActivity;
 import co.ajeg.tutoflash.adapter.AdapterList;
 import co.ajeg.tutoflash.adapter.AdapterManagerList;
+import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
+import co.ajeg.tutoflash.firebase.database.manager.DatabaseMateria;
 import co.ajeg.tutoflash.fragments.util.FragmentUtil;
 import co.ajeg.tutoflash.model.Tutoria;
 
@@ -49,8 +52,6 @@ public class CalendarioFragment extends Fragment {
     private String selectedday;
     private String selectedMonth;
     private String selectedYear;
-
-
 
 
     public CalendarioFragment(MainActivity mainActivity) {
@@ -96,9 +97,6 @@ public class CalendarioFragment extends Fragment {
         this.et_calendario_nueva_tutoria = view.findViewById(R.id.et_calendario_nuevaturoia);
         this.rv_calendario_eventos = view.findViewById(R.id.rv_calendario_eventos);
         this.rv_calendario_eventos.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-
-
 
         mainActivity = FragmentUtil.getActivity();
         mainActivity.headerFragment.changeTitleHeader("Calendario");
@@ -155,8 +153,8 @@ public class CalendarioFragment extends Fragment {
         String fecha = selectedday +"/" + selectedMonth + "/" + selectedYear;
 
         if(!descripcion.equals("")){
-
-            Tutoria tutoria= new Tutoria(descripcion,fecha);
+            Tutoria tutoria= new Tutoria(UUID.randomUUID().toString(), descripcion,fecha);
+            DatabaseMateria.addHorario(Autenticacion.getUser().getId(), fecha, descripcion);
             adapterList.onAddItem(tutoria);
         }
 
