@@ -125,25 +125,26 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 ImageView iv_item_home_materia_image;
                 iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
                 Log.e(">>",materia.getName());
-                if(materia.getName().contains("matematicas")){
+                if(materia.getName().contains("Matematicas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.math,getContext().getTheme()));
                 }
-                if(materia.getName().contains("fisica")){
+                if(materia.getName().contains("Fisica")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.fisica,getContext().getTheme()));
                 }
-                if(materia.getName().contains("literatura")){
+                if(materia.getName().contains("Literatura")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.literatura,getContext().getTheme()));
                 }
-                if(materia.getName().contains("ingles")){
+                if(materia.getName().contains("Ingles")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.ingles,getContext().getTheme()));
                 }
-                if(materia.getName().contains("programación")){
+                if(materia.getName().contains("Programación")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.programacion,getContext().getTheme()));
-                }if(materia.getName().contains("sistemas")){
+                }if(materia.getName().contains("Sistemas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.sistemas,getContext().getTheme()));
                 }
 
                 int nEntradas = materia.getnEntradas();
+                Log.e(">>>>",""+nEntradas);
                 tv_item_home_materia_name.setText(ucFirst(materia.getName()));
                 tv_item_home_materia_fecha.setText(nEntradas + " entradas");
 
