@@ -125,26 +125,28 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
                 ImageView iv_item_home_materia_image;
                 iv_item_home_materia_image = view.findViewById(R.id.iv_item_home_materia_image);
                 Log.e(">>",materia.getName());
-                if(materia.getName().contains("matematicas")){
+                String nameMaterias = materia.getName().toLowerCase();
+                if(nameMaterias.contains("matematicas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.math,getContext().getTheme()));
                 }
-                if(materia.getName().contains("fisica")){
+                Toast.makeText(getContext(), "Imagen: " +nameMaterias, Toast.LENGTH_SHORT).show();
+                if(nameMaterias.contains("fisica")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.fisica,getContext().getTheme()));
                 }
-                if(materia.getName().contains("literatura")){
+                if(nameMaterias.contains("literatura")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.literatura,getContext().getTheme()));
                 }
-                if(materia.getName().contains("ingles")){
+                if(nameMaterias.contains("ingles")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.ingles,getContext().getTheme()));
                 }
-                if(materia.getName().contains("programación")){
+                if(nameMaterias.contains("programación")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.programacion,getContext().getTheme()));
-                }if(materia.getName().contains("sistemas")){
+                }if(nameMaterias.contains("sistemas")){
                     iv_item_home_materia_image.setImageDrawable(getResources().getDrawable(R.drawable.sistemas,getContext().getTheme()));
                 }
 
                 int nEntradas = materia.getnEntradas();
-                tv_item_home_materia_name.setText(ucFirst(materia.getName()));
+                tv_item_home_materia_name.setText(ucFirst(nameMaterias));
                 tv_item_home_materia_fecha.setText(nEntradas + " entradas");
 
                 view.setOnClickListener((v)->{
