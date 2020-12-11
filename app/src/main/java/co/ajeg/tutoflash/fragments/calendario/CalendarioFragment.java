@@ -92,8 +92,6 @@ public class CalendarioFragment extends Fragment {
             }
         });
 
-
-
         this.et_calendario_nueva_tutoria = view.findViewById(R.id.et_calendario_nuevaturoia);
         this.rv_calendario_eventos = view.findViewById(R.id.rv_calendario_eventos);
         this.rv_calendario_eventos.setLayoutManager(new LinearLayoutManager(this.getContext()));

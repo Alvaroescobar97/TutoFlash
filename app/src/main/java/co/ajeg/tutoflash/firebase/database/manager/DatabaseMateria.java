@@ -1,5 +1,6 @@
 package co.ajeg.tutoflash.firebase.database.manager;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -151,6 +152,10 @@ public class DatabaseMateria {
             deteletMateriaTutor(nameMateria, materiaTema, materiaTutor.getTutorId(), (t) -> {
             });
         }
+    }
+
+    public void onListenerTurorias(Fragment fragment){
+
     }
 
     public static void addHorario(String userId, String horarioString, String mensaje){
