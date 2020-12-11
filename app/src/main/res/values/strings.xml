@@ -10,4 +10,5 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_inicio_actividad">InicioActividad</string>
     <string name="title_activity_inicio">InicioActivity</string>
+    <string name="fecha_de_hoy">Fecha de hoy</string>
 </resources>

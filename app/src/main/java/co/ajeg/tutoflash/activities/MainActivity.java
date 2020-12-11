@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import co.ajeg.tutoflash.R;
 import co.ajeg.tutoflash.firebase.FirebaseMensajes;
 import co.ajeg.tutoflash.firebase.autenticacion.Autenticacion;
-import co.ajeg.tutoflash.fragments.CalendarioFragment;
+import co.ajeg.tutoflash.fragments.calendario.CalendarioFragment;
 import co.ajeg.tutoflash.fragments.chat.ChatFragment;
 import co.ajeg.tutoflash.fragments.HeaderFragment;
 import co.ajeg.tutoflash.fragments.PerfilFragment;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         notificacionFragment = new NotificacionFragment(this);
 
-        calendarioFragment = CalendarioFragment.newInstance();
+        calendarioFragment = CalendarioFragment.newInstance(this);
 
         chatFragment = new ChatFragment(this);
 
