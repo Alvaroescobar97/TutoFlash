@@ -197,6 +197,21 @@ public class ChatItemFragment extends Fragment {
             return stateClick;
         });
 
+        if(this.chatPerson != null){
+            this.databaseChat.getChatAllMensaje(chatPerson.getId(), chatMensajeList -> {
+
+                if(chatMensajeList != null){
+                    this.chatMensajes = chatMensajeList;
+                    if (this.adapterList != null) {
+                      this.adapterList.onUpdateData( this.chatMensajes);
+                        this.adapterList.positionFinal();
+
+                    }
+                }
+
+               // Toast.makeText(this.getContext(), "Actualizando mensajes", Toast.LENGTH_SHORT).show();
+            });
+        }
 
         return view;
 
@@ -206,13 +221,6 @@ public class ChatItemFragment extends Fragment {
     public void changeCurrentChat(ChatPerson chatPerson) {
         this.chatPerson = chatPerson;
 
-        this.databaseChat.getChatAllMensaje(chatPerson.getId(), chatMensajeList -> {
-            this.chatMensajes = chatMensajeList;
-            if (adapterList != null) {
-                adapterList.onUpdateData(chatMensajeList);
-                this.adapterList.positionFinal();
-            }
-        });
     }
 
     public void setCurrentUsuario(User usuario){

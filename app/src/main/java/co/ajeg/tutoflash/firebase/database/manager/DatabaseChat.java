@@ -73,7 +73,7 @@ public class DatabaseChat {
             if (this.listenerMensajes != null) {
                 this.stopListenerMensajes();
             }
-            this.listenerMensajes = getReferenceChatMensajes(chatId).orderBy("date", Query.Direction.ASCENDING).addSnapshotListener((value, error) -> {
+            this.listenerMensajes = getReferenceChatMensajes(chatId).orderBy("date", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
                 List<ChatMensaje> mensajes = value.toObjects(ChatMensaje.class);
                 onCompleteListenerChatMensajes.onLoad(mensajes);
             });
