@@ -71,9 +71,9 @@ public class DatabaseMateria {
     }
 
     public void findMateriasForName(String name, OnCompleteListenerAllMaterias onCompleteListenerAllMaterias) {
-        String temaString = name.trim().replaceAll(" ", "");
+        String temaString = name.trim().replaceAll(" ", "").toLowerCase();
         activity.runOnUiThread(() -> {
-            getRefCollectionAllMaterias().whereGreaterThanOrEqualTo("name", temaString).get().addOnCompleteListener((task) -> {
+            getRefCollectionAllMaterias().whereEqualTo("name", temaString).get().addOnCompleteListener((task) -> {
                 if (task.isSuccessful()) {
                     List<Materia> materias = task.getResult().toObjects(Materia.class);
                     onCompleteListenerAllMaterias.onLoadAllMaterias(materias);

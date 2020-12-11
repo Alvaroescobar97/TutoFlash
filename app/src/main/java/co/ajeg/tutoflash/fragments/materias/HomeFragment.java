@@ -202,10 +202,12 @@ public class HomeFragment extends Fragment implements DatabaseMateria.OnComplete
 
     public void onFindMateria(){
         if(this.et_home_busqueda != null){
+
             String materiaString = et_home_busqueda.getText().toString();
             if(materiaString.equals("")){
                 this.adapterList.onUpdateData(this.materiaList);
             }else{
+                Toast.makeText(mainActivity, "Click, csdksldkl", Toast.LENGTH_SHORT).show();
                 this.databaseMateria.findMateriasForName(materiaString, (materiaList)->{
                     this.adapterList.onUpdateData(materiaList);
                 });
